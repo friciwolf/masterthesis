@@ -1,0 +1,83 @@
+% title page
+\linespread{1.0}\selectfont
+\thispagestyle{empty}
+\pagenumbering{gobble}
+\selectlanguage{ngerman}
+\pdfbookmark[1]{Titlepage}{Titlepage}
+\renewcommand{\headrulewidth}{0pt}
+\input{content/title.tex}
+
+% contents page
+\newpage
+\pagenumbering{Roman}
+\setcounter{page}{1}
+\thispagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\fancyfoot[RO,LE]{\slshape{\thepage}}
+\selectlanguage{english}
+\pdfbookmark[1]{Contents}{Contents}
+\addtocontents{toc}{~\hfill\textbf{Page}\par}
+\tableofcontents
+
+% begin thesis content
+\pageshift
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\linespread{\textlinespread}\selectfont
+\fancyfoot[RO,LE]{\slshape{\thepage}}
+\fancyhead[LE]{\slshape{\leftmark}}
+\fancyhead[RO]{\slshape{\rightmark}}
+\renewcommand{\headrulewidth}{0.5pt}
+
+% introduction
+\thispagestyle{plain}
+\input{content/introduction.tex}
+
+% theory
+\pageshift
+\thispagestyle{plain}
+\input{content/theory.tex}
+
+% other sections go here
+
+% conclusion
+\pageshift
+\thispagestyle{plain}
+\input{content/conclusion.tex}
+
+% appendix
+\begin{appendix}
+	% appendix sections should look like this
+	% \pageshift
+	% \thispagestyle{plain}
+	% \Section{Foo}\label{sec:apx_foo}
+	% Foo.
+\end{appendix}
+
+
+% bibliography
+\linespread{1.0}\selectfont
+\pageshift
+\thispagestyle{plain}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\refname}{Bibliography}
+\phantomsection
+\addcontentsline{toc}{section}{Bibliography}
+\bibliography{bib/bib}
+
+% finalize thesis content
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead{}
+\fancyfoot{}
+
+% thesis statement
+\pageshift
+\thispagestyle{empty}
+\input{content/statement.tex}
+
+% acknowledgment
+\pageshift
+\thispagestyle{empty}
+\selectlanguage{ngerman}
+\input{content/acknowledgment.tex}

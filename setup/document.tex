@@ -1,0 +1,130 @@
+%
+% lengths and sizes
+%
+
+% page geometry (bind correction is 4mm)
+\ifthenelse{\equal{\bindcorrection}{yes}}{
+	\newgeometry{twoside,includeheadfoot,top=16mm,bottom=16mm,inner=28mm,outer=20mm}
+}{
+	\newgeometry{twoside,includeheadfoot,top=16mm,bottom=16mm,inner=24mm,outer=24mm}
+}
+
+% line spread in text
+\newcommand{\textlinespread}[0]{1.05}
+
+% reset the indentation distance of new paragraphs
+\setlength{\parindent}{0cm}
+
+% indentation shortcut
+\newcommand{\ind}[0]{\hspace*{1em}}
+
+% vertical offset shortcut for paragraphs
+\newcommand{\pg}[0]{\vspace*{0.5em}}
+
+% enum/itemize distances
+\setlength{\pltopsep}{2mm}
+\setlength{\plitemsep}{2mm}
+
+
+%
+% page and text setup
+%
+
+% header design
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+
+% header on even pages
+\renewcommand{\sectionmark}[1]{\markboth{{\thesection~~#1}}{}}
+
+% header on odd pages
+\renewcommand{\subsectionmark}[1]{\markright{{\thesubsection~~#1}}}
+
+% optinally adds an empty page between chapters to ensure that new chapters allways start on odd pages
+\newcommand{\pageshift}{
+	\clearpage
+	\newpage
+	\ifodd
+		\thepage
+	\else
+		\null
+		\newpage
+	\fi
+}
+
+
+%
+% section and counter handling
+%
+
+% distance between number and name in sections
+\newlength{\secsep}
+\setlength{\secsep}{1em}
+
+% associate figures with sections
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+% associate tables with sections
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
+% associate equations with sections
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+
+% custom section
+\newcommand{\Section}[2][]{
+	\setcounter{subsection}{0}
+	\setcounter{figure}{0}
+	\setcounter{table}{0}
+	\setcounter{equation}{0}
+	\refstepcounter{section}
+	\section*{\thesection\hspace{\secsep}#2}
+	\ifthenelse{\equal{#1}{}}{
+		\addcontentsline{toc}{section}{\thesection\hspace{\secsep}#2}
+	}{
+		\addcontentsline{toc}{section}{\thesection\hspace{\secsep}\texorpdfstring{#2}{#1}}
+	}
+	\sectionmark{#2}
+}
+
+% custom subsection
+\newcommand{\Subsection}[2][]{
+	\setcounter{subsubsection}{0}
+	\refstepcounter{subsection}
+	\subsection*{\thesubsection\hspace{\secsep}#2}
+	\ifthenelse{\equal{#1}{}}{
+		\addcontentsline{toc}{subsection}{\thesubsection\hspace{\secsep}#2}
+	}{
+		\addcontentsline{toc}{subsection}{\thesubsection\hspace{\secsep}\texorpdfstring{#2}{#1}}
+	}
+	\subsectionmark{#2}
+}
+
+% custom subsubsection
+\newcommand{\Subsubsection}[2][]{
+	\refstepcounter{subsubsection}
+	\subsubsection*{\thesubsubsection\hspace{\secsep}#2}
+	\ifthenelse{\equal{#1}{}}{
+		\addcontentsline{toc}{subsubsection}{\thesubsubsection\hspace{\secsep}#2}
+	}{
+		\addcontentsline{toc}{subsubsection}{\thesubsubsection\hspace{\secsep}\texorpdfstring{#2}{#1}}
+	}
+	\subsubsectionmark{#2}
+}
+
+% custom, unnumbered section
+\newcommand{\UnnumberedSection}[2][]{
+	\setcounter{subsection}{0}
+	\setcounter{figure}{0}
+	\setcounter{table}{0}
+	\setcounter{equation}{0}
+	\refstepcounter{section}
+	\phantomsection
+	\section*{#2}
+	\ifthenelse{\equal{#1}{}}{
+		\addcontentsline{toc}{section}{#2}
+	}{
+		\addcontentsline{toc}{section}{\texorpdfstring{#2}{#1}}
+	}
+	\sectionmark{#2}
+}
