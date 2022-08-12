@@ -1,1 +1,33 @@
-\Section{Deep Learning}
+\Section{Deep Learning, Normalizing Flows and Invertible Neural Networks}
+\label{sec:deeplearning}
+
+Deep Learning is a subdomain within Machine Learning focussing on the construction and training of deep neural networks. Such networks have been proven to be extremely successful in different, analytically unsolvable problems such as (but not restricted to) image classification tasks, regression tasks, image generation tasks, language translation and reinforcement learning.
+
+In this chapter, a brief introduction to these networks and their properties with a focus on so-called normalizing flows and invertible neural networks is given.
+
+\Subsection{Foundations of Deep Learning and Neural Networks}
+\Subsubsection{The Universal Approximation Theorem}
+
+The success of Neural Networks (NNs) lies in their potential of learning (almost) arbitrary models. This property of NNs can be expressed mathematically through the Universal Approximation Theorem which in words states \cite{DLiPR}:
+
+\begin{quote}
+	\centering
+	A feed-forward network with linear output and at least one hidden layer with a finite number of nodes can approximate any real continuous function on a given closed and bounded subset to arbitrary precision.
+\end{quote}
+
+The Universal Approximation Theorem however does not state how the network should be constructed to achieve the desired precision. For this reason, the theorem has been proven for several network architectures; in case of ReLU-activated feed-forward networks the theorem can be written as the following \cite{UAC}:
+\newtheorem{theorem}{Theorem}
+\begin{theorem}
+	For any real and continuous function $f : [0, 1]^{d_{in}} \rightarrow \mathbb{R}^{d_{out}}$ and every $\epsilon>0$ there is a ReLU-network $\mathcal{N}$ with the same input and output dimension $d_{in}$ and $d_{out}$ and hidden layer width at most $w$ for which
+	\begin{equation*}
+		\sup_{x\in[0, 1]^{d_{in}}}\Vert f(x)-f_\mathcal{N}(x)\Vert \leq \epsilon
+	\end{equation*}
+	and
+	\begin{equation*}
+		d_{in} + 1 \leq w_{min}(d_{in}, d_{out}) \leq d_{in} + d_{out}
+	\end{equation*}
+\end{theorem}
+This theorem does not state anything about the exact depth (number of layers) the network needs to have, its speed of convergence and the optimization process it needs to undergo to achieve this arbitrary approximation. On the other hand, it is reassuring to have a mathematical guarantee for convergence for a given feed-forward network structure. For this reason, empiric studies are usually performed to look for a locally optimal solution for a given task.
+
+
+
