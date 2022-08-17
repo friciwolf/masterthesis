@@ -101,14 +101,14 @@ is a universal approximator with the free parameters $\theta$ (containing all th
 		\node [draw=none, scale=2.5, text height=0.333cm] at (3, -0.75) {$\hdots$};
 		
 	\end{tikzpicture}
-	\caption{Schematical structure of a feed-forward NN. The nodes represent the variables for the hidden and output layers or the biases applied to the intermediate outputs for the hidden layers. Arrows represent the matrix $W$ and the activations $g$.}
+	\caption{Schematical structure of a feed-forward NN. The nodes represent the variables for the hidden and output layers or the biases and the activations $g$ applied to the intermediate outputs for the hidden layers. Arrows represent the matrix $W$.}
 	\label{fig:nn}
 \end{figure}
 
 Note that for the approximation to work arbitrary well, the structure of the network and training have to be correctly adjusted to the task to be solved.
 
 \Subsubsection{Activation Functions}
-It is essential for convergence to select the right activation function $g$. Historically, several candidate activation functions such as sigmoid, tanh, the rectified linear unit (ReLU) and its variants such as SeLU and leaky-ReLU have emerged. In this work ReLU will be used exclusively. One great advantage of ReLU is the lack of saturation range compared to the sigmoid or tanh activation functions, where gradients above or below a given value of $x$ become negligible, "paralysing" the training. Apart from that, ReLU has tractable derivatives and has proven to be an efficient activator empirically. It is defined as
+It is essential for convergence to select the right activation function $g$. Historically, several candidate activation functions such as sigmoid, tanh, the rectified linear unit (ReLU) and its variants such as SeLU and leaky-ReLU have emerged. In this work ReLU will be used exclusively. An advantage of ReLU is the lack of saturation range compared to the sigmoid or the tanh activation functions, where gradients above or below a given value of $x$ become negligible, "paralysing" the training. Apart from that, ReLU has tractable derivatives and has proven to be an efficient activator empirically. It is defined as
 
 \begin{equation*}
 	\text{ReLU}(x) = \max \{0, x\}
@@ -119,7 +119,7 @@ where the maximum is taken element-wise over the vector components of $x$. Note 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{figures/neural_networks/activations}
-	\caption{Most commonly used activation functions. Note the plateaus of the sigmoid and tanh functions and for all $x<0$ for ReLU. Setting the gradient zero for x<0 renders several parameters inactive during training; on the other hand, large positive parameters have do not get stuck due to vanishing gradients and the function is scaleless}
+	\caption{Most commonly used activation functions. Note the plateaus of the sigmoid and tanh functions and for all $x$<0 for ReLU. Setting the gradient zero in case of ReLU for $x$<0 renders several parameters inactive during training; on the other hand, large positive parameters have do not get stuck due to vanishing gradients and the function is scaleless.}
 	\label{fig:activations}
 \end{figure}
 
