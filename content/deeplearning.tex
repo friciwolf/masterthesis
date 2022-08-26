@@ -32,7 +32,7 @@ This theorem does not state anything about the exact depth (number of layers) th
 In the following, a brief overview of the most common NN components is going to be given with special focus on the ones used for the construction of the cINN.
 
 \Subsubsection{Fully-Connected Neural Networks}
-The most elementary NNs perform affine transformations (consisting of a linear transformation represented by a matrix $W$ and a shift $b$) on a given input $x$ followed by the application of a non-linear function (called activation) $g$:
+The most elementary NNs perform affine transformations (consisting of a linear transformation represented by a weight matrix $W$ and a shift $b$) on a given input $x$ followed by the application of a non-linear function (called activation) $g$:
 
 \begin{equation*}
 	y = g(Wx+b)
@@ -123,6 +123,8 @@ where the maximum is taken element-wise over the vector components of $x$. Note 
 	\label{fig:activations}
 \end{figure}
 
+\textcolor{red}{datasets and gradient descent, Adam}
+
 \Subsubsection{Objective Functions}
 
 Having established the network structure, a measure of fit quality remains to be chosen. Such measures are called objective functions (error or loss functions) and used to govern the training by setting the gradients of the trainable parameters $\theta$.
@@ -138,11 +140,24 @@ In this work, distribution fitting will be performed which is reflected by the c
 
 with the convex function $f(r) = r\log r$ \cite{Papamakarios_NF}. In its expanded form it can be written as
 
-\begin{align*}
-	\mathbb{KL}\left[q_\text{x}(x) \, \, || \, \, p_\text{x}(x; \theta)\right] &= \mathbb{E}_{q_\text{x}(x)}\left[\frac{\log q_\text{x}(x)}{\log p_x(x; \theta)}\right] \\&= \underbrace{- \mathbb{E}_{q_\text{x}(x)} \left[ \log p_\text{x}(x; \theta)\right]}_{\mathcal{L}(\theta)} + \underbrace{\mathbb{E}_{q_\text{x}(x)}\left[\log q_\text{x}(x)\right]}_{const}
-\end{align*}
+\begin{equation}
+	\begin{aligned}
+		\mathbb{KL}\left[q_\text{x}(x) \, \, || \, \, p_\text{x}(x; \theta)\right] &= \mathbb{E}_{q_\text{x}(x)}\left[\frac{\log q_\text{x}(x)}{\log p_x(x; \theta)}\right] \\&= \underbrace{- \mathbb{E}_{q_\text{x}(x)} \left[ \log p_\text{x}(x; \theta)\right]}_{\mathcal{L}(\theta)} + \underbrace{\mathbb{E}_{q_\text{x}(x)}\left[\log q_\text{x}(x)\right]}_{const}
+	\end{aligned}
+	\label{eq:KL-loss}
+\end{equation}
 
-and can be decomposed into a $\theta$-parameter dependent and a $\theta$-independent term\footnote{Note that the Kullback-Leibler divergence is not symmetric in its arguments and swapping $q$ and $p$ does not yield a similar decomposition due to the expectation value taken over the probability density function $p_\text{x}(x; \theta)$. Hence a distinction between the forward and the backward Kullback-Leibler divergence has to be made. In to following, only the forward KL-divergence (introduced above) will be used.}. The KL-divergence has a global minimum of value 0 where both distributions are identical. With this expression, one can approximate an unknown posterior distribution $p(x | y)$ using a model function $p_\theta(x | y)$ (both conditioned on a random variable $y$) by taking the parameter-dependent term $\mathcal{L}(\theta)$ as a basis for the loss function. With this choice, one can potentially generate samples from the true posterior distribution at the global optimum of the KL-divergence. In the following, a likelihood-free solution to this inference problem using conditional invertible neural networks will be discussed.
+and can be decomposed into a $\theta$-parameter dependent and a $\theta$-independent term\footnote{Note that the Kullback-Leibler divergence is not symmetric in its arguments and swapping $q$ and $p$ does not yield a similar decomposition due to the expectation value taken over the probability density function $p_\text{x}(x; \theta)$. Hence a distinction between the forward and the backward Kullback-Leibler divergence has to be made. In to following, only the forward KL-divergence (introduced above) will be used.}. The KL-divergence has a global minimum of value 0 where both distributions are identical. With this expression, one can approximate an unknown posterior distribution $p(x | y)$ using a model function $p_\theta(x | y)$ (both conditioned on a random variable $y$) by taking the parameter-dependent term $\mathcal{L}(\theta)$ as a basis for the loss function.
+
+Objective functions "guide" only the training, but do not contain any measure about the quality of the predictions per se. It can occur in terms of the weights, that a given feature of one or several inputs enjoys a higher-than-optimal weight at the cost of generalization. For this reason, the entries of the weight matrix during gradient descent are penalized with an additional $L^2$ regularization term
+
+\begin{equation}
+	L'(\theta) = L(\theta) + \alpha \, ||\theta|| _2^2
+\end{equation}
+
+where $\alpha$ is a fixed regularization parameter.
+
+With this choice of the loss, one can potentially generate samples from the true posterior distribution at the global optimum of the KL-divergence. In the following, a likelihood-free solution to the posterior inference problem using conditional invertible neural networks will be discussed.
 
 \Subsection{Conditional Invertible Neural Networks}
 
@@ -165,10 +180,10 @@ To ensure invertibility the network input and output dimensions have to match to
 	\label{fig:inn}
 \end{figure}
 
-A conceptual disadvantage arises from the conditions being included in the network outputs. Assuming the dimensionality of $x$ and $y$ are wide apart from each other zero-padding or several noise-extending techniques are necessary to achieve convergence. This can be fixed by removing the conditions $y$ from the output and by using them as an additional input for the network and by setting the dimension of the latent space distribution to match that of the inputs $x$. A sketch of the resulting network -- the conditional invertible neural network (cINN) -- structure is shown in fig. \ref{fig:cINN_archicture}.
+A conceptual disadvantage arises from the conditions being included in the network outputs. Assuming the dimensionality of $x$ and $y$ are wide apart from each other zero-padding or several noise-extending techniques are necessary to construct the network potentially introducing unnecessary redundancies. This can be fixed by removing the conditions $y$ from the output and by using them as an additional input for the network and by setting the dimension of the latent space distribution to match that of the inputs $x$. With this approch, the conditions can also be pre-processed by applying a -- either pre- or jointly with the network trained -- network (a conditioning or summary network) \cite{BayesFlow}. Such setups enable to processing of highly correlated or feature-rich data at the cost of potential overfitting \cite{Ksoll_2020}. A sketch of the resulting network -- the conditional invertible neural network (cINN) -- structure is shown in fig. \ref{fig:cINN_archicture}.
 
 \begin{figure}
-	\caption{\textcolor{red}{A sketch of the network setup}}
+	\caption{\textcolor{red}{A sketch of the network setup with a summary network}}
 	\label{fig:cINN_archicture}
 \end{figure}
 
@@ -225,8 +240,8 @@ where $\odot$ denotes the element-wise (Hadamard) product. Note that although th
 
 \begin{equation*}
 	\left\{\begin{aligned}
-		u_2 &= (v_2 - t_1(v_1)) \odot \exp(-s_1(v_1)) \\
-		u_1 &= (v_1 - t_2(u_2)) \odot \exp(-s_2(u_2)) 
+		u_1 &= (v_2 - t_1(v_1)) \odot \exp(-s_1(v_1)) \\
+		u_2 &= (v_1 - t_2(u_2)) \odot \exp(-s_2(u_2)) 
 	\end{aligned}\right.
 \end{equation*}
 
@@ -245,12 +260,51 @@ and its determinant
 	\left|\frac{\partial (v_1, v_2)}{\partial (u_1, u_2)} \right| = \exp \left(\sum_j s^j_2(u_2) + s^j_2(v_1) \right)
 \end{equation*}
 
-it can be seen that they keep the determinant positive independently of the behaviour scaling transformations $s_i(\cdot)$. It becomes also clear from the determinant, that even for high-dimensional input and output vectors $u$, $v$ the determinant is computationally cheap to evaluate.
+it can be seen that they keep the determinant is positive independently of the behaviour scaling transformations $s_i(\cdot)$. It becomes also clear from the determinant, that even for high-dimensional input and output vectors $u$, $v$ the determinant is computationally cheap to evaluate.
 
-In practice the expressions in eq. \ref{eq:glow_transformation} are not evaluated directly and the transformation is split up in two intermediate steps.
+Due to their mutual dependence on each other the expressions in eq. \ref{eq:glow_transformation} are not evaluated directly in practice and the transformation is split up in two intermediate steps. First, a term with
+
+\begin{equation*}
+	f_1(u_1, u_2) = (v_1, u_2) = \begin{cases}
+		u_1 \odot \exp(s_2(u_2)) + t_2(u_2) \\
+		u_2
+	\end{cases}
+\end{equation*}
+
+is evaluated followed by
+
+\begin{equation*}
+	f_2(v_1, u_2) = (v_1, v_2) = \begin{cases}
+		v_1 \\
+		 u_2 \odot \exp(s_1(v_1)) + t_1(v_1)
+	\end{cases}
+\end{equation*}
+
+It is easy to check, that the composed transformation $f = f_2 \circ f_1$ has the same Jacobian (and hence the same determinant) as the one in eq. \ref{eq:glow_transformation}. This step-wise evaluation can be visualized in a flow chart, as shown in fig. \ref{fig:glow}.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{figures/neural_networks/glow.pdf}
-	\caption{The forward and the backward pass of the GLOW block. Note that per construction, the sub-networks do not have to invertible themselves, and the block can be evaluated in both directions. \cite{Ksoll_2020}}
+	\caption{The forward and the backward pass of the GLOW block. Note that per construction, the sub-networks do not have to invertible themselves, and the block can be evaluated in both directions. The conditions node $c$ is used as an additional input for each sub-network. \cite{Ksoll_2020}}
+	\label{fig:glow}
 \end{figure}
+
+\textcolor{red}{clamping factors}
+
+With the construction of the normalizing flow with the GLOW block and the subnetworks representing the scaling $s_i(\cdot)$ and transitions $t_i(\cdot)$, the setting of the loss function using the Kullback-Leibler divergence remains.
+
+\Subsubsection{The Kullback-Leibler Divergence as a Loss Function}
+
+Our goal is to approximate the real posterior distribution of a physics parameter $x$ under the observation $y$, i.e. we would like to write:
+
+\begin{equation*}
+	p(x | y) \approx p_\theta(x | y)
+\end{equation*}
+
+With the Kullback-Leibler divergence from \ref{eq:KL-loss}, this can be formalized with $q_\text{x}(x) = p(x | y)$ and $p_\text{x}(x; \theta) = p_\theta(x | y)$ as
+
+\begin{equation*}
+	\mathbb{KL}\left[p(x | y) || p_\theta(x | y) \right] = - \mathbb{E}_{p(x | y)} \left[ \log p_\theta(x | y)\right] + const.
+\end{equation*}
+\textcolor{red}{Note that this expectation value is maximum-likelihood error}
+This loss term can now be rewritten using the Jacobian and the known and fixed latent space distribution.
