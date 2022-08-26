@@ -1,4 +1,4 @@
-\Section{Deep Learning, Normalizing Flows and Invertible Neural Networks}
+\Section{Deep Learning and Invertible Neural Networks}
 \label{sec:deeplearning}
 
 Deep Learning is a subdomain within Machine Learning focussing on the construction and training of deep neural networks. Such networks have been proven to be extremely successful in different, analytically unsolvable problems such as (but not restricted to) image classification tasks, regression tasks, image generation tasks, language translation and reinforcement learning.
@@ -123,5 +123,134 @@ where the maximum is taken element-wise over the vector components of $x$. Note 
 	\label{fig:activations}
 \end{figure}
 
+\Subsubsection{Objective Functions}
 
+Having established the network structure, a measure of fit quality remains to be chosen. Such measures are called objective functions (error or loss functions) and used to govern the training by setting the gradients of the trainable parameters $\theta$.
+Several loss functions have been established for each NN-specific task to be solved. The mean-squared-error (MSE) has been found useful for regression tasks due to its resemblance to the least-squared-error obtained from likelihood fits of normal distributed data. The so-called cross-entropy error function has been found performant for classification tasks due to the relation of the loss to information theory and the accessible probabilistic interpretation of the outputs following sigmoid activation. Both of these loss functions need target labels to compare the network outputs to. Training procedures where fixed labels guide the parameter estimation are called supervised learning.
 
+Distribution fitting requires the loss function to compare samples from a probability distribution function to a target distribution. Since the discrete labels are replaced with continuous target distributions and none of the datapoints has a well-defined target these training procedures belong to the class of unsupervised learning. As the name suggests, the neural network does not obtain any additional feature representation of the data necessary for the optimization procedure. In layman's terms the network has to "figure out on its own" which input features are more important for the given task.
+
+In this work, distribution fitting will be performed which is reflected by the choice of the loss function. The Kullback-Leibler divergence (also called relative entropy) is a measure of resemblance of $p_\text{x}(x; \theta)$ to $q_\text{x}(x)$ both defined over the random variable \text{x} and belongs to the families of $f$-divegences defined as
+
+\begin{equation*}
+	D_f\left[q_\text{x}(x) \, \, || \, \, p_\text{x}(x; \theta)\right] = \mathbb{E}_{p_\text{x}(x; \theta)}\left[f\left(\frac{q_\text{x}(x)}{p_\text{x}(x; \theta)}\right)\right]
+\end{equation*}
+
+with the convex function $f(r) = r\log r$ \cite{Papamakarios_NF}. In its expanded form it can be written as
+
+\begin{align*}
+	\mathbb{KL}\left[q_\text{x}(x) \, \, || \, \, p_\text{x}(x; \theta)\right] &= \mathbb{E}_{q_\text{x}(x)}\left[\frac{\log q_\text{x}(x)}{\log p_x(x; \theta)}\right] \\&= \underbrace{- \mathbb{E}_{q_\text{x}(x)} \left[ \log p_\text{x}(x; \theta)\right]}_{\mathcal{L}(\theta)} + \underbrace{\mathbb{E}_{q_\text{x}(x)}\left[\log q_\text{x}(x)\right]}_{const}
+\end{align*}
+
+and can be decomposed into a $\theta$-parameter dependent and a $\theta$-independent term\footnote{Note that the Kullback-Leibler divergence is not symmetric in its arguments and swapping $q$ and $p$ does not yield a similar decomposition due to the expectation value taken over the probability density function $p_\text{x}(x; \theta)$. Hence a distinction between the forward and the backward Kullback-Leibler divergence has to be made. In to following, only the forward KL-divergence (introduced above) will be used.}. The KL-divergence has a global minimum of value 0 where both distributions are identical. With this expression, one can approximate an unknown posterior distribution $p(x | y)$ using a model function $p_\theta(x | y)$ (both conditioned on a random variable $y$) by taking the parameter-dependent term $\mathcal{L}(\theta)$ as a basis for the loss function. With this choice, one can potentially generate samples from the true posterior distribution at the global optimum of the KL-divergence. In the following, a likelihood-free solution to this inference problem using conditional invertible neural networks will be discussed.
+
+\Subsection{Conditional Invertible Neural Networks}
+
+Most neural network setups tackle the challenge of posterior inference where the probability distribution 
+
+\begin{equation*}
+	p(x | y) = \frac{p(y | x) p(x)}{p(y)}
+\end{equation*}
+
+in Bayes' Theorem cannot be evaluated analytically. Most of these models are constructed in a one-directional way and do not preserve probability during inference. For this reason, even for (potentially) invertible problems, the model inverse is ill-defined. To avoid this, the network architecture has to be adjusted to satisfy the requirements of invertibility.
+
+\Subsubsection{General cINN Architecture}
+
+To ensure invertibility the network input and output dimensions have to match to fulfil bijection. General invertible neural networks map the inputs $x$ to their targets $y$ while encoding some information regarding $x$ in the latent variables $z$. These variables are assumed to follow a fixed distribution which is also represented in the loss function. Usually these distributions are chosen to be a multivariate normal distribution, as they are unbiased and easy to sample from, which is crusial for obtaining the posterior distributions $p(x | y)$. Indeed, it can be shown, that upon perfect convergence, sampling from the latent space and picking an $y$ network inference yields the true posteriors $p(x | y)$ for any $y$ \cite{INN_Ardizzone}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\linewidth]{figures/neural_networks/inns.pdf}
+	\caption{General INN structure. Uniquely to these structures, the network can be trained in both directions with a supervised loss (SL) term for the target labels $y$ and an unsupervised loss term (USL) for the latents $z$ and inputs $x$. \cite{INN_Ardizzone}}
+	\label{fig:inn}
+\end{figure}
+
+A conceptual disadvantage arises from the conditions being included in the network outputs. Assuming the dimensionality of $x$ and $y$ are wide apart from each other zero-padding or several noise-extending techniques are necessary to achieve convergence. This can be fixed by removing the conditions $y$ from the output and by using them as an additional input for the network and by setting the dimension of the latent space distribution to match that of the inputs $x$. A sketch of the resulting network -- the conditional invertible neural network (cINN) -- structure is shown in fig. \ref{fig:cINN_archicture}.
+
+\begin{figure}
+	\caption{\textcolor{red}{A sketch of the network setup}}
+	\label{fig:cINN_archicture}
+\end{figure}
+
+By constructing an invertible structure, the challenge of exact posterior inference remains with the added difficulty of mapping the inputs to the latent space distribution (LSD) in a meaningful (invertible and information conserving) way. To tackle this challenge, normalizing flows (NF) have to be applied.
+
+\Subsubsection{Normalizing Flows}
+
+The main idea of NFs is to construct an invertible transformation $T$ which maps a probability distribution $p$ to a target probability distribution $q$ in an invertible way. Hence, both $T$ and its inverse $T^{-1}$ have to be invertible and differentiable to preserve the probability flow. Such mappings are called diffeormophisms; note that a composition of diffeomorphisms
+
+\begin{equation*}
+	T' = T_1 \circ T_2 \circ ... \circ T_N
+\end{equation*}
+
+yields a diffeomorphism too.
+
+In a historic sense a whitening transformation can be already viewn as a normalizing flow the target distribution being a (multivariate) normal distribution. In more general and complicated cases however, the transformation $T$ cannot be easily constructed by hand. As the transformation is applied to samples of the distribution $p$, the flow has to normalize the distribution internally.
+
+Assume we would like to express the probability $p(x)$ using the target distribution. For this, a straightforward coordinate transformation involving the Jacobian from the source to the target space can be used:
+
+\begin{equation*}
+	p(x) = p(z) \left| \det J_T \right| = p(z) \left| \frac{\partial x}{\partial z} \right|
+\end{equation*}
+
+The backward transformation can be written using the inverse of $T$ and its determinant
+
+\begin{equation*}
+	p(z) = p(x) \left| \det J_{T^{-1}} \right| = p(x) \left| \frac{\partial z}{\partial x} \right|
+\end{equation*}
+
+Here we can directly observe the explicit reason why $T$ has to be diffeomorphism. A graphical representation of a normalizing flow for two-dimensional distributions can be seen in fig. \ref{fig:NF_example}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figures/neural_networks/flow}
+	\caption{Example of a normalizing flow transforming a normal distribution to a star-shaped one in 4 steps. Note that the subsequent steps are also done with diffeomorphisms while the resulting transformation still remains a diffeomorphism. \cite{Papamakarios_NF}}
+	\label{fig:NF_example}
+\end{figure}
+
+cINNs use neural networks to learn the mapping $T$. In the following, the construction of the diffeomorphic transformation will be discussed in detail.
+
+\Subsubsection{Affine Coupling Blocks}
+
+To represent the transformation $T$ Affine Coupling Blocks (ACB) can be utilized. In this work, exclusively the Generative Flow (GLOW) coupling block \cite{glow_paper} will be used. The GLOW block follows a design similar to the RealNVP block from \cite{RealNVP}. These blocks in practice need to fulfil at least two conditions: first, they have to invertible and second, the Jacobian of the mapping it represents has to be numerically tractable, especially its determinant. The GLOW block fulfils both of these conditions. In order to do so, it first splits up its input $u = [u_1, u_2]$ in two equal parts, on which a scaling $s_i(\cdot)$ and a translation $t_i(\cdot)$ using arbitrary, non-invertible functions are applied. The resulting transformation reads
+
+\begin{equation}
+	\left\{\begin{aligned}
+		v_1 &= u_1 \odot \exp(s_2(u_2)) + t_2(u_2) \\
+		v_2 &= u_2 \odot \exp(s_1(v_1)) + t_1(v_1)
+	\end{aligned}\right.
+	\label{eq:glow_transformation}
+\end{equation}
+
+where $\odot$ denotes the element-wise (Hadamard) product. Note that although the functions $s_i(\cdot)$ and $t_i(\cdot)$ are not necessary invertible themselves (and can be represented with neural networks), the transformation in eq. \ref{eq:glow_transformation} is invertible, as $u_1$ and $u_2$ can be expressed with $v_1$ and $v_2$:
+
+\begin{equation*}
+	\left\{\begin{aligned}
+		u_2 &= (v_2 - t_1(v_1)) \odot \exp(-s_1(v_1)) \\
+		u_1 &= (v_1 - t_2(u_2)) \odot \exp(-s_2(u_2)) 
+	\end{aligned}\right.
+\end{equation*}
+
+At this point, the exponential functions may seem arbitrary. Looking at the Jacobian
+
+\begin{equation*}
+	\frac{\partial (v_1, v_2)}{\partial(u_1, u_2)} = \left(\begin{matrix}
+		\exp(s_2(u_2)) & \frac{\partial v_1}{\partial u_2} \\
+		0             & \exp(s_1(v_1))
+	\end{matrix}\right)
+\end{equation*}
+
+and its determinant
+
+\begin{equation*}
+	\left|\frac{\partial (v_1, v_2)}{\partial (u_1, u_2)} \right| = \exp \left(\sum_j s^j_2(u_2) + s^j_2(v_1) \right)
+\end{equation*}
+
+it can be seen that they keep the determinant positive independently of the behaviour scaling transformations $s_i(\cdot)$. It becomes also clear from the determinant, that even for high-dimensional input and output vectors $u$, $v$ the determinant is computationally cheap to evaluate.
+
+In practice the expressions in eq. \ref{eq:glow_transformation} are not evaluated directly and the transformation is split up in two intermediate steps.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{figures/neural_networks/glow.pdf}
+	\caption{The forward and the backward pass of the GLOW block. Note that per construction, the sub-networks do not have to invertible themselves, and the block can be evaluated in both directions. \cite{Ksoll_2020}}
+\end{figure}
