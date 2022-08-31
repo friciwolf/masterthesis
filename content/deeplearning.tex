@@ -346,8 +346,8 @@ This form of the KL-divergence can be understood in terms of likelihoods as find
 
 \begin{equation*}
 	\begin{aligned}
-		\mathbb{KL}\left[p(x | y) || p_\theta(x | y) \right] &= - \mathbb{E}_{p(x | y)}\left(\log p(z) \left|\det\frac{\partial z}{\partial x}\right|\right) \\
-		&= - \mathbb{E}_{p(x | y)}\left(\log p(z)  + \log \left|\det\frac{\partial z}{\partial x}\right|\right)
+		\mathbb{KL}\left[p(x | y) || p_\theta(x | y) \right] &= - \mathbb{E}_{p(x | y)}\left(\log p(z) \left|\det\frac{\partial z}{\partial x}\right|\right) + const. \\
+		&= - \mathbb{E}_{p(x | y)}\left(\log p(z)  + \log \left|\det\frac{\partial z}{\partial x}\right|\right) + const.
 	\end{aligned}
 \end{equation*}
 
