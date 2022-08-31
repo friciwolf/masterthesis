@@ -96,7 +96,7 @@ is a universal approximator with the free parameters $\theta$ (containing all th
 		\node [draw=none, scale=2.5, text height=0.333cm] at (3, -0.75) {$\hdots$};
 		
 	\end{tikzpicture}
-	\caption{Schematical structure of a feed-forward NN. The nodes represent the variables for the hidden and output layers or the biases and the activations $g$ applied to the intermediate outputs for the hidden layers. Arrows represent the matrix $W$.}
+	\caption{Schematic structure of a feed-forward NN. The nodes represent the variables for the hidden and output layers or the biases and the activations $g$ applied to the intermediate outputs for the hidden layers. Arrows represent the matrix $W$.}
 	\label{fig:nn}
 \end{figure}
 
@@ -114,7 +114,7 @@ where the maximum is taken element-wise over the vector components of $x$. Note 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{figures/neural_networks/activations}
-	\caption{Most commonly used activation functions. Note the plateaus of the sigmoid and tanh functions and for all $x$<0 for ReLU. Setting the gradient zero in case of ReLU for $x$<0 renders several parameters inactive during training; on the other hand, large positive parameters have do not get stuck due to vanishing gradients and the function is scaleless.}
+	\caption{Most commonly used activation functions. Note the plateaus of the sigmoid and tanh functions and for all $x$<0 for ReLU. Setting the gradient zero in case of ReLU for $x$<0 renders several parameters inactive during training; on the other hand, large positive parameters do not get stuck due to vanishing gradients and the function is scaleless.}
 	\label{fig:activations}
 \end{figure}
 
@@ -178,7 +178,7 @@ Note that the learning rate is a decisive parameter in the update process; while
 
 Note that while Adam evaluates the next step using multiple measures in a sophisticated manner, in its core and using the right parameters the same gradient descent from eq. \ref{eq:optimization} can be found. It has been found experimentally that the parameters $\beta_1 = 0.9$ and $\beta_2 = 0.999$ are suitable choices for general tasks.
 
-In order to further improve the optimization, the updates are evaluated for a fixed number of samples (batches). The main advantage of stochastic gradient descent is the consequtive updates towards a more general optimum and avoiding getting stuck at local optima due to strongly varying gradients evaluated from the dataset.
+In order to further improve the optimization, the updates are evaluated for a fixed number of samples (batches). The main advantage of stochastic gradient descent is the consecutive updates towards a more general optimum and avoiding getting stuck at local optima due to strongly varying gradients evaluated from the dataset.
 Once the whole training dataset has been used up, an epoch has reached its end and the process starts anew with a shuffled training dataset. After several epochs, the procedure converges.
 In order to monitor the network performance and its generalization capabilities, the test set is used. For this, the loss can be evaluated for these "unseen" datasamples, which shows signs of anomalies during training. Should for example the test loss rise while the training loss decreases, one can be certain that overtraining has had occurred.
 
@@ -196,7 +196,7 @@ in Bayes' Theorem cannot be evaluated analytically. Most of these models are con
 
 \Subsubsection{General cINN Architecture}
 
-To ensure invertibility the network input and output dimensions have to match to fulfil bijection. General invertible neural networks map the inputs $x$ to their targets $y$ while encoding some information regarding $x$ in the latent variables $z$. These variables are assumed to follow a fixed distribution which is also represented in the loss function. Usually these distributions are chosen to be a multivariate normal distribution, as they are unbiased and easy to sample from, which is crusial for obtaining the posterior distributions $p(x | y)$. Indeed, it can be shown, that upon perfect convergence, sampling from the latent space and picking an $y$ network inference yields the true posteriors $p(x | y)$ for any $y$ \cite{INN_Ardizzone}.
+To ensure invertibility the network input and output dimensions have to match to fulfil bijection. General invertible neural networks map the inputs $x$ to their targets $y$ while encoding some information regarding $x$ in the latent variables $z$. These variables are assumed to follow a fixed distribution which is also represented in the loss function. Usually these distributions are chosen to be a multivariate normal distribution, as they are unbiased and easy to sample from, which is crucial for obtaining the posterior distributions $p(x | y)$. Indeed, it can be shown, that upon perfect convergence, sampling from the latent space and picking an $y$ network inference yields the true posteriors $p(x | y)$ for any $y$ \cite{INN_Ardizzone}.
 
 \begin{figure}[h!]
 	\centering
@@ -228,7 +228,7 @@ The main idea of NFs is to construct an invertible transformation $T$ which maps
 
 yields a diffeomorphism too.
 
-In a historic sense a whitening transformation can be already viewn as a normalizing flow the target distribution being a (multivariate) normal distribution. In more general and complicated cases however, the transformation $T$ cannot be easily constructed by hand. As the transformation is applied to samples of the distribution $p$, the flow has to normalize the distribution internally.
+In a historic sense a whitening transformation can be already viewed as a normalizing flow the target distribution being a (multivariate) normal distribution. In more general and complicated cases however, the transformation $T$ cannot be easily constructed by hand. As the transformation is applied to samples of the distribution $p$, the flow has to normalize the distribution internally.
 
 Assume we would like to express the probability $p(x)$ using the target distribution. For this, a straightforward coordinate transformation involving the Jacobian from the source to the target space can be used:
 
