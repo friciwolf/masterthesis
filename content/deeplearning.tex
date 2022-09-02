@@ -1,4 +1,4 @@
-\Section{Deep Learning and Invertible Neural Networks}
+\Section{Deep Learning and Conditional Invertible Neural Networks}
 \label{sec:deeplearning}
 
 Deep Learning is a subdomain within Machine Learning focussing on the construction and training of deep neural networks. Such networks have been proven to be extremely successful in different, analytically unsolvable problems such as (but not restricted to) image classification tasks, regression tasks, image generation tasks, language translation and reinforcement learning.
@@ -154,7 +154,7 @@ What is missing from a complete training is data the network is trained with res
 
 %With this choice of the loss, one can potentially generate samples from the true posterior distribution at the global optimum of the KL-divergence. In the following, a likelihood-free solution to the posterior inference problem using conditional invertible neural networks will be discussed.
 
-\Subsection{Training and Loss Optimization}
+\Subsubsection{Training and Loss Optimization}
 
 The optimization is data-driven. The dataset is split up to two disjoint datasets: a training and a test set. For every iteration a number of samples from the training set are evaluated through the network from which the current network performance can be evaluated. Ideally, finding a local optimum of a one-dimensional function requires a closed form of the function itself with respect to its parameters. Unfortunately, this is usually not the case due to the nonlinear nature of the optimization problem. For this reason, the weight matrices are adjusted for every node through backpropagation: the gradients for each hyperparameter are calculated from the previous layer and the parameters are updated through gradient descent along the negative of the parameter gradient moving slowing to a local optimal value. For a simple case, it can be intuitively written with a positive learning rate $\eta$ as
 
