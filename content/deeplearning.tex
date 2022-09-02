@@ -194,7 +194,7 @@ Most neural network setups tackle the challenge of posterior inference where the
 
 in Bayes' Theorem cannot be evaluated analytically. Most of these models are constructed in a one-directional way and do not preserve probability during inference. For this reason, even for (potentially) invertible problems, the model inverse is ill-defined. To avoid this, the network architecture has to be adjusted to satisfy the requirements of invertibility.
 
-\Subsubsection{General cINN Architecture}
+\Subsubsection{General INN Architecture}
 
 To ensure invertibility the network input and output dimensions have to match to fulfil bijection. General invertible neural networks map the inputs $x$ to their targets $y$ while encoding some information regarding $x$ in the latent variables $z$. These variables are assumed to follow a fixed distribution which is also represented in the loss function. Usually these distributions are chosen to be a multivariate normal distribution, as they are unbiased and easy to sample from, which is crucial for obtaining the posterior distributions $p(x | y)$. Indeed, it can be shown, that upon perfect convergence, sampling from the latent space and picking an $y$ network inference yields the true posteriors $p(x | y)$ for any $y$ \cite{INN_Ardizzone}.
 
