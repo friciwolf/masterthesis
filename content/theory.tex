@@ -2,7 +2,13 @@
 
 \Subsection{$\color{red}\text{The Standard Model of Particle Physics}$}
 
-The Standard Model of Particle Physics (Standard Model) can be written in a compact form as
+The Standard Model of Particle Physics (Standard Model or SM) is our best understanding of the fundamental interactions (strong, weak and the electromagnetic interaction) occuring in Nature (excluding gravity due to the inaccessibility of the scales it acts under laboratory conditions). It describes the dynamics of elementary particles and the processes they undergo upon production or decay.
+
+Depending on the interactions they participate in, these particles can be sorted into hadrons and leptons; hadrons take part in the strong interaction and couple directly to its mediator particle, the gluon. Leptons on the other hand do not participate in it. Particles can be electrically charged or neutral. In the former case, they couple to photons and hence participate in the electromagnetic interaction. The $Z$ and $W$ bosons are the mediators of the weak interaction.
+
+Regarding their spin, one distinguishes between two main categories: bosons (particles of integer spin) and fermions (particles with half-odd integer spin).
+
+The SM Lagrangian can be written in a compact form as
 
 \begin{equation}
 	\mathcal{L} = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + i \bar{\psi}\slashed{D}\psi + \psi_iy_{ij}\psi_j\phi + h.c. + |D_\mu\phi|^2 - V(\phi)
@@ -15,6 +21,8 @@ The Standard Model of Particle Physics (Standard Model) can be written in a comp
 	\caption{Standard model of elementary particles. Note the three generation of quarks and leptons, and their isospin doublet scheme. The four force carriers and the Higgs boson are listed on right. \cite{enwiki:1101993746}}
 	\label{fig:sm}
 \end{figure}
+
+\textcolor{red}{Despite its incredible predictivity (electron g-2), it is known that the Standard Model is an incomplete description of Nature. For this reason, several SM testing and BSM measurements are performed.}
 
 \Subsection{The Higgs Mechanism and the Higgs Boson}
 The Higgs term in the Lagragian from eq. \ref{eq:lagrangian} gives rise to the mass of the gauge bosons. The potential $V(\phi)$ is given by
@@ -48,15 +56,15 @@ where $v$ is the location of the potential minimum (a constant) and $H$ is real 
 	m^2_W = \frac{g^2 v^2}{4}, \quad m^2_Z = \frac{(g'^2 + g^2)v^2}{4}
 \end{equation*}
 
-with the electroweak coupling constants $g$, and $g'$. Additionally, the resulting Lagrangian density respects the physical symmetries
+with the electroweak coupling constants $g$, and $g'$. Not only the gauge bosons obtain a mass thanks to the Higgs field though. Through the Yukawa coupling, fermions (and all massive particles at tree level) couple directly to the Higgs boson with a coupling dependent on their mass and spin. Additionally, the resulting Lagrangian density respects the physical symmetries
 
 \begin{equation*}
 	SU(3)_c \times SU(2)_L \times U(1)_Y
 \end{equation*}
 
-which would have broken in the absence of the field $\phi$. As symmetries in a Lagrangian imply the existence of charges, those of the Lagrangian $\mathcal{L}$ induce the colour charges, isospin charges and electric charges; the existence of the latter two is only visible through the electroweak unification.
+which would have broken in the absence of the field $\phi$ due to the mass terms of the electroweak gauge bosons. As symmetries in a Lagrangian imply the existence of charges, those of the Lagrangian $\mathcal{L}$ induce the colour charges, isospin charges and electric charges; the existence of the latter two is only visible through the electroweak unification.
 
-Since its observation in 2012 at CERN \cite{Chatrchyan_2012} the properties of the Higgs boson has been extensively studied in detail. The SM Higgs a CP-even scalar of charge 0 with a measured mass of
+Since its observation in 2012 by the ATLAS and CMS experiments at CERN \cite{Chatrchyan_2012} the properties of the Higgs boson have been extensively studied in detail. The SM Higgs a CP-even scalar of charge 0 with a measured mass of
 
 \begin{equation*}
 	m_H = 125.25 \pm 0.17 \, \text{GeV}
@@ -67,10 +75,71 @@ The most common Higgs production mechanisms at high energy colliders are shown i
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/theory/higgsproduction.png}
-	\caption{Main Higgs boson production processes in high energy hadron colliders \cite{Workman:2022ynf}.}
+	\caption{Main Higgs boson production processes in high energy hadron colliders \cite{Workman:2022ynf}. From $(a)$ to $(g)$ these are: ggF $(a)$, VBF $(b)$, Higgs-strahlung $(c)$, associated vector boson production from $gg$ $(d)$, $t\bar{t}H$ $(e)$ and $tHq$ $(f)-(g)$}
 	\label{fig:higgsproduction}
 \end{figure}
 
-In the following the vector boson associated Higgs production will be discussed in detail.
+The most common Higgs decay final state branching ratios for various Higgs masses are shown in fig. \ref{fig:higgsbranch}. Note that the main decay channels are swamped with background processes, which made direct detection first available in the $\gamma\gamma$ and $ZZ\rightarrow4l$ final states. Also note that some of the final states are only available through higher-order diagrams as the Higgs couples only to massive particles directly.
 
-\Subsection{VH-Higgs Production}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\linewidth]{figures/theory/higgsdecay.pdf}
+	\caption{Most common Higgs decay channels expressed as final state branching ratios depending on the Higgs mass. The band widths represent the uncertainties of each channel. \cite{HiggsCrossSections}}
+	\label{fig:higgsbranch}
+\end{figure}
+
+In the following the gluon-gluon induced vector boson associated Higgs production ($gg\rightarrow VH$) with a focus on a BSM-sensitive physics observable will be discussed in detail.
+
+\Subsection{Gluon-Gluon Induced VH-Higgs Production}
+
+The processes describing $gg\rightarrow VH$ are shown in fig. \ref{fig:VH_diagrams}. As these processes contain loops, they are perfect candidates for SM testing precision measurements. As for the $ZH$ final states the box and the triangle diagrams interfere destructively, its contribution leads to enhanced sensitivity to BSM physics. This can be seen by the loop itself, to which BSM particles can contribute. Another advantage of the $ZH$ final state is the top-quark exclusibe SM contribution which have characteristic thresholds in several kinematical distributions of the cross-section; well-selected cuts increase the number of gluon-initiated events \cite{Harlander_2018}.
+
+\begin{figure}[h!]
+	\centering
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{figures/theory/diagrams/ggVH_triangle.pdf}
+	\end{minipage}%
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.6\linewidth]{figures/theory/diagrams/ggZH_box.pdf}
+	\end{minipage}
+	\caption{Feynman diagrams of the contributing $gg\rightarrow VH$ processes at leading order.}
+	\label{fig:VH_diagrams}
+\end{figure}
+
+The total cross-section for the VH production can be written as
+
+\begin{equation*}
+	\sigma^{VH} = \sigma^{VH}_\text{DY} + \sigma^{VH}_\text{non-DY}
+\end{equation*}
+
+where "DY" stands for the contribution of the Drell-Yan-like production channel (the triangle diagram) and non-DY stands for that of the box diagram. Note that in the SM at leading order we can assume that
+
+\begin{equation*}
+	\sigma^{WH}_\text{non-DY} = 0.
+\end{equation*}
+
+It can be shown, that the ratio $R^{ZH}_\text{DY}$ defined as
+
+\begin{equation}
+	R^{ZH}_\text{DY} = \frac{\sigma^{ZH}}{\sigma^{ZH}_\text{DY}} = 1 + \frac{\sigma^{ZH}_\text{non-DY}}{\sigma^{ZH}_\text{DY}}
+	\label{eq:ratio}
+\end{equation}
+
+is a suitable observable for SM test measurements as it can be seen in fig. \ref{fig:RZH} if one considers the distribution in the invariant $M_{ZH}$ mass.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\linewidth]{figures/theory/RZH}
+	\caption{The dependence of the ratio $R^{ZH}_\text{DY}$ on different BSM scenarios in the $M_{ZH}$ distribution. Note that differing top- and bottom quark Yukawa couplings ($y_t$ and $y_b$, respectively), the resulting distribution differs significantly.}
+	\label{fig:RZH}
+\end{figure}
+
+However, an experiment/theory comparison using $R^{ZH}_\text{DY}$ suffers from arising systematic uncertainties; fortunately it still can be use a basis for other BSM-senstive observables. For this purpose, the similarity between the Drell-Yan-like $WH$ and $ZH$ final states can be exploited. Defining expanded fraction in eq. \ref{eq:ratio} and writing
+
+\begin{equation}
+	R^{ZW}_R = \frac{\sigma^{ZH}/\sigma^{WH}}{\sigma^{ZH}_\text{DY}/\sigma^{WH}}
+\end{equation}
+
+results in an excellent observable candidate for two reasons. First, it is expected that measuring the nominator $\sigma^{ZH}/\sigma^{WH}$ a number of systematic uncertainties cancel especially if the parameters of $ZH$ and $WH$ analyses are aligned as much as possible. Second, the denominator $\sigma^{ZH}_\text{DY}/\sigma^{WH}$ can be theoretically evaluated with high precision and is insensitive to BSM effects, as the only couplings (the electroweak couplings) in the related processes are experimentally heavily constrained.

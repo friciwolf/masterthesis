@@ -1,0 +1,19 @@
+\documentclass{article}
+
+\usepackage{tikz-feynman}
+\usepackage[a6paper, landscape]{geometry}
+\begin{document}
+	\begin{figure}
+		\centering
+		\feynmandiagram [tree layout, horizontal=v1 to v2] {
+		%i1 [particle={$g$}] -- [gluon] v1 -- [fermion] v2 -- [scalar, edge label={$H$}] {h -- {o1 [particle=$b$], o2 [particle=$b$]}},
+		%i2 [particle={$g$}] -- [gluon] v4 -- [anti fermion] v3 -- [boson, edge label={$Z$}] {z -- {o3 [particle=$l$], o4 [particle=$\nu_l$]}},
+		i2 -- v1 -- v2 -- v3 -- v4 -- v1,
+		i1 -- v4,
+		%{ v4 -- [fermion] v1},
+		%{ v3 -- [anti fermion] v2},
+		%o1 [particle=$b$] -- [fermion] h -- [fermion] o2 [particle=$b$],
+		%o3 [particle=$l$] -- [fermion] z -- [fermion] o4 [particle=$\nu_l$],
+		};
+	\end{figure}
+\end{document}

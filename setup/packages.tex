@@ -92,8 +92,9 @@
 \usepackage{paralist}
 
 % feynman graphs
-\usepackage{feynmp}
-\DeclareGraphicsRule{*}{mps}{*}{}
+%\usepackage{feynmp}
+%\DeclareGraphicsRule{*}{mps}{*}{}
+%\usepackage{feynmf}
 
 % blindtext
 \usepackage{lipsum}
@@ -104,9 +105,16 @@
 % for the Feyman slsh \slashed
 \usepackage{slashed}
 
-\usepackage{pgfplots}
+%\usepackage{pgfplots}
 
 % enabling [H] for figure positioning
 %\usepackage{float}
 
 \usepackage{neuralnetwork}
+
+% graphics 
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage[outline]{contour} % glow around text
+\usepackage{xcolor}
+\tikzset{>=latex} % for LaTeX arrow head

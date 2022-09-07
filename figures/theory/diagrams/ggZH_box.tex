@@ -1,0 +1,18 @@
+\documentclass{article}
+
+\usepackage{tikz-feynman}
+\usepackage[a6paper, landscape]{geometry}
+\begin{document}
+	\begin{figure}
+		\centering
+		\feynmandiagram [horizontal=v1 to v2] {
+		%i1 [particle=\(e^{-}\)] -- [fermion] a -- [fermion] i2 [particle=\(e^{+}\)],
+		%a -- [photon, edge label=\(\gamma\)] b,
+		%f1 [particle=\(\mu^{-}\)] -- [fermion] b -- [fermion] f2 [particle=\(\mu^{+}\)],
+		i1 [particle={$g$}] -- [gluon] v1 -- [fermion] v2 -- [scalar] o1 [particle={$H$}],
+		i2 [particle={$g$}] -- [gluon] v4 -- [anti fermion] v3 -- [boson] o2 [particle={$Z$}],
+		{ v4 -- [fermion] v1},
+		{ v3 -- [anti fermion] v2},
+		};
+	\end{figure}
+\end{document}
