@@ -38,9 +38,9 @@ The events are categorised through a triggering system and are assigned to four 
 	\label{tab:triggers}
 \end{table}
 
-The naming in \ref{tab:triggers} indicates the phase space which the triggers cut off. In the di-leptonic channels the lepton with the higher energy (the leading lepton) is required to have $p_T > \SI{23}{\giga\electronvolt}$ and $p_T > \SI{17}{\giga\electronvolt}$ for $ee$ and $\mu\mu$, respectively; the sub-leading (the "other") lepton is then required to have $p_T>\SI{12}{\giga\electronvolt}$ and $\SI{8}{\giga\electronvolt}$ for $ee$ and $\mu\mu$, respectively. In the semi-leptonic categories, only electrons with $p_T>\SI{32}{\giga\electronvolt}$ and \textcolor{red}{muons with $\SI{24}{\giga\electronvolt}$ are kept}.
+The naming in \ref{tab:triggers} indicates the phase space which the triggers cut off. In the di-leptonic channels the lepton with the higher energy (the leading lepton) is required to have $p_T > \SI{23}{\giga\electronvolt}$ and $p_T > \SI{17}{\giga\electronvolt}$ for $ee$ and $\mu\mu$, respectively; the sub-leading (the "other") lepton is then required to have $p_T>\SI{12}{\giga\electronvolt}$ and $\SI{8}{\giga\electronvolt}$ for $ee$ and $\mu\mu$, respectively. In the semi-leptonic categories, only electrons with $p_T>\SI{32}{\giga\electronvolt}$ and isolated muons with $\SI{24}{\giga\electronvolt}$ and $|\eta|<2$ and isolated muons with $p_T>\SI{27}{\giga\electronvolt}$ are kept.
 
-In addition to these selection criteria, both the muon and electron tracks have to be isolated, except for the $e$ channel where \textcolor{red}{the electrons have to be tight}.
+In addition to these selection criteria, both the muon tracks have to be isolated in the $\mu\mu$ channel. For the $e$ channel, the tight working point has been selected as trigger efficiency.
 
 The datasets used for the analysis have been simulated with \texttt{PYTHIA} \cite{Sj_strand_2008} and \texttt{HERWIG++} \cite{herwig}. These simulated events not only contain matrix element calcualtion samples, but also the CMS detectors simulations using \texttt{GEANT4} in order to represent the final observed distribtuions accurately \cite{geant1, geant2, geant3}. The list of the signal sample datsets is shown in tab. \ref{tab:signal_datasets}.
 
@@ -96,37 +96,37 @@ For the background processes, one distinguishes between the following processes:
 
 In the following the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail.
 
-The muon selection criteria are listed in tab. \ref{tab:muon_selection}. \textcolor{red}{$p_T$ cuts} In order to qualify they ought to be identified as tight muons and have to be contained within the tracker. Their impact parameter (IP) geometry should also be compatible with the primary vertex (PV). Furthermore, the IP significance \texttt{sip3d} (defined as the ratio between the uncertainty of the IP and the IP itself) is also restricted to guarantee that these muons originate from the PV. \textcolor{red}{pfRelISO04\_all}
+The muon selection criteria are listed in tab. \ref{tab:muon_selection}. For the leading muons, a $p_T$-cut of 25 GeV has been required; qualifying subleading muons need to satisfy $p_T>\SI{15}{\giga\electronvolt}$. Furhtermore, muons ought to be identified as tight muons and have to be contained within the tracker, while their impact parameter (IP) geometry being also compatible with the primary vertex (PV). In addition, the IP significance \texttt{sip3d} (defined as the ratio between the uncertainty of the IP and the IP itself) is also restricted to guarantee that these muons originate from the PV. The \texttt{pfRelISO04\_all} parameter cut ensures the isolation of the muons and hence their origin from the PV.
 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{c}
 		\hline
 		\texttt{tightId} \\
-		$p_T > \SI{15}{\giga\electronvolt}$ \\
+		$p_T > \SI{25}{\giga\electronvolt}/\SI{15}{\giga\electronvolt}$ \\
 		$|\eta| \leq 2.4$ \\
 		$d_{xy} \leq \SI{0.05}{\centi\meter}$ \\
 		$d_z \leq \SI{0.1}{\centi\meter}$ \\
-		$\textcolor{red}{\texttt{pfRelIso04\_all}} \leq 0.15$  \\
-		sip3d $\leq 8$ \\
+		$\texttt{pfRelIso04\_all} \leq 0.15$  \\
+		\texttt{sip3d} $\leq 8$ \\
 		\hline \\
 	\end{tabular}
-	\caption{Selection criteria for the muons.}
+	\caption{Selection criteria for the muons. The first and the second values correspond to the cuts applied to the leading and sub-leading muons, respectively.}
 	\label{tab:muon_selection}
 \end{table}
 
-The electron selection criteria is listed in tab. \ref{tab:electron_selection}. As identification efficiency the 80\% working point (WP80, defined on a Drell-Yang sample) has been selected. The electrons are required to be included in the tracker (through $\eta$) to ensure quality transversal momentum reconstruction. These electrons should also originate from the primary vertex through the impact parameter (IP) cuts $d_i$. Similarly to muons, the IP significance is also restricted. For quality reconstruction, the number of lost hits in the tracker is also restricted. 
+The electron selection criteria is listed in tab. \ref{tab:electron_selection}. The electrons are required to be included in the tracker (through $\eta$) to ensure quality transversal momentum reconstruction. These electrons should also originate from the primary vertex through the impact parameter (IP) cuts $d_i$. Similarly to muons, the IP significance and isolation measures are also restricted. For quality reconstruction, the maximum number of lost hits in the tracker is also limited. As identification efficiency, the 80\% working point (WP80, defined on a Drell-Yang sample) has been chosen.
 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{c}
 		\hline
 		\texttt{MVA WP80} \\
-		$p_T > \SI{15}{\giga\electronvolt} $\\
+		$p_T > \SI{25}{\giga\electronvolt}/\SI{15}{\giga\electronvolt} $\\
 		$|\eta| \leq 2.5$ \\
 		$d_{xy} \leq \SI{0.05}{\centi\meter}$ \\
 		$d_z \leq \SI{0.1}{\centi\meter}$ \\
-		$\textcolor{red}{\texttt{pfRelIso04\_all}} \leq 0.15$  \\
+		$\texttt{pfRelIso04\_all} \leq 0.15$  \\
 		sip3d $\leq 8$ \\
 		$\text{lost hits} \leq 1$ \\
 		\hline \\
@@ -135,7 +135,7 @@ The electron selection criteria is listed in tab. \ref{tab:electron_selection}. 
 	\label{tab:electron_selection}
 \end{table}
 
-For the jets in consideration, the selection criteria in tab. \ref{tab:jet_selection} are applied. For AK8 jets, the transversal momentum selection lies higher than those of the AK4 jets; both jets are required to carry the tight ID. In addition to that, they should be restricted to the region covered by the tracker. Based on the jet selection, the flavour tacking algorithm identifies the bottom jets. For the AK4-tagging, \textcolor{red}{DeepFlavour and for AK8 jets, DeepDoubleX are used.}
+For the jets in consideration, the selection criteria in tab. \ref{tab:jet_selection} are applied. For AK8 jets, the transversal momentum selection lies higher than those of the AK4 jets; both jets are required to carry the tight ID. In addition to that, they should be restricted to the region covered by the tracker. Based on the jet selection, the flavour tacking algorithm identifies the bottom jets. For the AK4-tagging, DeepFlavour and for AK8 jets, DeepDoubleX are used.
 
 \begin{table}[h!]
 	\centering
@@ -149,6 +149,8 @@ For the jets in consideration, the selection criteria in tab. \ref{tab:jet_selec
 	\caption{Jet selection criteria. For the transversal cuts the first and the second values are applied to the AK4 and AK8 jets, respectively.}
 	\label{tab:jet_selection}
 \end{table}
+
+\Subsection{\textcolor{red}{Event Categorisation}}
 
 The resulting histogram for each subcategory and process for the DNN scores is shown in fig. \ref{fig:conditions}.
 

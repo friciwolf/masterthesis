@@ -10,26 +10,27 @@ The conditions shown in fig \ref{fig:conditions} in chapter \ref{ch:analysis_str
 
 \Subsubsection{Prior Selection}
 
-In order to do so, a set of signal modifier parameters are drawn from a pool of expected parameter distribution (the prior). Then, each process in the histogram is scaled with the corresponding parameter and the bins will summed up meaning (similar to the expected dataset) the information about the contribution of each process to each bin is lost.
+In order to do so, a set of signal modifier parameters are drawn from a pool of expected parameter distribution (the prior). Then, each process in the histogram is scaled with the corresponding parameter and the bins will summed up meaning (similar to the expected dataset) the information about the contribution of each process to each bin is lost thereafter.
 
 The prior distribution for the processes have been selected as the following. For the signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} the $\mu_i$ were sampled from a gamma distribution
 
 \begin{equation*}
-	f(x; k, \theta) = \frac{x^{k-1}e^{-x/\theta}}{\theta^k\Gamma(k)}
+	\Gamma(x; k, \theta) = \frac{x^{k-1}e^{-x/\theta}}{\theta^k\Gamma(k)}
 \end{equation*}
 
-with shape parameter $k$ and scale $\theta$. An advantage of this distribution as prior is the positiveness of the samples $\{x_i\}$ from the distribution; apart from that, the distribution has a long tail for increasing values of $x$ which allow a more fined selection in a given range. The parameters were set to be $k = 1.5$ and $\theta = 7$; with this specific selection, one obtains a prior which is sensitive in the low signal yield region $\mu \lesssim 10$ while maintaining network sensitivity for values $\mu<100$.
+with shape parameter $k$ and scale $\theta$. An advantage of this distribution as prior is the positiveness of the samples $\{x_i\}$ from the distribution as negative signal modifier parameters carry no physical meaning; apart from that, the distribution has a long tail for increasing values of $x$ which allow a more fined selection in a given range while maintaining some generalization property. The parameters were set to be $k = 1.5$ and $\theta = 7$; with this specific selection, one obtains a prior which is sensitive in the low signal yield region $\mu \lesssim 10$ while maintaining network sensitivity for values $\mu\lesssim100$.
 
 For the background processes, it is expected that the MC simulations follow the expectation with good accuracy. Hence, one expects $\mu \approx 1$. For this reason, the prior has been chosen to follow a lognormal distribution
 
 \begin{equation*}
-	f(x; \mu, \sigma) = \frac{1}{\sqrt{2\pi }\sigma x}\exp\left(-\frac{\left(\ln(x)-\mu\right)^2}{2\sigma^2}\right)
+	\mathcal{N}(x; \mu, \sigma) = \frac{1}{\sqrt{2\pi }\sigma x}\exp\left(-\frac{\left(\ln x-\mu\right)^2}{2\sigma^2}\right)
 \end{equation*}
 
 with mean $\mu = 0.05$ and $\sigma = 0.25$, lognormal distributions being positive themselves.
 
-In order the estimate the arising uncertainty from the luminosity, the obtained conditions (after scaling and uncertainty variation) are then scaled with an additional luminosity factor. These have been drawn from a lognormal distribution with $\mu = 0$ and $\sigma = 0.02$.
-All distributions are shown in fig. \ref{fig:priors}.
+In order the estimate the arising uncertainty from the luminosity, the obtained conditions (after scaling and uncertainty variation) are then scaled with an additional luminosity factor. These have been drawn from a lognormal distribution with $\mu = 0$ and $\sigma = 0.02$. All distributions are shown in fig. \ref{fig:priors}.
+
+With these priors, the cINN has a total of 17 inputs for 3 signal, 13 background processes and the luminosity uncertainty factor.
 
 \begin{figure}[h!]
 	\centering
@@ -50,43 +51,86 @@ After successful histogram scaling, the statistical and systematic uncertainty f
 
 \Subsection{Systematic Uncertainties}
 
-\textcolor{red}{There are 24 sources of systematic uncertainties which have been taken into account. These are:} \\
+The systematic uncertainties require an interpolation method as the shifts in the histograms are computationally expensive to obtain. In other words, as only the effect of the $1\sigma$ up- and down-shifts of the uncertainties (templates) listed above are given, the task to represent the in-between-cases (and obviously, those on the outside of the given range) in the histrograms remains. For this purpose, a non-linear histogram morphing method has been implemented.
 
-%\begin{tabular}{c}
-%	\texttt{PDFSet               }  \\
-%	\texttt{PSWeight\_FSR        }  \\
-%	\texttt{PSWeight\_ISR        }  \\
-%	\texttt{ScaleWeight\_Envelope}  \\
-%	\texttt{ScaleWeight\_Fact    }  \\
-%	\texttt{ScaleWeight\_Mixed   }  \\
-%	\texttt{ScaleWeight\_Renorm  }  \\
-%	\texttt{btagWeight\_cferr1   }  \\
-%	\texttt{btagWeight\_cferr2   }  \\
-%	\texttt{btagWeight\_hf       }  \\
-%	\texttt{btagWeight\_hfstats1 }  \\
-%	\texttt{btagWeight\_hfstats2 }  \\
-%	\texttt{btagWeight\_lf       }  \\
-%	\texttt{btagWeight\_lfstats1 }  \\
-%	\texttt{btagWeight\_lfstats2 }  \\
-%	\texttt{electron\_id         }  \\
-%	\texttt{electron\_reco       }  \\
-%	\texttt{l1\_ecal\_prefiring  }  \\
-%	\texttt{muon\_id             }  \\
-%	\texttt{muon\_iso            }  \\
-%	\texttt{pileup               }  \\
-%%  \texttt{trigger\_e\_sf       }  \\
-%	\texttt{trigger\_ee\_sf      }  \\
-%	\texttt{trigger\_mu\_sf      }  \\
-%	\texttt{trigger\_mumu\_sf    }  \\
-%%  \texttt{top\_pT\_reweighting }  \\
-%%  \texttt{TuneCP5              }  \\
-%\end{tabular} 
+In the following, an overview on the treated uncertainties and the morphing algorithm will be given with a discussion on the implementation and on its effects on the histograms following thereafter.
 
-The systematic uncertainties require an interpolation method as the shifts in the histograms are computationally expensive to obtain. In other words, as only the effect of the $1\sigma$ up- and down-shifts of the uncertainties (templates) listed above are given, the task to represent the in-between-cases (and obviously, those of outside of the given range) in the histrograms remains. For this purpose, a non-linear histogram morphing method has been implemented.
+\Subsubsection{Normalization and Shape-Changing Uncertainties}
 
-In the following, an overview of the morphing algorithm will be given with a discussion on the implementation and on its effects on the histograms following thereafter.
+There are 25 sources of systematic uncertainties which have been taken into account. These uncertainties can be grouped into normalization and shape-changing uncertainties.
 
-\Subsubsection{Non-linear Histogram Morphing}
+Normalization uncertainties do not affect the shape of the histograms. Rather, they have an affect each bin equally (hence the name "normalization"). To this group belong the following: the luminosity uncertainty and the parton density function uncertainties (which arise from the unknown interaction initial state due to the nontrivial proton structure).
+
+The shape-changing uncertainties influence all histogram bins differently and incorporates most uncertainties in this work. The 23 shape-chaniging and the parton density function normalization uncertainties have been listed in tab. \ref{tab:s_sys_table}; interpolation among these systematic effects given the $1\sigma$ shifted histograms have been performed via histogram morphing, which will be discussed in the next chapter. \textcolor{red}{Due to its scaling nature, the luminosity uncertainty has been used as an additional network input.}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{cc}
+		Uncertainty name               & Description \\
+		
+		\hline
+		\texttt{PDFSet} & Parton density function uncertainty \\
+		
+		\hline
+		$\begin{aligned}
+			\texttt{PSWeight}&\texttt{\_FSR} & \\
+			\texttt{PSWeight}&\texttt{\_ISR} & \\
+		\end{aligned}$ & $\begin{array}{c}
+			\text{Parton shower mismodelling uncertainties} \\
+			\text{for final and initial state radiation}
+		\end{array}$ \\
+		
+		\hline
+		$\begin{aligned}	
+			\texttt{ScaleWeight}&\texttt{\_Envelope} \\
+			\texttt{ScaleWeight}&\texttt{\_Fact    } \\
+			\texttt{ScaleWeight}&\texttt{\_Mixed   } \\
+			\texttt{ScaleWeight}&\texttt{\_Renorm  } \\
+		\end{aligned}$ & Jet energy scale uncertainties \\
+		
+		\hline
+		% https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation#preUL_scale_factor_uncertainties
+		$\begin{aligned}
+			\texttt{btagWeight}&\texttt{\_lf       } \\
+			\texttt{btagWeight}&\texttt{\_cferr1   } \\
+			\texttt{btagWeight}&\texttt{\_cferr2   } \\
+			\texttt{btagWeight}&\texttt{\_hf       } \\
+			\texttt{btagWeight}&\texttt{\_hfstats1 } \\
+			\texttt{btagWeight}&\texttt{\_hfstats2 } \\
+			\texttt{btagWeight}&\texttt{\_lfstats1 } \\
+			\texttt{btagWeight}&\texttt{\_lfstats2 } \\
+		\end{aligned}$ & b-tag score weight correction uncertainties \\
+		
+		\hline
+		\texttt{l1\_ecal\_prefiring  } & 2017 ECAL miss-calibration correction uncertainty \\
+		
+		\hline		
+		% https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffs2017
+		$\begin{aligned}
+			\texttt{electron}&\texttt{\_reco } \\
+			\texttt{electron}&\texttt{\_id   } \\
+			\texttt{muon}&\texttt{\_id       } \\
+			\texttt{muon}&\texttt{\_iso      } \\
+		\end{aligned}$         & $\begin{array}{c}
+			\text{Lepton identification, isolation} \\
+			\text{and isolation uncertainties}
+		\end{array}$\\
+		
+		\hline
+		$\begin{aligned}
+			\texttt{trigger}&\texttt{\_ee\_sf  } \\
+			\texttt{trigger}&\texttt{\_mu\_sf  } \\
+			\texttt{trigger}&\texttt{\_mumu\_sf} \\
+		\end{aligned}$ & Trigger efficiency uncertainties \\
+		\hline
+		% https://twiki.cern.ch/twiki/bin/view/CMS/PileupSystematicErrors
+		\texttt{pileup               } & Pileup uncertainty \\
+	\end{tabular}
+	\caption{The one normalization (\texttt{PDFSet}) and the other 23 shape-changing uncertainties with a brief description.}
+	\label{tab:s_sys_table}
+\end{table}
+
+\Subsubsection{Non-Linear Histogram Morphing}
 
 Non-linear histogram morphing has been implemented on the basis of \cite{Baak_2015}. For the interpolation a nominal distribution and -- in this case -- 24 other distribution templates representing the $1\sigma$ and $-1\sigma$ shifts are given. The nominal template $f(x|m)$ with morphing parameter $m$ can then be appromated around $m=0$ with the other templates in a simple 1D case using
 
@@ -98,7 +142,7 @@ Non-linear histogram morphing has been implemented on the basis of \cite{Baak_20
 
 where the derivatives and the factorials have been absorbed in $f'_j$.
 
-For $T$ uncorrelated uncertainties (hence for $T$ morphing parameters $m$) with morphing parameter values $\pm1$ there are $2T+1$ sampled distributions in total (counting the nominal distribution). An intuitive representation of the "morphing parameter space" with the indication of the available templates is shown in fig. \ref{fig:morphing_phase_space}.
+For $T$ uncorrelated uncertainties (hence for $T$ morphing parameters $m$) with morphing parameter values $\pm1$ there are $2T+1$ sampled distributions in total (counting the nominal distribution, defined as $m=0$). An intuitive representation of the "morphing parameter space" with the indication of the available templates is shown in fig. \ref{fig:morphing_phase_space}.
 
 \begin{figure}[h!]
 	\centering
@@ -127,14 +171,14 @@ For $T$ uncorrelated uncertainties (hence for $T$ morphing parameters $m$) with 
 	\label{fig:morphing_phase_space}
 \end{figure}
 
-For theis multidemensional case as there are no "mixed templates" taking into account the effect of two independent systematic variations, the mixed derivative terms from the above expansion are zero. Hence, the expression can be written for a given $\mathbf{m}_i$\footnote{$\mathbf{m}_i = (0, 0, ..., 0, \pm 1, 0, ..., 0)$ for the i-th template with $\sigma=\pm1$} as:
+For this multidemensional case as there are no "mixed templates" taking into account the effect of two independent systematic variations, the mixed derivative terms from the above expansion are zero. Hence, the expression can be written for a given $\mathbf{m}_i$\footnote{$\mathbf{m}_i = (0, 0, ..., 0, \pm 1, 0, ..., 0)$ for the i-th template with $\sigma=\pm1$} as:
 
 \begin{equation}
 	f(x | \mathbf{m}_i) = \underbrace{\vphantom{\frac{1}{2!}\left.\frac{\partial^2 f(x | \mathbf{m})}{\partial m_j^2}\right|_{\mathbf{m}=0}}f(x | 0)}_{f_0} + \sum^T_{j=1} \underbrace{\vphantom{\frac{1}{2!}\left.\frac{\partial^2 f(x | \mathbf{m})}{\partial m_j^2}\right|_{\mathbf{m}=0}}\left.\frac{\partial f(x | \mathbf{m})}{\partial m_j}\right|_{\mathbf{m}=0}}_{f'_j}(m_i)_j + \sum^T_{j=1} \underbrace{\frac{1}{2!}\left.\frac{\partial^2 f(x | \mathbf{m})}{\partial m_j^2}\right|_{\mathbf{m}=0}}_{f'_{jj}}(m_i)^2_j + \mathcal{O}\left((m_i)_j^3\right)
 	\label{eq:morphing}
 \end{equation}
 
-where $(m_i)_j$ denotes the j-th component of the i-th morphing parameter vector. The aim is to find an expression for the unknown derivatives as only the histogram $f(x|m)$ is given. If one knew the derivatives, one could easily select a general $m_i$ and insert in into eq. \ref{eq:morphing}, yielding the morphed distribution.
+where $(m_i)_j$ denotes the j-th component of the i-th morphing parameter vector. The aim is to find an expression for the unknown derivatives as only the histogram (but not its derivative) $f(x|\mathbf{m})$ is given. If one knew the derivatives, one could easily select a general $\mathbf{m}_i$ and insert in into eq. \ref{eq:morphing}, yielding the morphed distribution.
 
 In order to express the derivatives write all given templates in a vectorized form, and make use of the matrix form
 
@@ -182,21 +226,75 @@ this collapses into
 	M^{-1}\mathbf{f} = \mathbf{f}'
 \end{equation*}
 
-and eq. \ref{eq:morphing} can be then written for a general $m$ as
+and eq. \ref{eq:morphing} can be then written for a general $\mathbf{m}$ as
 
 \begin{equation}
 	f(x|\mathbf{m}) = (1, m_1, m_1^2, ..., m_T, m^2_T) M^{-1}\mathbf{f}
 	\label{eq:final_morphing}
 \end{equation}
 
-Eq. \ref{eq:final_morphing} is the final shape of the morphing algorithm implemented for the representation of the systematic effects in the dataset. The effect of the morphing algorithm on some samples is discussed in the next chapter.
+Eq. \ref{eq:final_morphing} is the final shape of the morphing algorithm implemented for the representation of the systematic effects in the dataset. The results of applying morphing on some selected histograms is discussed in the next chapter.
 
-\Subsubsection{\textcolor{red}{Systematic Uncertainty Representation}}
+\Subsubsection{Systematic Uncertainty Representation in Training Data}
 
-\Subsection{Statistical Uncertainties}
+The effect of the morphing algorithm from above has been studied by looking at some arbitrary histograms explicitly. Below an example for a normalisation and two shape-changing uncertainties is given for both morphing parameters $m=-0.5$ and $m = 0.5$.
 
-There are two sources of statistical uncertainties on Monte Carlo level. First, there is a Poisson fluctuation due to the generator generating a finite amount of samples for each process. As the number of samples is large, one can assume that these fluctuations follow a normal distribution. Second, it is expected that the data in the DNN-score histograms follow a Poisson distribution themselves.
+For the parton desitity function uncertainty, negative values of $m$ decrease the event content of each bin, while $m>0$ yields more events compared to the nominal histogram. As a normalisation uncertainty, it keeps the shape of the distribution. This behaviour can be seen in fig. \ref{fig:pdfset}.
 
+\begin{figure}[h!]
+	\centering
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/network_setup/PDFSet_-0.5}
+	\end{minipage}%
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/network_setup/PDFSet_+0.5}
+	\end{minipage}
+	\caption{Morphed histograms for $m = -0.5$ (left) and $m = +0.5$ (right) for \texttt{PDFSet} for the $e$, $ee$, $\mu$ and $\mu\mu$ categories separated with the blue dashed line. Below the difference of the morphed histogram to the nominal histogram ($m = 0$) is shown. Note that each bin has been influenced uniformly, keeping the overall shape of the conditions.}
+	\label{fig:pdfset}
+\end{figure}
+
+As a shape-changing uncertainty, $\texttt{pileup}$ influences all bins separately. Due to this behaviour, the content of a given bin for a process might increase in one bin but decrease in another bin for the same morphing parameter. The morphed histogram for the same morphing parameters are shown in fig. \ref{fig:pileup}.
+
+\begin{figure}[h!]
+	\centering
+		\begin{minipage}{.5\textwidth}
+				\centering
+				\includegraphics[width=\linewidth]{figures/network_setup/pileup_-0.5}
+			\end{minipage}%
+		\begin{minipage}{.5\textwidth}
+				\centering
+				\includegraphics[width=\linewidth]{figures/network_setup/pileup_+0.5}
+			\end{minipage}
+	\caption{Morphed histograms for $m = -0.5$ (left) and $m = +0.5$ (right) for \texttt{pileup}. Below the difference of the morphed histogram to the nominal histogram is shown. Note that effect is different for each process and in each bin as expected for a shape changing uncertainty.}
+	\label{fig:pileup}
+\end{figure}
+
+As the second shape-chaning uncertainty to showcase, the dilepton trigger efficiency effects have been chosen. Due to their focus on given $\mu\mu$ or $ee$ final states, these uncertainties influence single categories only. The effect of \texttt{trigger\_mumu\_sf} and \texttt{trigger\_ee\_sf} are shown in fig. \ref{fig:trigger_sf}.
+
+\begin{figure}[h!]
+	\centering
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/network_setup/trigger_mumu_sf_-0.5}
+		\includegraphics[width=\linewidth]{figures/network_setup/trigger_ee_sf_-0.5}
+	\end{minipage}%
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/network_setup/trigger_mumu_sf_+0.5}
+		\includegraphics[width=\linewidth]{figures/network_setup/trigger_ee_sf_+0.5}
+	\end{minipage}
+	\caption{Morphed histograms for $m = -0.5$ (left) and $m = +0.5$ (right) for \texttt{trigger\_mumu\_sf} (above) and \texttt{trigger\_ee\_sf} (below). The four categories from left to right are: $e$, $ee$, $\mu$ and $\mu\mu$. Note the exclusive action of the efficiency uncertainties on a single category.}
+	\label{fig:trigger_sf}
+\end{figure}
+
+\Subsection{\textcolor{red}{Statistical Uncertainties}}
+
+There are two sources of statistical uncertainties on Monte Carlo level. First, there is a Poisson fluctuation due to the generator producing a finite amount of samples for each process. As the number of samples is large, one can assume that these fluctuations follow a normal distribution with $\mu = N$ and $\sigma = \sqrt{N}$. Second, it is expected that the data in the DNN-score histograms follow a Poisson distribution themselves.
+
+The generator-related statistical effects have been applied following morphing, after which eventually arising negative values (due to the variation being performed through a normal distribution) have been clamped to zero. Then, the signal strength modifiers drawn from the prior distributions have been applied to each process and the resulting bins have been summed up, losing information on the exact bin content (just like in the case of real data). Last, the resulting histogram bin heights have been independently varied following a Poisson distribution to model statistical effects in the data and the application of the normalising luminosity uncertainty has been performed. The resulting histograms have been saved and used as training or test dataset.
+\textcolor{red}{graph showing when to apply what effect?}
 
 \Subsection{Network Architecture}
 
@@ -206,7 +304,7 @@ The network inputs are one signal modifier parameter per process and an addition
 
 Regarding the conditions, it had a dimension of 235 for the four considered categories ($e$, $ee$, $\mu$ and $\mu\mu$).
 
-The cINN uses 12 GLOW blocks. After each block, an additional permutation layer is introduced. These layers perform arbitrary (but fixed) permutations among the outputs. Note that this transformation has per construction a determinant of $\pm1$ making no change in the volume for the resulting normalizing flow. On the other hand, it does remove any correlations between neighbouring input values, making training more performant.
+The implementation has been done in \texttt{Python} using \texttt{PyTorch} \cite{pytorch}; the network has been constructed using the "Framework for Easily Invertible Architectures" (\texttt{FrEIA}) framework \cite{freia}. The cINN uses 12 GLOW blocks. After each block, an additional permutation layer is introduced. These layers perform arbitrary (but fixed) permutations among the outputs. Note that this transformation has per construction a determinant of $\pm1$ making no change in the volume for the resulting normalizing flow. On the other hand, it does remove any correlations between neighbouring input values, making training more performant.
 
 The GLOW networks contain subnetworks with 128 Nodes, of 4 layers. The activation function for each layer was chosen to be ReLU.
 
@@ -216,7 +314,9 @@ Both networks have been trained for \textcolor{red}{11000 epochs} on a dataset c
 
 As a learning rate scheduler, an empirically well-functioning cosine scheduler has been used. This scheduler starts off with a learning rate of $10^{-3}$ and reduces it to $10^{-5}$ in steps in each epoch. The evolution of the learning rate is shown in fig. \ref{fig:lr}. As an optimizer, Adam has been chosen.
 
-\begin{figure}
+All tests have been performed three times (3 runs) with differently initialized models and the model with the lowest test loss has been studied further.
+
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.6\linewidth]{figures/network_setup/lr}
 	\caption{The evolution of the learning rate with each epoch on a logarithmic scale.}
