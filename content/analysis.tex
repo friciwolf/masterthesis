@@ -14,7 +14,7 @@ The analysis has been performed on Monte Carlo (MC) data exclusively. The phase 
 	\label{fig:VH_finalstates}
 \end{figure}
 
-The events are categorised through a triggering system and are assigned to four categories. The list of the triggers for the di- and semileptonic channels are listed in tab. \ref{tab:triggers}.
+The events are categorised through a triggering system and are assigned to four channels. The list of the triggers for the di- and semileptonic channels are listed in tab. \ref{tab:triggers}.
 
 \begin{table}[h!]
 	\centering
@@ -42,7 +42,7 @@ The naming in \ref{tab:triggers} indicates the phase space which the triggers cu
 
 In addition to these selection criteria, both the muon tracks have to be isolated in the $\mu\mu$ channel. For the $e$ channel, the tight working point has been selected as trigger efficiency.
 
-The datasets used for the analysis have been simulated with \texttt{PYTHIA} \cite{Sj_strand_2008} and \texttt{HERWIG++} \cite{herwig}. These simulated events not only contain matrix element calcualtion samples, but also the CMS detectors simulations using \texttt{GEANT4} in order to represent the final observed distribtuions accurately \cite{geant1, geant2, geant3}. The list of the signal sample datsets is shown in tab. \ref{tab:signal_datasets}.
+The datasets used for the analysis have been simulated with \texttt{PYTHIA} \cite{Sj_strand_2008} and \texttt{HERWIG++} \cite{herwig}. These simulated events not only contain matrix element calcualtion samples, but also the CMS detectors simulations using \texttt{GEANT4} in order to represent the final observed distribtuions accurately \cite{geant1, geant2, geant3}. The list of the signal sample datsets is shown in tab. \ref{tab:signal_datasets}. These processes are \texttt{ggZH} (for the box diagram process), \texttt{ZH\_DY} (for the Drell-Yan-like $ZH$ production process) and \texttt{WH} (for the $WH$ Higgsstrahlung process).
 
 \begin{table}[h!]
 	\centering
@@ -73,7 +73,7 @@ For the background processes, one distinguishes between the following processes:
 	\item[] $\texttt{t}\bar{\texttt{t}}\texttt{V}$: Associated vector boson production in the initial or final states with a $t\bar{t}$ pair. For the top quarks decaying into bottom quarks and the leptonically decaying vector bosons, this yields a final state similar to the signal final state.
 	\item[] $\texttt{st}$: Single top quark production. A hadronically decaying top with a QCD-induced bottom jet results in a semileptonic di-bottom state.
 	\item[] \texttt{VV}, \texttt{VVV} and $\texttt{t}{\bar{\texttt{t}}}\texttt{VV}$: di- or triboson production with (or without) associated $t\bar{t}$ production. If any of these vector bosons decay hadronically while the other(s) decay leptonically, this results in a semi- or dileptonic di-bottom final state.
-	\item[] $\texttt{t}\bar{\texttt{t}}\texttt{VH}$, \texttt{ggH} and \texttt{VBF}: Higgs production channels.
+	\item[] $\texttt{t}\bar{\texttt{t}}\texttt{VH}$, \texttt{ggH} and \texttt{VBFH}: Higgs production channels.
 	\item[] \texttt{wjets}: leptonically decaying jet-associated $W$ boson production.
 	\item[] \texttt{QCD}: reducible QCD background.
 	\item[] \texttt{rare}: rare processes such as four top production.
@@ -94,7 +94,7 @@ For the background processes, one distinguishes between the following processes:
 
 \Subsection{Analysis Setup}
 
-In the following the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail.
+In the following the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail. \textcolor{red}{As a brief overview, the analysis setup has been summarized in fig. X.Y}
 
 The muon selection criteria are listed in tab. \ref{tab:muon_selection}. For the leading muons, a $p_T$-cut of 25 GeV has been required; qualifying subleading muons need to satisfy $p_T>\SI{15}{\giga\electronvolt}$. Furhtermore, muons ought to be identified as tight muons and have to be contained within the tracker, while their impact parameter (IP) geometry being also compatible with the primary vertex (PV). In addition, the IP significance \texttt{sip3d} (defined as the ratio between the uncertainty of the IP and the IP itself) is also restricted to guarantee that these muons originate from the PV. The \texttt{pfRelISO04\_all} parameter cut ensures the isolation of the muons and hence their origin from the PV.
 
@@ -131,7 +131,7 @@ The electron selection criteria is listed in tab. \ref{tab:electron_selection}. 
 		$\text{lost hits} \leq 1$ \\
 		\hline \\
 	\end{tabular}
-	\caption{Selection criteria for the muons.}
+	\caption{Selection criteria for the electrons.}
 	\label{tab:electron_selection}
 \end{table}
 
@@ -152,11 +152,94 @@ For the jets in consideration, the selection criteria in tab. \ref{tab:jet_selec
 
 \Subsection{\textcolor{red}{Event Categorisation}}
 
-The resulting histogram for each subcategory and process for the DNN scores is shown in fig. \ref{fig:conditions}.
+For better signal yield the selected events have been categorized depending on their final state configuration. In the network analysis, only channels with two b tagged AK4 jets with semi- or dileptonic final states have been chosen.
+
+In the dileptonic configurations, the lepton charges have been required to be opposite, such that the total charge of selected objects is $Q_{tot} = 0$. In addition to that, the invariant mass defined by the dilepton system is required to be close to the $Z$ mass and only events with maximum absolute deviation of $\SI{15}{\giga\electronvolt}$ are kept. For the semileptonic channels, such a selection is not necessary. Additional selection is performed with supplementary leading lepton transversal momentum $p^l_T$ and missing trasverse energy $\slashed{E}_T$ cuts.
+
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{ccccc}
+		channel & $\mu\mu$ & $ee$ & $\mu$ & $e$ \\
+		\hline \hline \\
+		$p^l_T$ & $>\SI{30}{\giga\electronvolt}$ & $>\SI{25}{\giga\electronvolt}$ & $>\SI{25}{\giga\electronvolt}$ & $>\SI{35}{\giga\electronvolt}$ \\
+		$n_\mu$ & 2 & 0 & 1 & 0 \\
+		$n_e$ & 0 & 2 & 0 & 1 \\
+		$Q_{tot}$ & 0 & 0 & -- & -- \\
+		$\slashed{E}_T$ & -- & -- & \multicolumn{2}{c}{$>\SI{30}{\giga\electronvolt}$}  \\
+		$m_{ll}$ & \multicolumn{2}{c}{$|m_{ll}-m_Z|\leq\SI{15}{\giga\electronvolt}$} & -- & -- \\
+	\end{tabular}
+	\caption{Selected categories with the additional kinematic cuts they impose. Note that there is a channel for each trigger.}
+	\label{tab:categories}
+\end{table}
+
+\Subsection{\textcolor{red}{Multi-Process Classification}}
+
+Following the definition of the channels, the contained final state objects are furthermore categorized using a DNN. The network assigns these final state objects to so-called subcategories for general channels. Hence, the input variables include properties of additional physics objects, such as AK8 jets. The physics objects kinematic variables, correlations among them and additional jet and particle identification values. These complete list of input variables is shown in tab. \ref{tab:DNN_inputs}.
+
+\begin{table} [h!]
+	\centering
+	\begin{tabular}{cc}
+		Object & Variable \\
+		\hline
+		Leptons (2) & $E, p_x, p_y, p_z, q$, PDG ID \\
+		AK4 jets (4) & $E, p_x, p_y, p_z$, b-tag value \\
+		AK8 jets (2) & $E, p_x, p_y, p_z$, b-tag value \\
+		Correlated objects & $m_{ll}, \Delta\phi_{jj}, \Delta R_{ll}$ \\
+		                   & $m_{jj}, p_{T, jj}, \Delta\phi_{jj}, \Delta R_{jj}$ \\
+		                   & $\min(\Delta R_{l1j1}, \Delta R_{l1j2})$ \\
+		                   & $\min(\Delta R_{l2j1}, \Delta R_{l2j2}$ \\
+		                   & $m_{lljj}, N_{AK4j}, p^{miss}_T$
+	\end{tabular}
+	\caption{The 54 inputs of the classifier DNN with object multiplicity indicated in brackets. Note that the network has been trained as a general final state classifier, so additional kinematic variables irrelevant for the dilepton and single lepton channel analysis are also used as inputs.}
+	\label{tab:DNN_inputs}
+\end{table}
+
+The DNN then assigns a probability (following sigmoid activation) to each final state object belonging to a process group. As the sensitivity for some background processes is low, these are grouped into a single process group; hence, for the 16 processes the analysis differentiates between there are only 13 process groups the DNN sorts the physics final state objects into. The 13 process groups are listed in tab. \ref{tab:DNN_outputs}.
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{cc}
+		Process group & Included Processes \\
+		\hline
+		\texttt{ggZH} & \texttt{ggZH} \\
+		\texttt{ZH\_DY} & \texttt{ZH\_DY} \\
+		\texttt{WH} & \texttt{WH} \\
+		\texttt{dy} & \texttt{dy} \\
+		\texttt{tt} & \texttt{t}$\bar{\texttt{t}}$ \\
+		\texttt{st} & \texttt{st} \\
+		\texttt{ggH} & \texttt{ggH} \\
+		\texttt{VBFH} & \texttt{VBFH} \\
+		\texttt{wjets} & \texttt{wjets} \\
+		\texttt{QCD} & \texttt{QCD} \\
+		\texttt{merged\_ttVX} & \texttt{t}$\bar{\texttt{t}}$\texttt{V}, \texttt{t}$\bar{\texttt{t}}$\texttt{VV},  \texttt{t}$\bar{\texttt{t}}$\texttt{VH} \\
+		\texttt{merged\_multiboson} & \texttt{VV}, \texttt{VVV} \\
+	\end{tabular}
+	\caption{The output nodes of the DNN corresponding to a single process group each. Note that some process groups contain multiple rare processes which are difficult to resolve.}
+	\label{tab:DNN_outputs}
+\end{table}
+
+An example of the output of a such classification is shown for an $ee$ category and \texttt{ZH\_DY} process group in fig. \ref{fig:ZH_DY_sub}. Note that there are $13\times4 = 52$ plots for the 13 process groups and 4 categories in total. On this particular plot, the strong Drell-Yan and $t\bar{t}$ background is clearly visible, while a large portion of \texttt{ZH\_DY} signal events are classified correctly.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\linewidth]{figures/analysis/ee_2b_dnn_node_ZH_DY}
+	\caption{The DNN score distribution for the categorised final state objects for the \texttt{ZH\_DY} subcategory. Note the the different norming of the y axis and the high share of $t\bar{t}$, \texttt{dy} and \texttt{ZH\_DY} processes. Due to the effective categorization none of the \texttt{WH}, \texttt{QCD} and \texttt{wjets} events landed in this category. This is one of the total 52 categories.}
+	\label{fig:ZH_DY_sub}
+\end{figure}
+
+Unfortunately, no single processes can be seen in a measured dataset. What is possible though, is to fit the data to the distribution of the DNN scores of every category. A such histogram for a single category is shown in fig. \ref{fig:ee_dnn_score}; for all four categories covered by this study, the resulting histogram in shown in fig. \ref{fig:conditions}. In case of a true dataset, only the resulting bin heights would be visible on which an analytical likelihood fit can be performed extracting the contribution of each process to the bins.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\linewidth]{figures/analysis/cond1.pdf}
+	\caption{The DNN score histogram distribution for the $ee$ category and each 13 subcategory (separated in red). On the x-axis, only the bin index is shown. The fourth subcategory from the left corresponds to the above-mentioned \texttt{ZH\_DY} subcategory. This is one of the four categories.}
+	\label{fig:ee_dnn_score}
+\end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1.1\linewidth]{figures/analysis/cond4_notOrdered.pdf}
-	\caption{The distribution of the DNN scores for each subcategory (separated in red) in the semi- and dileptonic categories in consideration (separated in blue). Note the high share of Drell-Yan, $t\bar{t}$ and QCD background events in each bin and the absence of $WH$ events in the dileptonic bins.}
+	\caption{The distribution of the DNN scores for each subcategory (separated in red) in the semi- and dileptonic categories in consideration (separated in blue). Note the high share of Drell-Yan, $t\bar{t}$ and QCD background events in each bin and the absence of $WH$ events in the dileptonic bins. The $ee$ category is the second one from the left.}
 	\label{fig:conditions}
 \end{figure}
