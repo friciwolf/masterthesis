@@ -351,7 +351,7 @@ This form of the KL-divergence can be understood in terms of likelihoods as find
 	\end{aligned}
 \end{equation*}
 
-where $z = f(x, y, \theta)$ is the output of the network in the latent space. At this point we can fix the distribution $p(z)$ to be a multivariate gaussian of mean 0 and standard deviation 1. Writing
+where $z = f(x, y, \theta)$ is the output of the network in the latent space. At this point we can fix the distribution $p(z)$ to be a multivariate Gaussian of mean 0 and standard deviation 1. Writing
 
 \begin{equation*}
 	p(z) \propto \mathcal{N}(z; \mu = 0, \Sigma=\mathbb{1}) \propto \exp\left(-\frac{z^2}{2}\right)

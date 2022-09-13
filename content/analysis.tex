@@ -173,11 +173,11 @@ In the dileptonic configurations, the lepton charges have been required to be op
 	\label{tab:categories}
 \end{table}
 
-\Subsection{\textcolor{red}{Multi-Process Classification}}
+\Subsection{Multi-Process Classification and Weight Application}
 
 Following the definition of the channels, the contained final state objects are furthermore categorized using a DNN. The network assigns these final state objects to so-called subcategories for general channels. Hence, the input variables include properties of additional physics objects, such as AK8 jets. The physics objects kinematic variables, correlations among them and additional jet and particle identification values. These complete list of input variables is shown in tab. \ref{tab:DNN_inputs}.
 
-\begin{table} [h!]
+\begin{table}[h!]
 	\centering
 	\begin{tabular}{cc}
 		Object & Variable \\
@@ -195,7 +195,15 @@ Following the definition of the channels, the contained final state objects are 
 	\label{tab:DNN_inputs}
 \end{table}
 
-The DNN then assigns a probability (following sigmoid activation) to each final state object belonging to a process group. As the sensitivity for some background processes is low, these are grouped into a single process group; hence, for the 16 processes the analysis differentiates between there are only 13 process groups the DNN sorts the physics final state objects into. The 13 process groups are listed in tab. \ref{tab:DNN_outputs}.
+The DNN then assigns a probability (following sigmoid activation) to each final state object belonging to a process group. As the sensitivity for some rare background processes is low, these are grouped into a single process group; hence, for the 16 processes the analysis differentiates between there are only 13 process groups the DNN sorts the physics final state objects into. The 13 process groups are listed in tab. \ref{tab:DNN_outputs}.
+
+The events carry a generator weight, as it would be computationally infeasible to simulate all processes proportionally to their occurrence; rather they are scaled with the experiment luminosity and process cross section. At the same time, it is desirable to reduce the uncertainties due to the finite size of Monte Carlo samples. The resulting weights written as
+
+\begin{equation*}
+	w_i = \frac{\mathcal{L}\sigma w^\text{gen}_i}{\sum\limits_i w^\text{gen}_i}
+\end{equation*}
+
+with luminosity $\mathcal{L}$ and cross section $\sigma$ and are applied to the DNN scores after classification for each process $i$.
 
 \begin{table}[h!]
 	\centering
@@ -219,16 +227,16 @@ The DNN then assigns a probability (following sigmoid activation) to each final 
 	\label{tab:DNN_outputs}
 \end{table}
 
-An example of the output of a such classification is shown for an $ee$ category and \texttt{ZH\_DY} process group in fig. \ref{fig:ZH_DY_sub}. Note that there are $13\times4 = 52$ plots for the 13 process groups and 4 categories in total. On this particular plot, the strong Drell-Yan and $t\bar{t}$ background is clearly visible, while a large portion of \texttt{ZH\_DY} signal events are classified correctly.
+An example output of a such classification is shown for an $ee$ category and \texttt{ZH\_DY} process group in fig. \ref{fig:ZH_DY_sub}. Note that there are $13\times4 = 52$ plots for the 13 process groups and 4 categories in total. On this particular plot, the strong Drell-Yan and $t\bar{t}$ background is clearly visible, while a large portion of \texttt{ZH\_DY} signal events are classified correctly.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{figures/analysis/ee_2b_dnn_node_ZH_DY}
-	\caption{The DNN score distribution for the categorised final state objects for the \texttt{ZH\_DY} subcategory. Note the the different norming of the y axis and the high share of $t\bar{t}$, \texttt{dy} and \texttt{ZH\_DY} processes. Due to the effective categorization none of the \texttt{WH}, \texttt{QCD} and \texttt{wjets} events landed in this category. This is one of the total 52 categories.}
+	\caption{The DNN score distribution for the categorised final state objects for the \texttt{ZH\_DY} subcategory. Note the the different norming of the y axis and the high share of $t\bar{t}$, \texttt{dy} and \texttt{ZH\_DY} processes. Due to the effective categorization none of the \texttt{WH}, \texttt{QCD} and \texttt{wjets} events landed in this category. This is one of the total 52 subcategories.}
 	\label{fig:ZH_DY_sub}
 \end{figure}
 
-Unfortunately, no single processes can be seen in a measured dataset. What is possible though, is to fit the data to the distribution of the DNN scores of every category. A such histogram for a single category is shown in fig. \ref{fig:ee_dnn_score}; for all four categories covered by this study, the resulting histogram in shown in fig. \ref{fig:conditions}. In case of a true dataset, only the resulting bin heights would be visible on which an analytical likelihood fit can be performed extracting the contribution of each process to the bins.
+Unfortunately, no single process can be seen in a measured dataset. What is possible though, is to fit the data to the distribution of the DNN scores of every category. A such histogram for a single category is shown in fig. \ref{fig:ee_dnn_score}; for all four categories covered by this study, the resulting histogram in shown in fig. \ref{fig:conditions}. In case of a measured dataset, only the resulting bin heights would be visible on which an analytical likelihood fit can be performed extracting the contribution of each process to the bins.
 
 \begin{figure}[h!]
 	\centering
@@ -243,3 +251,15 @@ Unfortunately, no single processes can be seen in a measured dataset. What is po
 	\caption{The distribution of the DNN scores for each subcategory (separated in red) in the semi- and dileptonic categories in consideration (separated in blue). Note the high share of Drell-Yan, $t\bar{t}$ and QCD background events in each bin and the absence of $WH$ events in the dileptonic bins. The $ee$ category is the second one from the left.}
 	\label{fig:conditions}
 \end{figure}
+
+\Subsection{Likelihood Fits}
+
+Using these histograms, the maximum likelihood fits can be performed to obtain the signal strength parameters. For that, the likelihood function for a signal+background hypothesis defined as
+
+\begin{equation*}
+	\mathcal{L}(N | \left\{\mu_i\right\} , \left\{\theta_i\right\}) = \prod\limits_i \frac{(\mu_is_i(\theta)+b_i(\theta))^N}{N!}e^{-\mu_is_i(\theta) + b_i(\theta)} \prod\limits_j p(\tilde{\theta}_j | \theta_j)
+\end{equation*}
+
+with Poisson-distributed binwise signal and background contributions $s_i$ and $b_i$ depending on the uncertainty-modelling nuissance parameter $\theta$ following the probability distribution $p(\tilde{\theta} | \theta)$. Note that this fit assumes only changes in the background processes within the uncertainties, but not in their proportion. In other words, there is a single signal strength modifier parameter for each signal process exclusively.
+
+In this thesis, these signal strength modifier parameters will inferred using a conditional invertible neural network and will be compared to their maximum likelihood counterpart.
