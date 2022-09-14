@@ -98,12 +98,20 @@ describing the median absolute distance of the histogram ratios to the ideal cas
 The predictions for the complete test dataset are shown in fig. \ref{fig:predictions}. For each two dimensional histogram, the x axis shows the predicted values for a parameter on the y axis. In these plots several structures are clearly visible, which can be categorised into three groups for both networks:
 
 \begin{itemize}
-	\item[] \textit{Unrecognised processes} are those, where the network has clear difficulties obtaining the parameter with which the processes had been scaled. These are \texttt{VBFH, ggH, ttVH, ttVV, vvv} all of which are rare background processes. Due to the network not being able to differentiate between the different scalings, all of these are fitted close to the mean of the prior distribution, resulting in the thin vertical distribution in fig. \ref{fig:predictions}. \textcolor{red}{looking at the DNN score histograms}
-	\item[] \textit{Weakly recognised processes} are \texttt{rare}, \texttt{ttV}, \texttt{vv}. For these processes, the network can already resolve sevaral parameters close to the mean, from where the sensitivity starts to develop during training. Parameters further away from the mean are still fit the average value, resulting in an overall lense-like shape.
-	\item[] \textit{Recongnised processes} are all signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} and the major background sources \texttt{QCD}, \texttt{dy}, \texttt{st}, \texttt{tt}, \texttt{wjets}. For these processes, most scaling parameters predictions lie close to the real value, hence distribution scatter around the "perfect prediction diagonal".
+	\item[] \textit{Unrecognized processes} are those, where the network has clear difficulties obtaining the parameter with which the processes had been scaled. These are \texttt{VBFH, ggH, ttVH, ttVV, vvv} all of which are rare background processes. Due to the network not being able to differentiate between the different scalings, all of these are fitted close to the mean of the prior distribution, resulting in the thin vertical distribution in fig. \ref{fig:predictions}. Their contribution of each bin is shown in fig. \ref{fig:cond_without_sig_bkg} in orange. Note that even without signal and main background processes, their contribution is extremely low.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=\linewidth]{figures/inference/cond4_sorted_no_main_bkg_no_sig.pdf}
+		\caption{Nominal conditions sorted by occurrence without main background \texttt{tt, dy, st} and signal processes, showing the total contribution of the unrecognized processes in orange.}
+		\label{fig:cond_without_sig_bkg}
+	\end{figure}
+	
+	\item[] \textit{Weakly recognized processes} are \texttt{rare}, \texttt{ttV}, \texttt{vv}. For these processes, the network can already resolve sevaral parameters close to the mean, from where the sensitivity starts to develop during training. Parameters further away from the mean are still fit the average value, resulting in an overall lense-like shape.
+	\item[] \textit{Recongnised processes} are all signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} and the major background sources \texttt{QCD}, \texttt{dy}, \texttt{st}, \texttt{tt}, \texttt{wjets}. For these processes, most scaling parameters predictions lie close to the real value, hence distribution scatter around the "perfect prediction diagonal". Note that the \texttt{QCD} background scaling factors tend to be underestimated resulting in a asymmetric scattering around the perfect prediction line.
 \end{itemize}
 
-Note the unique decrease in sensitivity for the signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} for $\mu\lesssim10$ resulting in a tail-like structure stretching towards the mean. Uniquely to these processes, the network cannot resolve them as long as the signal strength modifier parameters lie below a certain threshold value for some configurations. Since their contribution (compared to the other significant background processes) is already low, the added statistical and systematic effects (the Poisson bin-variation being the most significant one, as it modifies all bins with $\sqrt{N}$) renders these statistically undetectable.
+For the signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} a decrease in sensitivity for $\mu\lesssim10$ resulting in a tail-like structure stretching towards the mean has been observed. Uniquely to these processes, the network cannot resolve them as long as the signal strength modifier parameters lie below a certain threshold value for some configurations. Since their contribution (compared to the other significant background processes) is already low, the added statistical and systematic effects (the Poisson bin-variation being the most significant one, as it modifies all bins with $\sqrt{N}$) renders these statistically undetectable.
 
 Note that the calibration curves show no signs of inherent biases in the resulting model, hence the fact that this effect is due to some training relics can be excluded. It is expected then, that the posterior distributions are broader in this range covering the true value, which will be discussed in the next section.
 
@@ -132,7 +140,6 @@ Following the sampling from the target Gaussian function in the latent space, th
 Both networks succeed in the reconstruction of the nominal parameters with differing precision. It appears at first glance that the some recongnized background processes (\texttt{dy}, \texttt{st}, \texttt{tt}) have an order of magnitude narrower posterior distribution. From the posterior estimation, such behaviour is expected as the calibration curves show no signs of biases, meaning the posteriors should all be scattered around the true values with their widths covering it. This implies the network sensitivity can only be characterized by the width of the posterior distributions for well-behaving (single-peaked) posteriors; in other words, enhanced sensitivity implies narrower posteriors.
 
 All three signal processes are overestimated with the true values lying closely outside of the 68\% quantiles. All background scaling parameters (except for \texttt{QCD}, which is underestimated and lies outside of the $1\sigma$ range) lie close to their nominal values.
-
 For weakly recognized and unrecognized processes, an interesting property of cINNs can be observed. Taking a glimpse at the blue posteriors and the orange analytic prior distributions for any of these processes (\texttt{VBHF, ggH, rare, ttV, ttVH, ttVV, vv, vvv}) only minimal changes in the former can be observed. For the cINN, these processes are statistically independent of the posteriors (and therefore, redundant in a way), so the normalizing flow mapping the priors to the Gaussian distributions does not need to decorrelate them from the other observables (which, in reality, should be done, but their contribution appears negligible at the current sensitivity), as they -- from the network's perspective -- have no influence on the conditions whatsoever.
 
 Mathematically speaking, if some physics observations $y$ are independent of a phyics parameter $x$, it means that by Bayes' Theorem the posteriors can be rewritten using the priors $p(x)$ as
@@ -143,35 +150,45 @@ Mathematically speaking, if some physics observations $y$ are independent of a p
 
 Which means the posteriors and the priors coincide. Note that the independence should be mutual, so the probability of obtaining $x$ given $y$ does not change either, directly yielding $p(x|y) = p(x)$. Hence, the blue histograms coincide with the orange priors.
 
-This observation shows the "naked" presence of the normalizing flow itself. The NF maps the datapoints from the prior distributions to a normal distribution via a diffeomorphism while the network is trained to optimize the modelled posterior distributions with respect to the unknown real distribution. From the results above, it becomes less surprising to observe that the network is capable of reproducing the priors for parameters which are independent of the conditions --- from a single condition and samples from the latent space distribution alone.
+This observation shows the "naked" presence of the normalizing flow itself. The NF maps the datapoints from the prior distributions to a normal distribution via a diffeomorphism while the network is trained to optimize the modelled posterior distributions with respect to the unknown real distribution. From the results above, it becomes less surprising to observe that the network is capable of reproducing the priors for parameters which appear to be independent of the conditions -- even from a single condition and samples from the latent space distribution alone.\\
 
-The numerical results for the inference have been summarized in tab. \ref{tab:inference_res}.
+In order to study the sensitivity further a "small-background high-signal" scenario from the test samples has been evaluated and the numerical results for both cases have been summarized in tab. \ref{tab:inference_res}. The posteriors are shown in fig. \ref{fig:HS-SM}. Similar to the nominal case, the three categories remain with a crucial difference: the posteriors for \texttt{ZHDY} and \texttt{WH} take a shape of a more symmetric and narrow distribution due to the increased sensitivity as expected. The relative uncertainty has also seen a drastic decrease from $\sim66.54\%$ to $\sim18.19\%$ for \texttt{ZHDY} and from $\sim63.24\%$ to $\sim26.30\%$ for \texttt{WH}. For the third signal process \texttt{ggZH}, this decrease is minor (from $\sim69.22\%$ to $\sim 62.07\%$) due to its small scaling parameter and its small share among the three.
 
 \begin{table}[h!]
 	\centering
-	\begin{tabular}{cccc}
-		\multirow{2}{*}{Processes} & \multicolumn{3}{c}{$\mu$} \\
-		 & cINN & SN-cINN & \texttt{CMSCombine} \\
+	\begin{tabular}{cccccccc}
+		\multirow{3}{*}{Processes} & \multicolumn{7}{c}{$\mu$}\\
+		&\multicolumn{4}{c}{Nominal}&\multicolumn{3}{c}{High-Signal, Low-Background} \\
+%		& \multicolumn{3}{c}{$\mu$} & \multicolumn{2}{c}{$\mu$} \\
+		& $\mu^{MC}$ & cINN & SN-cINN & \texttt{CMSCombine} & $\mu^{MC}$ & cINN & SN-cINN \\[0.1em]
 		 \hline\\
-		$\mu_\text{ggZH } $ & $5.10^{+3.57}_{-3.50}$ & $4.86^{+3.38}_{-3.33}$ &  \textcolor{red}{combine}  \\[0.3em]
-		$\mu_\text{ZHDY } $ & $3.90^{+2.62}_{-2.57}$ & $3.76^{+2.57}_{-2.52}$ &    \\[0.3em]
-		$\mu_\text{WH   } $ & $3.02^{+1.92}_{-1.90}$ & $2.93^{+1.80}_{-1.80}$ &    \\[0.3em]
-		$\mu_\text{VBFH } $ & $1.08^{+0.27}_{-0.27}$ & $1.08^{+0.26}_{-0.26}$ & -- \\[0.3em]
-		$\mu_\text{QCD  } $ & $0.84^{+0.14}_{-0.14}$ & $0.86^{+0.15}_{-0.15}$ & -- \\[0.3em]
-		$\mu_\text{dy   } $ & $0.99^{+0.04}_{-0.04}$ & $0.99^{+0.04}_{-0.04}$ & -- \\[0.3em]
-		$\mu_\text{ggH  } $ & $1.09^{+0.27}_{-0.27}$ & $1.08^{+0.26}_{-0.26}$ & -- \\[0.3em]
-		$\mu_\text{rare } $ & $1.06^{+0.25}_{-0.25}$ & $1.08^{+0.26}_{-0.26}$ & -- \\[0.3em]
-		$\mu_\text{st   } $ & $1.00^{+0.03}_{-0.03}$ & $1.00^{+0.03}_{-0.03}$ & -- \\[0.3em]
-		$\mu_\text{tt   } $ & $1.00^{+0.02}_{-0.02}$ & $1.00^{+0.02}_{-0.02}$ & -- \\[0.3em]
-		$\mu_\text{ttV  } $ & $1.05^{+0.24}_{-0.24}$ & $1.07^{+0.25}_{-0.25}$ & -- \\[0.3em]
-		$\mu_\text{ttVH } $ & $1.09^{+0.27}_{-0.27}$ & $1.08^{+0.27}_{-0.27}$ & -- \\[0.3em]
-		$\mu_\text{ttVV } $ & $1.08^{+0.26}_{-0.27}$ & $1.07^{+0.26}_{-0.26}$ & -- \\[0.3em]
-		$\mu_\text{vv   } $ & $1.06^{+0.25}_{-0.25}$ & $1.06^{+0.25}_{-0.25}$ & -- \\[0.3em]
-		$\mu_\text{vvv  } $ & $1.09^{+0.27}_{-0.27}$ & $1.09^{+0.27}_{-0.27}$ & -- \\[0.3em]
-		$\mu_\text{wjets} $ & $0.99^{+0.12}_{-0.12}$ & $1.02^{+0.13}_{-0.13}$ & -- \\[0.3em]
-		$\mu_\text{lumi } $ & $1.00^{+0.02}_{-0.02}$ & $1.00^{+0.02}_{-0.02}$ & -- \\[0.3em]
+		$\mu_\text{ggZH } $ & $1.00$ & $5.10^{+3.57}_{-3.50}$ & $4.86^{+3.38}_{-3.33}$ &  \textcolor{red}{combine} & $9.01 $ & $10.73^{+6.64}_{-6.68}$ & $10.38^{+6.19}_{-6.18}$ \\[0.3em]
+		$\mu_\text{ZHDY } $ & $1.00$ & $3.90^{+2.62}_{-2.57}$ & $3.76^{+2.57}_{-2.52}$ &                           & $33.50$ & $35.26^{+5.85}_{-5.89}$ & $36.62^{+6.07}_{-5.98}$ \\[0.3em]
+		$\mu_\text{WH   } $ & $1.00$ & $3.02^{+1.92}_{-1.90}$ & $2.93^{+1.80}_{-1.80}$ &                           & $9.95 $ & $11.35^{+2.98}_{-2.99}$ & $11.03^{+2.90}_{-2.93}$ \\[0.3em]
+		$\mu_\text{VBFH } $ & $1.00$ & $1.08^{+0.27}_{-0.27}$ & $1.08^{+0.26}_{-0.26}$ & --                        & $0.89 $ & $1.09^{+0.27}_{-0.27}$  & $1.07^{+0.25}_{-0.25}$  \\[0.3em]
+		$\mu_\text{QCD  } $ & $1.00$ & $0.84^{+0.14}_{-0.14}$ & $0.86^{+0.15}_{-0.15}$ & --                        & $1.40 $ & $1.17^{+0.18}_{-0.18}$  & $1.12^{+0.17}_{-0.18}$  \\[0.3em]
+		$\mu_\text{dy   } $ & $1.00$ & $0.99^{+0.04}_{-0.04}$ & $0.99^{+0.04}_{-0.04}$ & --                        & $1.05 $ & $1.01^{+0.05}_{-0.05}$  & $1.01^{+0.05}_{-0.05}$  \\[0.3em]
+		$\mu_\text{ggH  } $ & $1.00$ & $1.09^{+0.27}_{-0.27}$ & $1.08^{+0.26}_{-0.26}$ & --                        & $1.14 $ & $1.09^{+0.27}_{-0.27}$  & $1.08^{+0.25}_{-0.25}$  \\[0.3em]
+		$\mu_\text{rare } $ & $1.00$ & $1.06^{+0.25}_{-0.25}$ & $1.08^{+0.26}_{-0.26}$ & --                        & $0.88 $ & $1.03^{+0.23}_{-0.24}$  & $1.10^{+0.27}_{-0.26}$  \\[0.3em]
+		$\mu_\text{st   } $ & $1.00$ & $1.00^{+0.03}_{-0.03}$ & $1.00^{+0.03}_{-0.03}$ & --                        & $0.84 $ & $0.78^{+0.03}_{-0.03}$  & $0.77^{+0.03}_{-0.03}$  \\[0.3em]
+		$\mu_\text{tt   } $ & $1.00$ & $1.00^{+0.02}_{-0.02}$ & $1.00^{+0.02}_{-0.02}$ & --                        & $0.79 $ & $0.78^{+0.02}_{-0.02}$  & $0.78^{+0.02}_{-0.02}$  \\[0.3em]
+		$\mu_\text{ttV  } $ & $1.00$ & $1.05^{+0.24}_{-0.24}$ & $1.07^{+0.25}_{-0.25}$ & --                        & $0.52 $ & $1.02^{+0.23}_{-0.23}$  & $1.05^{+0.24}_{-0.24}$  \\[0.3em]
+		$\mu_\text{ttVH } $ & $1.00$ & $1.09^{+0.27}_{-0.27}$ & $1.08^{+0.27}_{-0.27}$ & --                        & $0.96 $ & $1.08^{+0.26}_{-0.26}$  & $1.07^{+0.26}_{-0.26}$  \\[0.3em]
+		$\mu_\text{ttVV } $ & $1.00$ & $1.08^{+0.26}_{-0.27}$ & $1.07^{+0.26}_{-0.26}$ & --                        & $0.69 $ & $1.08^{+0.27}_{-0.27}$  & $1.08^{+0.25}_{-0.25}$  \\[0.3em]
+		$\mu_\text{vv   } $ & $1.00$ & $1.06^{+0.25}_{-0.25}$ & $1.06^{+0.25}_{-0.25}$ & --                        & $1.43 $ & $1.18^{+0.29}_{-0.30}$  & $1.21^{+0.30}_{-0.30}$  \\[0.3em]
+		$\mu_\text{vvv  } $ & $1.00$ & $1.09^{+0.27}_{-0.27}$ & $1.09^{+0.27}_{-0.27}$ & --                        & $0.84 $ & $1.09^{+0.26}_{-0.27}$  & $1.07^{+0.25}_{-0.26}$  \\[0.3em]
+		$\mu_\text{wjets} $ & $1.00$ & $0.99^{+0.12}_{-0.12}$ & $1.02^{+0.13}_{-0.13}$ & --                        & $1.05 $ & $1.17^{+0.12}_{-0.13}$  & $1.22^{+0.13}_{-0.13}$  \\[0.3em]
+		$\mu_\text{lumi } $ & $1.00$ & $1.00^{+0.02}_{-0.02}$ & $1.00^{+0.02}_{-0.02}$ & --                        & $0.98 $ & $1.00^{+0.02}_{-0.02}$  & $1.00^{+0.02}_{-0.02}$  \\[0.3em]
 		\hline
 	\end{tabular}
-	\caption{The predicted values of the signal strength modifier and of the nuisance parameter for the cINN and the summary-network extended network (SN-cINN). Note the similarity of the output of both networks.}
+	\caption{The predicted values of the signal strength modifier and of the nuisance parameter for the cINN and the summary-network extended network (SN-cINN) for the nominal and the high-signal, low-background scenario. Note the similarity of the output of both networks.}
 	\label{tab:inference_res}
 \end{table}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\linewidth]{figures/inference/194finalNoSummarye11000_posteriors}
+	\includegraphics[width=\linewidth]{figures/inference/194finalSummary1Layer11000e300NodesCdim100_posteriors}
+	\caption{Posterior distributions for the selected high-signal small-background scenario.}
+	\label{fig:HS-SM}
+\end{figure}
