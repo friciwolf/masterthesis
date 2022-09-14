@@ -109,7 +109,7 @@ It is essential for convergence to select the right activation function $g$. His
 	\text{ReLU}(x) = \max \{0, x\}
 \end{equation*}
 
-where the maximum is taken element-wise over the vector components of $x$. Note that its derivative is not continuous and makes a jump at the origin from 0 to 1, which unnecessarily renders parameters 0 during training. On the other hand, this activation function has no scale, making it an excellent candidate for general approximation tasks. A graph of the most commonly used activation functions is shown in fig. \ref{fig:activations}.
+where the maximum is taken element-wise over the vector components of $x$. Note that its derivative is not continuous and makes a jump at the origin from 0 to 1, which renders parameters 0 during training. On the other hand, this activation function has no scale, making it an excellent candidate for general approximation tasks. A graph of the most commonly used activation functions is shown in fig. \ref{fig:activations}.
 
 \begin{figure}
 	\centering
@@ -140,7 +140,7 @@ with the convex function $f(r) = r\log r$ \cite{Papamakarios_NF}. In its expande
 	\label{eq:KL-loss}
 \end{equation}
 
-and can be decomposed into a $\theta$-parameter dependent and a $\theta$-independent term\footnote{Note that the Kullback-Leibler divergence is not symmetric in its arguments and swapping $q$ and $p$ does not yield a similar decomposition due to the expectation value taken over the probability density function $p_\text{x}(x; \theta)$. Hence a distinction between the forward and the backward Kullback-Leibler divergence has to be made. In to following, only the forward KL-divergence (introduced above) will be used.}. The KL-divergence has a global minimum of value 0 where both distributions are identical. With this expression, one can approximate an unknown posterior distribution $p(x | y)$ using a model function $p_\theta(x | y)$ (both conditioned on a random variable $y$) by taking the parameter-dependent term $\mathcal{L}(\theta)$ as a basis for the loss function.
+and can be decomposed into a $\theta$-parameter dependent and a $\theta$-independent term\footnote{Note that the Kullback-Leibler divergence is not symmetric in its arguments and swapping $q$ and $p$ does not yield a similar decomposition due to the expectation value taken over the probability density function $p_\text{x}(x; \theta)$. Hence a distinction between the forward and the backward Kullback-Leibler divergence has to be made. In to following, the forward KL-divergence (introduced above) will be used exclusively.}. The KL-divergence has a global minimum of value 0 where both distributions are identical. With this expression, one can approximate an unknown posterior distribution $p(x | y)$ using a model function $p_\theta(x | y)$ (both conditioned on a random variable $y$) by taking the parameter-dependent term $\mathcal{L}(\theta)$ as a basis for the loss function.
 
 Objective functions "guide" only the training, but are not a measure about the quality of the predictions per se. It can occur in terms of the weights, that a given feature of one or several inputs enjoys a higher-than-optimal weight at the cost of generalization (overfitting and overtraining). For this reason, the entries of the weight matrix during gradient descent are penalized with an additional $L^2$ regularization term
 
@@ -156,7 +156,7 @@ What is missing from a complete training is data the network is trained with res
 
 \Subsubsection{Training and Loss Optimization}
 
-The optimization is data-driven. The dataset is split up to two disjoint datasets: a training and a test set. For every iteration a number of samples from the training set are evaluated through the network from which the current network performance can be evaluated. Ideally, finding a local optimum of a one-dimensional function requires a closed form of the function itself with respect to its parameters. Unfortunately, this is usually not the case due to the nonlinear nature of the optimization problem. For this reason, the weight matrices are adjusted for every node through backpropagation: the gradients for each hyperparameter are calculated from the previous layer and the parameters are updated through gradient descent along the negative of the parameter gradient moving slowing to a local optimal value. For a simple case, it can be intuitively written with a positive learning rate $\eta$ as
+The optimization is data-driven. The dataset is split up to two disjoint datasets: a training and a test set. For every iteration a number of samples from the training set are evaluated through the network from which the current network performance can be evaluated. Ideally, finding a local optimum of a one-dimensional function requires a closed form of the function itself with respect to its parameters. Unfortunately, this is usually not the case due to the high-dimensional and nonlinear nature of the optimization problem. For this reason, the weight matrices are adjusted for every node through backpropagation: the gradients for each hyperparameter are calculated from the previous layer and the parameters are updated through gradient descent along the negative of the parameter gradient moving slowing to a locally optimal value. For a simple case, it can be intuitively written with a positive learning rate $\eta$ as
 
 \begin{equation}
 	\theta^t = \theta^{t-1}-\eta\left[\frac{\partial \mathcal{L}}{\partial\theta}\right]^{t-1}
@@ -178,9 +178,9 @@ Note that the learning rate is a decisive parameter in the update process; while
 
 Note that while Adam evaluates the next step using multiple measures in a sophisticated manner, in its core and using the right parameters the same gradient descent from eq. \ref{eq:optimization} can be found. It has been found experimentally that the parameters $\beta_1 = 0.9$ and $\beta_2 = 0.999$ are suitable choices for general tasks.
 
-In order to further improve the optimization, the updates are evaluated for a fixed number of samples (batches). The main advantage of stochastic gradient descent is the consecutive updates towards a more general optimum and avoiding getting stuck at local optima due to strongly varying gradients evaluated from the dataset.
+In order to further improve the optimization, the updates are evaluated for a fixed number of samples (batches) which introduces a stochastic nature to it averaging the gradient for the selected samples. The main advantage of stochastic gradient descent is the consecutive updates towards a more general optimum and avoiding getting stuck at local optima due to strongly varying gradients evaluated from the dataset.
 Once the whole training dataset has been used up, an epoch has reached its end and the process starts anew with a shuffled training dataset. After several epochs, the procedure converges.
-In order to monitor the network performance and its generalization capabilities, the test set is used. For this, the loss can be evaluated for these "unseen" datasamples, which shows signs of anomalies during training. Should for example the test loss rise while the training loss decreases, one can be certain that overtraining has had occurred.
+In order to monitor the network performance and its generalization capabilities, the test set is used. For this, the loss can be evaluated for these "unseen" datasamples, which can show signs of anomalies during training. Should for example the test loss rise while the training loss decreases, one can be certain that overtraining has had occurred.
 
 \Subsection{Conditional Invertible Neural Networks}
 
@@ -196,7 +196,7 @@ in Bayes' Theorem cannot be evaluated analytically. Most of these models are con
 
 \Subsubsection{General INN Architecture}
 
-To ensure invertibility the network input and output dimensions have to match to fulfil bijection. General invertible neural networks map the inputs $x$ to their targets $y$ while encoding some information regarding $x$ in the latent variables $z$. These variables are assumed to follow a fixed distribution which is also represented in the loss function. Usually these distributions are chosen to be a multivariate normal distribution, as they are unbiased and easy to sample from, which is crucial for obtaining the posterior distributions $p(x | y)$. Indeed, it can be shown, that upon perfect convergence, sampling from the latent space and picking an $y$ network inference yields the true posteriors $p(x | y)$ for any $y$ \cite{INN_Ardizzone}.
+To ensure invertibility the network input and output dimensions have to match to fulfil bijection. General invertible neural networks map the inputs $x$ to their targets $y$ while encoding some information regarding $x$ in the latent variables $z$. These variables are assumed to follow a fixed distribution which is also represented in the loss function. Usually these distributions are chosen to be a multivariate normal distribution, as they are unbiased and easy to sample from, the latter being crucial for obtaining the posterior distributions $p(x | y)$. Indeed, it can be shown that upon perfect convergence sampling from the latent space and picking an $y$ network inference yields the true posteriors $p(x | y)$ for any $y$ \cite{INN_Ardizzone}.
 
 \begin{figure}[h!]
 	\centering
@@ -318,7 +318,7 @@ It is easy to check, that the composed transformation $f = f_2 \circ f_1$ has th
 	\label{fig:glow}
 \end{figure}
 
-Note that the exponential functions in eq. \ref{eq:glow_transformation} can potentially produce extreme values which can lead to numerical instabilities during optimization. For this reason, additional soft-clamping is introduced, and an additional scale function with a fix clamping coefficient $\alpha$ is applied to the scale coefficients $s_i(\cdot)$:
+Note that the exponential functions in eq. \ref{eq:glow_transformation} can potentially produce extreme values which can lead to numerical instabilities during optimization. For this reason, additional soft-clamping is introduced, and an additional scale function with a fixed clamping coefficient $\alpha$ is applied to the scale coefficients $s_i(\cdot)$:
 
 \begin{equation*}
 	s' = \frac{2\alpha}{\pi} \arctan\left(\frac{s}{\alpha}\right)
@@ -336,13 +336,13 @@ Our goal is to approximate the real posterior distribution of a physics paramete
 	p(x | y) \approx p_\theta(x | y)
 \end{equation*}
 
-With the Kullback-Leibler divergence from \ref{eq:KL-loss}, this can be formalized with $q(x) = p(x | y)$ and $p(x; \theta) = p_\theta(x | y)$ as
+With the Kullback-Leibler divergence from eq. \ref{eq:KL-loss}, this can be formalized with $q(x) = p(x | y)$ and $p(x; \theta) = p_\theta(x | y)$ as
 
 \begin{equation*}
 	\mathbb{KL}\left[p(x | y) || p_\theta(x | y) \right] = - \mathbb{E}_{p(x | y)} \left[ \log p_\theta(x | y)\right] + const.
 \end{equation*}
 
-This form of the KL-divergence can be understood in terms of likelihoods as finding the optimal parameters that maximizes the likelihood is asymptomatically equivalent to finding the distribution which has minimal distance to the real distribution in terms of the KL-divergence \cite{Bishop_book}. This expression can now be rewritten using the Jacobian and the known and fixed latent space distribution as
+This form of the KL-divergence can be understood in terms of likelihoods as finding the optimal parameters which maximize the likelihood is asymptomatically equivalent to finding the distribution which has minimal distance to the real distribution in terms of the KL-divergence \cite{Bishop_book}. This expression can now be rewritten using the Jacobian and the known and fixed latent space distribution as
 
 \begin{equation*}
 	\begin{aligned}
