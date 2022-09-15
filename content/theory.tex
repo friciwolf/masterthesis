@@ -5,25 +5,30 @@
 
 The Standard Model of Particle Physics (Standard Model or SM) is our best understanding of the fundamental interactions (strong, weak and the electromagnetic interaction) occuring in Nature (excluding gravity due to the inaccessibility of the scales it acts under laboratory conditions). It describes the dynamics of elementary particles and the processes they undergo upon production or decay.
 
-Depending on the interactions they participate in, these particles can be sorted into hadrons and leptons; hadrons take part in the strong interaction and couple directly to its mediator particle, the gluon. Leptons on the other hand do not participate in it. Particles can be electrically charged or neutral. In the former case, they couple to photons and hence participate in the electromagnetic interaction. The $Z$ and $W$ bosons are the mediators of the weak interaction.
+These elementary particles can be sorted into quarks, leptons and interaction carrier particles. Quarks take part in the strong interaction and couple directly to its mediator particles, the gluons. Leptons on the other hand are left invariant by them. These particles can be sorted into isospin tuples and into three generations. Particles can be electrically charged or neutral. In the former case, they couple to photons and hence participate in the electromagnetic interaction. The $Z$ and $W$ bosons are the mediators of the weak interaction. The newest addition to this family, the Higgs-boson is responsible for generating the masses of the electroweak force-carriers and of the quarks and leptons.
 
-Regarding their spin, one distinguishes between two main categories: bosons (particles of integer spin) and fermions (particles with half-odd integer spin).
+Regarding their spin, one distinguishes between two main categories: bosons (particles of integer spin) and fermions (particles with half-odd integer spin). All quarks and leptons are fermions and all force carriers are of bosonic nature. Fig. \ref{fig:sm} shows an overview of all elementary particles grouped along the above-mentioned criteria.
 
-The SM Lagrangian can be written in a compact form as
 
-\begin{equation}
-	\mathcal{L} = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + i \bar{\psi}\slashed{D}\psi + \psi_iy_{ij}\psi_j\phi + h.c. + |D_\mu\phi|^2 - V(\phi)
+The SM Lagrangian can be written in a compact and elegant form as
+
+\begin{align}
+	\begin{split}
+		\mathcal{L} = &-\frac{1}{4}F_{\mu\nu}F^{\mu\nu} \\ &+ i \bar{\psi}\slashed{D}\psi \\ &+ \psi_iy_{ij}\psi_j\phi + h.c. \\ &+ |D_\mu\phi|^2 - V(\phi)
+	\end{split}
 	\label{eq:lagrangian}
-\end{equation}
+\end{align}
+
+The first term describes the interaction of the gauge bosons among each other; the second term encodes the interaction between fermions altogether. The third term contains the Yukawa-couplings of the fermions to the Higgs field. The final and fourth term describes the interplay between the Higgs and the gauge bosons and the Higgs field itself through the potential $V(\phi)$
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.6\linewidth]{figures/theory/sm.png}
-	\caption{Standard model of elementary particles. Note the three generation of quarks and leptons, and their isospin doublet scheme. The four force carriers and the Higgs boson are listed on right. \cite{enwiki:1101993746}}
+	\caption{The Standard Model of Elementary Particles. Note the three generation of quarks and leptons, and their isospin doublet scheme. The four force carriers and the Higgs boson are listed on right. \cite{enwiki:1101993746}}
 	\label{fig:sm}
 \end{figure}
 
-\textcolor{red}{Despite its incredible predictivity (electron g-2), it is known that the Standard Model is an incomplete description of Nature. For this reason, several SM testing and BSM measurements are performed.}
+Despite its incredible predictivity (electron g-2), it is known that the Standard Model is an incomplete description of Nature. For this reason, several SM testing and BSM measurements are performed.
 
 \Subsection{The Higgs Mechanism and the Higgs Boson}
 The Higgs term in the Lagragian from eq. \ref{eq:lagrangian} gives rise to the mass of the gauge bosons. The potential $V(\phi)$ is given by
@@ -32,7 +37,7 @@ The Higgs term in the Lagragian from eq. \ref{eq:lagrangian} gives rise to the m
 	V(\phi) = -\mu^2 \phi^\dagger \phi + \frac{\lambda}{4}\left(\phi^\dagger\phi\right)^2 
 \end{equation*}
 
-and is rotational symmetric and takes a "mexican hat"-like shape. The form of the potential in the complex plane is shown if fig. \ref{fig:mexicanhat}.
+and is rotational symmetric and takes a Mexican hat"-like shape. The form of the potential in the complex plane is shown if fig. \ref{fig:mexicanhat}.
 
 \begin{figure}[h!]
 	\centering

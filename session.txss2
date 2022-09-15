@@ -1,0 +1,108 @@
+{
+    "InternalPDFViewer": {
+        "Embedded": true,
+        "File": "thesis.pdf"
+    },
+    "Session": {
+        "Bookmarks": [
+            {
+                "bookmarkNumber": -1,
+                "fileName": "../../../../Images/projects/Naptár22/layout/wallcalendar/new-calendar.tex",
+                "lineNumber": 223,
+                "text": "new-calendar.tex\n\\MonthPage[layout=large calendar, put photo=full page]{March}"
+            },
+            {
+                "bookmarkNumber": 1,
+                "fileName": "../documents/cms_meetings/18/farkas.tex",
+                "lineNumber": -1,
+                "text": "farkas.tex\n\\begin{columns}"
+            }
+        ],
+        "CurrentFile": "content/inference.tex",
+        "FileVersion": 1,
+        "Files": [
+            {
+                "Col": 26,
+                "EditorGroup": 0,
+                "FileName": "thesis.tex",
+                "FirstLine": 0,
+                "FoldedLines": "",
+                "Line": 36
+            },
+            {
+                "Col": 24,
+                "EditorGroup": 0,
+                "FileName": "content/index.tex",
+                "FirstLine": 0,
+                "FoldedLines": "",
+                "Line": 64
+            },
+            {
+                "Col": 40,
+                "EditorGroup": 0,
+                "FileName": "setup/packages.tex",
+                "FirstLine": 0,
+                "FoldedLines": "",
+                "Line": 119
+            },
+            {
+                "Col": 0,
+                "EditorGroup": 0,
+                "FileName": "content/theory.tex",
+                "FirstLine": 0,
+                "FoldedLines": "",
+                "Line": 99
+            },
+            {
+                "Col": 529,
+                "EditorGroup": 0,
+                "FileName": "content/experiment.tex",
+                "FirstLine": 0,
+                "FoldedLines": "",
+                "Line": 177
+            },
+            {
+                "Col": 121,
+                "EditorGroup": 0,
+                "FileName": "content/deeplearning.tex",
+                "FirstLine": 0,
+                "FoldedLines": "",
+                "Line": 344
+            },
+            {
+                "Col": 0,
+                "EditorGroup": 0,
+                "FileName": "content/analysis.tex",
+                "FirstLine": 0,
+                "FoldedLines": "",
+                "Line": 95
+            },
+            {
+                "Col": 7,
+                "EditorGroup": 0,
+                "FileName": "content/network.tex",
+                "FirstLine": 0,
+                "FoldedLines": "",
+                "Line": 53
+            },
+            {
+                "Col": 0,
+                "EditorGroup": 0,
+                "FileName": "content/inference.tex",
+                "FirstLine": 139,
+                "FoldedLines": "",
+                "Line": 151
+            },
+            {
+                "Col": 12,
+                "EditorGroup": 0,
+                "FileName": "bib/bib.bib",
+                "FirstLine": 0,
+                "FoldedLines": "",
+                "Line": 709
+            }
+        ],
+        "MasterFile": "thesis.tex",
+        "VerticalSplit": false
+    }
+}

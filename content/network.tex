@@ -298,9 +298,9 @@ There are two sources of statistical uncertainties on Monte Carlo level. First, 
 The generator-related statistical effects have been applied following morphing, after which eventually arising negative values (due to the variation being performed through a normal distribution) have been clamped to zero. Then, the signal strength modifiers drawn from the prior distributions have been applied to each process and the resulting bins have been summed up, losing information on the exact bin content (just like in the case of real data). Last, the resulting histogram bin heights have been independently varied following a Poisson distribution to model statistical effects in the data and the application of the normalising luminosity uncertainty has been performed. The resulting histograms have been saved and used as training or test dataset.
 \textcolor{red}{graph showing when to apply what effect?}
 
-\Subsection{Network Architecture}
+\Subsection{Network Architecture and Hyperparameters}
 
-In the following, the cINN network architectures for the inference will be elaborated.
+In the following, the cINN network architectures for the inference will be elaborated. The hyperparameters listed below have been systematically varied and those with the lowest test loss have been kept.
 
 The network inputs are three signal and 13 background modifier parameter for each process and an additional normalizing nuisance parameter for the luminosity uncertainties. In total, the network has 17 inputs.
 

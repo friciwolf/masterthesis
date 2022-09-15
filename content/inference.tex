@@ -1,6 +1,6 @@
 \Section{Signal Modifier Parameter Inference with cINNs}
 
-In this chapter, the performance of the network will be characterized in detail. Two network setups will be considered: one without and one with a summary network reducing the representation of the conditions. These networks will be referred to cINN and SN-cINN (for summary network-extended cINN). It will be shown that the setup without a summary network results in superior performance for which an explanation will be given. 
+In this chapter, the performance of the network will be characterized in detail. Two network setups will be considered: one without and one with a summary network reducing the representation of the conditions. These networks will be referred to as cINN and SN-cINN (for summary network-extended cINN). It will be shown that the setup without a summary network results in superior performance for which an explanation will be given. 
 
 \Subsection{Training Performance}
 
@@ -103,7 +103,7 @@ The predictions for the complete test dataset are shown in fig. \ref{fig:predict
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=\linewidth]{figures/inference/cond4_sorted_no_main_bkg_no_sig.pdf}
-		\caption{Nominal conditions sorted by occurrence without main background \texttt{tt, dy, st} and signal processes, showing the total contribution of the unrecognized processes in orange.}
+		\caption{Nominal conditions sorted by relative process occurrence without main background \texttt{tt, dy, st} and signal processes, showing the total contribution of the unrecognized processes in orange. Note that the content of each orange bin is $\lesssim\mathcal{O}(\sqrt{N})$, so their contribution is suppressed by statistical effects -- even without main background and signal processes.}
 		\label{fig:cond_without_sig_bkg}
 	\end{figure}
 	
@@ -115,14 +115,24 @@ For the signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} a decrease
 
 Note that the calibration curves show no signs of inherent biases in the resulting model, hence the fact that this effect is due to some training relics can be excluded. It is expected then, that the posterior distributions are broader in this range covering the true value, which will be discussed in the next section.
 
-In general, this resolution effect only be can further tackled by a more refined event selection and/or category creation and similar improved analysis techniques.
+In general, this resolution effect only be can further tackled by a more refined event selection and/or category creation and similar improved analysis techniques, which can help to further reduce background or even increase the signal yield.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{figures/inference/p}
 	\includegraphics[width=\linewidth]{figures/inference/p_SN}
-	\caption{The predicted signal scale parameters vs. the simulated "real" Monte Carlo values. Note the three main }
+	\caption{The predicted signal scale parameters vs. the simulated "real" Monte Carlo values. Note the five unrecognized processes, the tail for the signal processes, the well-reconstructed processes and the in-between-quality predictions characterized by the lense-like distribution.}
 	\label{fig:predictions}
+\end{figure}
+
+It is worth noting that the signal strength modifier parameters are consequently underestimated by both networks. This effect becomes most visible if one switches to linear scales as shown in fig. \ref{fig:predictions_sig_lin}. From these graphs it is clearly visible that the \texttt{WH} process enjoys the most sensitivity, while \texttt{ggZH} the least. This behaviour will also be reflected in the shape of the posterior distributions, discussed in the next section.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\linewidth]{figures/inference/p_lin}
+	\includegraphics[width=\linewidth]{figures/inference/p_lin_SN}
+	\caption{The prediction for the signal processes using a linear axis scale for the cINN (top) and the SN-cINN (bottom). Note the systematic underestimation of the strength modifier parameters most visible for \texttt{ggZH}, \texttt{ZHDY}.}
+	\label{fig:predictions_sig_lin}
 \end{figure}
 
 \Subsection{Posterior Inference}
@@ -133,16 +143,16 @@ Following the sampling from the target Gaussian function in the latent space, th
 	\centering
 	\includegraphics[width=\linewidth]{figures/inference/finalNoSummarye11000_posteriors}
 	\includegraphics[width=\linewidth]{figures/inference/finalSummary1Layer11000e300NodesCdim100_posteriors}
-	\caption{The posterior distributions for each process.}
+	\caption{The posterior distributions for each process. \textcolor{red}{Update 'em!}}
 	\label{fig:posteriors}
 \end{figure}
 
-Both networks succeed in the reconstruction of the nominal parameters with differing precision. It appears at first glance that the some recongnized background processes (\texttt{dy}, \texttt{st}, \texttt{tt}) have an order of magnitude narrower posterior distribution. From the posterior estimation, such behaviour is expected as the calibration curves show no signs of biases, meaning the posteriors should all be scattered around the true values with their widths covering it. This implies the network sensitivity can only be characterized by the width of the posterior distributions for well-behaving (single-peaked) posteriors; in other words, enhanced sensitivity implies narrower posteriors.
+Both networks succeed in the reconstruction of the nominal parameters with differing precision. It appears at first glance that the some recognized background processes (\texttt{dy}, \texttt{st}, \texttt{tt}) have an order of magnitude narrower posterior distribution. From the posterior estimation, such behaviour is expected as the calibration curves show no signs of biases, meaning the posteriors should all be scattered around the true values with their widths covering it. This implies the network sensitivity can only be characterized by the width of the posterior distributions for well-behaving (single-peaked) posteriors; in other words, enhanced sensitivity implies narrower posteriors.
 
 All three signal processes are overestimated with the true values lying closely outside of the 68\% quantiles. All background scaling parameters (except for \texttt{QCD}, which is underestimated and lies outside of the $1\sigma$ range) lie close to their nominal values.
 For weakly recognized and unrecognized processes, an interesting property of cINNs can be observed. Taking a glimpse at the blue posteriors and the orange analytic prior distributions for any of these processes (\texttt{VBHF, ggH, rare, ttV, ttVH, ttVV, vv, vvv}) only minimal changes in the former can be observed. For the cINN, these processes are statistically independent of the posteriors (and therefore, redundant in a way), so the normalizing flow mapping the priors to the Gaussian distributions does not need to decorrelate them from the other observables (which, in reality, should be done, but their contribution appears negligible at the current sensitivity), as they -- from the network's perspective -- have no influence on the conditions whatsoever.
 
-Mathematically speaking, if some physics observations $y$ are independent of a phyics parameter $x$, it means that by Bayes' Theorem the posteriors can be rewritten using the priors $p(x)$ as
+Mathematically speaking, if some physics observations $y$ are independent of a physics parameter $x$, it means that by Bayes' Theorem the posteriors can be rewritten using the priors $p(x)$ as
 
 \begin{equation*}
 	p(x|y) = \frac{p(y|x)p(x)}{p(y)} = \frac{\cancel{p(y)}}{\cancel{p(y)}} p(x)
@@ -152,7 +162,7 @@ Which means the posteriors and the priors coincide. Note that the independence s
 
 This observation shows the "naked" presence of the normalizing flow itself. The NF maps the datapoints from the prior distributions to a normal distribution via a diffeomorphism while the network is trained to optimize the modelled posterior distributions with respect to the unknown real distribution. From the results above, it becomes less surprising to observe that the network is capable of reproducing the priors for parameters which appear to be independent of the conditions -- even from a single condition and samples from the latent space distribution alone.\\
 
-In order to study the sensitivity further a "small-background high-signal" scenario from the test samples has been evaluated and the numerical results for both cases have been summarized in tab. \ref{tab:inference_res}. The posteriors are shown in fig. \ref{fig:HS-SM}. Similar to the nominal case, the three categories remain with a crucial difference: the posteriors for \texttt{ZHDY} and \texttt{WH} take a shape of a more symmetric and narrow distribution due to the increased sensitivity as expected. The relative uncertainty has also seen a drastic decrease from $\sim66.54\%$ to $\sim18.19\%$ for \texttt{ZHDY} and from $\sim63.24\%$ to $\sim26.30\%$ for \texttt{WH}. For the third signal process \texttt{ggZH}, this decrease is minor (from $\sim69.22\%$ to $\sim 62.07\%$) due to its small scaling parameter and its small share among the three.
+In order to study the sensitivity further a "small-background high-signal" scenario from the test samples has been evaluated and the numerical results for both cases have been summarized in tab. \ref{tab:inference_res}. The posteriors are shown in fig. \ref{fig:HS-SM}. Similar to the nominal case, the three categories remain with a crucial difference: the posteriors for \texttt{ZHDY} and \texttt{WH} take a shape of a more symmetric and narrow distribution due to the increased sensitivity as expected. The relative uncertainty has also seen a drastic decrease from $\sim66.54\%$ to $\sim18.19\%$ for \texttt{ZHDY} and from $\sim63.24\%$ to $\sim26.30\%$ for \texttt{WH}. For the third signal process \texttt{ggZH}, this decrease is minor (from $\sim69.22\%$ to $\sim 62.07\%$) due to its small scaling parameter and its small share among the three.\\
 
 \begin{table}[h!]
 	\centering
@@ -189,6 +199,12 @@ In order to study the sensitivity further a "small-background high-signal" scena
 	\centering
 	\includegraphics[width=\linewidth]{figures/inference/194finalNoSummarye11000_posteriors}
 	\includegraphics[width=\linewidth]{figures/inference/194finalSummary1Layer11000e300NodesCdim100_posteriors}
-	\caption{Posterior distributions for the selected high-signal small-background scenario.}
+	\caption{Posterior distributions for the selected high-signal small-background scenario. Note the more symmetric shape of the signal distributions and the thinner posterior distribution relative to the MC expected value showing increased network sensitivity. For the unrecognized processes, their posterior distribution is reproduced.}
 	\label{fig:HS-SM}
 \end{figure}
+
+So far, it occurs that the SN-cINN and the cINN can both reproduce the same results under similar conditions. The SN-cINN carries unfortunately two intrinsic conceptual disadvantages: first, it reduces the input dimension of the physics observable and second, it is often prone to overtraining empirically. Naïvely, the reduction and reweighing of the conditions should benefit the training; however, the bins in the condition histogram are completely independent of each other and this reweighing can be then performed by the subnetworks in the GLOW blocks themselves. In other words, any reduction in dimensionality by the summary network itself in case of uncorrelated data yields implicit information loss reducing training performance. This is also reflected by the lack of "network architecture flexibility": forcing the SN-cINN architectures requires a lot of arbitrary fine-tuning per hand and only some individual setups are stable (if at all). For this reason, the cINN setup is considered to be superior compared to the SN-cINN setup.
+
+\Subsection{Conclusion}
+
+It has been shown that the cINN is capable of inferring the signal strength modifier parameters for sufficient sensitivity. Upon successful training, the network is approximately bias-less and reproduces the prior distributions for physics variables with respect to which it is insensitive as expected. Although the network underestimates some signal strength and nuisance parameters, the predictions scatter closely around the perfect predictions.
