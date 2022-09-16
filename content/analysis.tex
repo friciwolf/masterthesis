@@ -94,12 +94,12 @@ Regarding (ir)reducible background, one distinguishes between the following proc
 
 \Subsection{Analysis Setup}
 
-In the following the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail. \textcolor{red}{For a brief overview, the analysis setup has been summarized in fig. \ref{fig:analysis_workflow}}.
+In the following, the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail. \textcolor{red}{As a brief overview, the analysis setup has been summarized in fig. \ref{fig:analysis_workflow}}.\\
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{figures/analysis/classification.pdf}
-	\caption{\textcolor{red}{Flow chart of the analysis workflow.}}
+	\caption{\textcolor{red}{Flow chart of the analysis workflow.} First, the physics processes are simulated, followed by a detector simulation. The resulting objects undergo a final state selection, cutting off phase space regions for maximizing the signal yield. Depending on the event signature, they are categorized and then organized into subcategories using a deep neural network, which assigns a score value to them. The resulting scores can then be histogrammed, to which the generator weights can be applied. Measured data can then be fitted to the resulting histogram.}
 	\label{fig:analysis_workflow}
 \end{figure}
 
@@ -210,7 +210,7 @@ The events carry a generator weight, as it would be computationally infeasible t
 	w_i = \frac{\mathcal{L}\sigma w^\text{gen}_i}{\sum\limits_i w^\text{gen}_i}
 \end{equation*}
 
-with luminosity $\mathcal{L}$ and cross section $\sigma$ and are applied to the DNN scores after classification for each process $i$.
+with luminosity $\mathcal{L}$ and cross section $\sigma$ and are then applied to the maximum DNN score distribution histogram following the classification for each process $i$.
 
 \begin{table}[h!]
 	\centering

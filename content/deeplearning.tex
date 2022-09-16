@@ -209,9 +209,9 @@ To ensure invertibility the network input and output dimensions have to match to
 
 A conceptual disadvantage arises from the conditions being included in the network outputs. Assuming the dimensionality of $x$ and $y$ are wide apart from each other zero-padding or several noise-extending techniques are necessary to construct the network potentially introducing unnecessary redundancies. This can be fixed by removing the conditions $y$ from the output and by using them as an additional input for the network and by setting the dimension of the latent space distribution to match that of the inputs $x$. With this approach, the conditions can also be pre-processed by applying a -- either pre- or jointly with the network trained -- network (a conditioning or summary network) \cite{BayesFlow}. Such setups enable processing of highly correlated or feature-rich data at the cost of potential overfitting \cite{Ksoll_2020}. A sketch of the resulting network -- the conditional invertible neural network (cINN) -- structure is shown in fig. \ref{fig:cINN_archicture}.
 
-\begin{figure}
-%	\centering
-%	\includegraphics[width=0.4\linewidth]{figures/neural_networks/SN.pdf}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.4\linewidth]{figures/neural_networks/SN-cINN.pdf}
 	\caption{\textcolor{red}{A sketch of the network setup with a summary network}}
 	\label{fig:cINN_archicture}
 \end{figure}
