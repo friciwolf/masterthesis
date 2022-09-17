@@ -108,14 +108,14 @@ The predictions for the complete test dataset are shown in fig. \ref{fig:predict
 	\end{figure}
 	
 	\item[] \textit{Weakly recognized processes} are \texttt{rare}, \texttt{ttV}, \texttt{vv}. For these processes, the network can already resolve sevaral parameters close to the mean, from where the sensitivity starts to develop during training. Parameters further away from the mean are still fit the average value, resulting in an overall lense-like shape.
-	\item[] \textit{Recongnised processes} are all signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} and the major background sources \texttt{QCD}, \texttt{dy}, \texttt{st}, \texttt{tt}, \texttt{wjets}. For these processes, most scaling parameters predictions lie close to the real value, hence distribution scatter around the "perfect prediction diagonal". Note that the \texttt{QCD} background scaling factors tend to be underestimated resulting in a asymmetric scattering around the perfect prediction line.
+	\item[] \textit{Recongnised processes} are all signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} and the major background sources \texttt{QCD}, \texttt{dy}, \texttt{st}, \texttt{tt}, \texttt{wjets}. For these processes, most scaling parameters predictions lie close to the real value, hence distribution scatter around the "perfect prediction diagonal".
 \end{itemize}
 
 For the signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} a decrease in sensitivity for $\mu\lesssim10$ resulting in a tail-like structure stretching towards the mean has been observed. Uniquely to these processes, the network cannot resolve them as long as the signal strength modifier parameters lie below a certain threshold value for some configurations. Since their contribution (compared to the other significant background processes) is already low, the added statistical and systematic effects (the Poisson bin-variation being the most significant one, as it modifies all bins with $\sqrt{N}$) renders these statistically undetectable.
 
 Note that the calibration curves show no signs of inherent biases in the resulting model, hence the fact that this effect is due to some training relics can be excluded. It is expected then, that the posterior distributions are broader in this range covering the true value, which will be discussed in the next section.
 
-In general, this resolution effect only be can further tackled by a more refined event selection and/or category creation and similar improved analysis techniques, which can help to further reduce background or even increase the signal yield.
+In general, this resolution effect only be can further tackled by a more refined event selection and/or category creation and similar improved analysis techniques, which can help to further reduce background or even increase the signal yield. The discussion of these techniques however lies beyond the scope of this thesis.
 
 \begin{figure}[h!]
 	\centering
@@ -125,7 +125,7 @@ In general, this resolution effect only be can further tackled by a more refined
 	\label{fig:predictions}
 \end{figure}
 
-It is worth noting that the signal strength modifier parameters are consequently underestimated by both networks. This effect becomes most visible if one switches to linear scales as shown in fig. \ref{fig:predictions_sig_lin}. From these graphs it is clearly visible that the \texttt{WH} process enjoys the most sensitivity, while \texttt{ggZH} the least. This behaviour will also be reflected in the shape of the posterior distributions, discussed in the next section.
+It is worth noting that the signal strength modifier parameters are widely and asymmetrically scattered around the perfect predictions in the high-signal region for the $ZH$ processes for both networks. This effect becomes most visible if one switches to linear scales as shown in fig. \ref{fig:predictions_sig_lin}. From these graphs it is clearly visible that the \texttt{WH} process enjoys the most sensitivity, while \texttt{ggZH} the least. This behaviour will also be reflected in the shape of the posterior distributions, discussed in the next section.
 
 \begin{figure}[h!]
 	\centering
@@ -137,7 +137,7 @@ It is worth noting that the signal strength modifier parameters are consequently
 
 \Subsection{Posterior Inference}
 
-Following the sampling from the target Gaussian function in the latent space, the posteriors can be inferred for the physics parameters for both networks. These are shown in fig. \ref{fig:posteriors} for the nominal histogram where all expectations are $\mu=1$. \footnote{Can be understood as inference on an Asimov datasets.} The obtained posterior distributions (normalized to 1) are shown in blue with their means (the predictions) drawn in black. The true values are shown with the red line. The edges of the 68\% quantiles are drawn in black; these can be interpreted as the uncertainty on the scaling parameters. The original posterior distributions for the signal modifier parameters and the nuisance parameters are shown in orange.
+Following the sampling from the target Gaussian function in the latent space, the posteriors can be inferred for the physics parameters for both networks. These are shown in fig. \ref{fig:posteriors} for the nominal histogram where all expectations are $\mu=1$. \footnote{Can be understood as inference on an Asimov datasets, or on the SM expectation.} The obtained posterior distributions (normalized to 1) are shown in blue with their means (the predictions) drawn in black. The true values are shown with the red line. The edges of the 68\% quantiles are drawn in black; these can be interpreted as the uncertainty on the scaling parameters. The original posterior distributions for the signal modifier parameters and the nuisance parameters are shown in orange.
 
 \begin{figure}[h!]
 	\centering
@@ -166,29 +166,29 @@ In order to study the sensitivity further a "small-background high-signal" scena
 
 \begin{table}[h!]
 	\centering
-	\begin{tabular}{cccccccc}
+	\begin{tabular}{ccccccccc}
 		\multirow{3}{*}{Processes} & \multicolumn{7}{c}{$\mu$}\\
-		&\multicolumn{4}{c}{Nominal}&\multicolumn{3}{c}{High-Signal, Low-Background} \\
+		&\multicolumn{4}{c}{Nominal}&\multicolumn{4}{c}{High-Signal, Low-Background} \\
 %		& \multicolumn{3}{c}{$\mu$} & \multicolumn{2}{c}{$\mu$} \\
-		& $\mu^{MC}$ & cINN & SN-cINN & \texttt{CMSCombine} & $\mu^{MC}$ & cINN & SN-cINN \\[0.1em]
+		& $\mu^{MC}$ & cINN & SN-cINN & \texttt{CMSCombine} & $\mu^{MC}$ & cINN & SN-cINN & \texttt{CMSCombine} \\[0.1em]
 		 \hline\\
-		$\mu_\text{ggZH } $ & $1.00$ & $5.10^{+3.57}_{-3.50}$ & $4.86^{+3.38}_{-3.33}$ &  \textcolor{red}{combine} & $9.01 $ & $10.73^{+6.64}_{-6.68}$ & $10.38^{+6.19}_{-6.18}$ \\[0.3em]
-		$\mu_\text{ZHDY } $ & $1.00$ & $3.90^{+2.62}_{-2.57}$ & $3.76^{+2.57}_{-2.52}$ &                           & $33.50$ & $35.26^{+5.85}_{-5.89}$ & $36.62^{+6.07}_{-5.98}$ \\[0.3em]
-		$\mu_\text{WH   } $ & $1.00$ & $3.02^{+1.92}_{-1.90}$ & $2.93^{+1.80}_{-1.80}$ &                           & $9.95 $ & $11.35^{+2.98}_{-2.99}$ & $11.03^{+2.90}_{-2.93}$ \\[0.3em]
-		$\mu_\text{VBFH } $ & $1.00$ & $1.08^{+0.27}_{-0.27}$ & $1.08^{+0.26}_{-0.26}$ & --                        & $0.89 $ & $1.09^{+0.27}_{-0.27}$  & $1.07^{+0.25}_{-0.25}$  \\[0.3em]
-		$\mu_\text{QCD  } $ & $1.00$ & $0.84^{+0.14}_{-0.14}$ & $0.86^{+0.15}_{-0.15}$ & --                        & $1.40 $ & $1.17^{+0.18}_{-0.18}$  & $1.12^{+0.17}_{-0.18}$  \\[0.3em]
-		$\mu_\text{dy   } $ & $1.00$ & $0.99^{+0.04}_{-0.04}$ & $0.99^{+0.04}_{-0.04}$ & --                        & $1.05 $ & $1.01^{+0.05}_{-0.05}$  & $1.01^{+0.05}_{-0.05}$  \\[0.3em]
-		$\mu_\text{ggH  } $ & $1.00$ & $1.09^{+0.27}_{-0.27}$ & $1.08^{+0.26}_{-0.26}$ & --                        & $1.14 $ & $1.09^{+0.27}_{-0.27}$  & $1.08^{+0.25}_{-0.25}$  \\[0.3em]
-		$\mu_\text{rare } $ & $1.00$ & $1.06^{+0.25}_{-0.25}$ & $1.08^{+0.26}_{-0.26}$ & --                        & $0.88 $ & $1.03^{+0.23}_{-0.24}$  & $1.10^{+0.27}_{-0.26}$  \\[0.3em]
-		$\mu_\text{st   } $ & $1.00$ & $1.00^{+0.03}_{-0.03}$ & $1.00^{+0.03}_{-0.03}$ & --                        & $0.84 $ & $0.78^{+0.03}_{-0.03}$  & $0.77^{+0.03}_{-0.03}$  \\[0.3em]
-		$\mu_\text{tt   } $ & $1.00$ & $1.00^{+0.02}_{-0.02}$ & $1.00^{+0.02}_{-0.02}$ & --                        & $0.79 $ & $0.78^{+0.02}_{-0.02}$  & $0.78^{+0.02}_{-0.02}$  \\[0.3em]
-		$\mu_\text{ttV  } $ & $1.00$ & $1.05^{+0.24}_{-0.24}$ & $1.07^{+0.25}_{-0.25}$ & --                        & $0.52 $ & $1.02^{+0.23}_{-0.23}$  & $1.05^{+0.24}_{-0.24}$  \\[0.3em]
-		$\mu_\text{ttVH } $ & $1.00$ & $1.09^{+0.27}_{-0.27}$ & $1.08^{+0.27}_{-0.27}$ & --                        & $0.96 $ & $1.08^{+0.26}_{-0.26}$  & $1.07^{+0.26}_{-0.26}$  \\[0.3em]
-		$\mu_\text{ttVV } $ & $1.00$ & $1.08^{+0.26}_{-0.27}$ & $1.07^{+0.26}_{-0.26}$ & --                        & $0.69 $ & $1.08^{+0.27}_{-0.27}$  & $1.08^{+0.25}_{-0.25}$  \\[0.3em]
-		$\mu_\text{vv   } $ & $1.00$ & $1.06^{+0.25}_{-0.25}$ & $1.06^{+0.25}_{-0.25}$ & --                        & $1.43 $ & $1.18^{+0.29}_{-0.30}$  & $1.21^{+0.30}_{-0.30}$  \\[0.3em]
-		$\mu_\text{vvv  } $ & $1.00$ & $1.09^{+0.27}_{-0.27}$ & $1.09^{+0.27}_{-0.27}$ & --                        & $0.84 $ & $1.09^{+0.26}_{-0.27}$  & $1.07^{+0.25}_{-0.26}$  \\[0.3em]
-		$\mu_\text{wjets} $ & $1.00$ & $0.99^{+0.12}_{-0.12}$ & $1.02^{+0.13}_{-0.13}$ & --                        & $1.05 $ & $1.17^{+0.12}_{-0.13}$  & $1.22^{+0.13}_{-0.13}$  \\[0.3em]
-		$\mu_\text{lumi } $ & $1.00$ & $1.00^{+0.02}_{-0.02}$ & $1.00^{+0.02}_{-0.02}$ & --                        & $0.98 $ & $1.00^{+0.02}_{-0.02}$  & $1.00^{+0.02}_{-0.02}$  \\[0.3em]
+		$\mu_\text{ggZH } $ & $1.00$ & $5.10^{+3.57}_{-3.50}$ & $4.86^{+3.38}_{-3.33}$ &  \textcolor{red}{combine} & $9.01 $ & $10.73^{+6.64}_{-6.68}$ & $10.38^{+6.19}_{-6.18}$ & \\[0.3em]
+		$\mu_\text{ZHDY } $ & $1.00$ & $3.90^{+2.62}_{-2.57}$ & $3.76^{+2.57}_{-2.52}$ &                           & $33.50$ & $35.26^{+5.85}_{-5.89}$ & $36.62^{+6.07}_{-5.98}$ & \\[0.3em]
+		$\mu_\text{WH   } $ & $1.00$ & $3.02^{+1.92}_{-1.90}$ & $2.93^{+1.80}_{-1.80}$ &                           & $9.95 $ & $11.35^{+2.98}_{-2.99}$ & $11.03^{+2.90}_{-2.93}$ & \\[0.3em]
+		$\mu_\text{VBFH } $ & $1.00$ & $1.08^{+0.27}_{-0.27}$ & $1.08^{+0.26}_{-0.26}$ & --                        & $0.89 $ & $1.09^{+0.27}_{-0.27}$  & $1.07^{+0.25}_{-0.25}$  & -- \\[0.3em]
+		$\mu_\text{QCD  } $ & $1.00$ & $0.84^{+0.14}_{-0.14}$ & $0.86^{+0.15}_{-0.15}$ & --                        & $1.40 $ & $1.17^{+0.18}_{-0.18}$  & $1.12^{+0.17}_{-0.18}$  & -- \\[0.3em]
+		$\mu_\text{dy   } $ & $1.00$ & $0.99^{+0.04}_{-0.04}$ & $0.99^{+0.04}_{-0.04}$ & --                        & $1.05 $ & $1.01^{+0.05}_{-0.05}$  & $1.01^{+0.05}_{-0.05}$  & -- \\[0.3em]
+		$\mu_\text{ggH  } $ & $1.00$ & $1.09^{+0.27}_{-0.27}$ & $1.08^{+0.26}_{-0.26}$ & --                        & $1.14 $ & $1.09^{+0.27}_{-0.27}$  & $1.08^{+0.25}_{-0.25}$  & -- \\[0.3em]
+		$\mu_\text{rare } $ & $1.00$ & $1.06^{+0.25}_{-0.25}$ & $1.08^{+0.26}_{-0.26}$ & --                        & $0.88 $ & $1.03^{+0.23}_{-0.24}$  & $1.10^{+0.27}_{-0.26}$  & -- \\[0.3em]
+		$\mu_\text{st   } $ & $1.00$ & $1.00^{+0.03}_{-0.03}$ & $1.00^{+0.03}_{-0.03}$ & --                        & $0.84 $ & $0.78^{+0.03}_{-0.03}$  & $0.77^{+0.03}_{-0.03}$  & -- \\[0.3em]
+		$\mu_\text{tt   } $ & $1.00$ & $1.00^{+0.02}_{-0.02}$ & $1.00^{+0.02}_{-0.02}$ & --                        & $0.79 $ & $0.78^{+0.02}_{-0.02}$  & $0.78^{+0.02}_{-0.02}$  & -- \\[0.3em]
+		$\mu_\text{ttV  } $ & $1.00$ & $1.05^{+0.24}_{-0.24}$ & $1.07^{+0.25}_{-0.25}$ & --                        & $0.52 $ & $1.02^{+0.23}_{-0.23}$  & $1.05^{+0.24}_{-0.24}$  & -- \\[0.3em]
+		$\mu_\text{ttVH } $ & $1.00$ & $1.09^{+0.27}_{-0.27}$ & $1.08^{+0.27}_{-0.27}$ & --                        & $0.96 $ & $1.08^{+0.26}_{-0.26}$  & $1.07^{+0.26}_{-0.26}$  & -- \\[0.3em]
+		$\mu_\text{ttVV } $ & $1.00$ & $1.08^{+0.26}_{-0.27}$ & $1.07^{+0.26}_{-0.26}$ & --                        & $0.69 $ & $1.08^{+0.27}_{-0.27}$  & $1.08^{+0.25}_{-0.25}$  & -- \\[0.3em]
+		$\mu_\text{vv   } $ & $1.00$ & $1.06^{+0.25}_{-0.25}$ & $1.06^{+0.25}_{-0.25}$ & --                        & $1.43 $ & $1.18^{+0.29}_{-0.30}$  & $1.21^{+0.30}_{-0.30}$  & -- \\[0.3em]
+		$\mu_\text{vvv  } $ & $1.00$ & $1.09^{+0.27}_{-0.27}$ & $1.09^{+0.27}_{-0.27}$ & --                        & $0.84 $ & $1.09^{+0.26}_{-0.27}$  & $1.07^{+0.25}_{-0.26}$  & -- \\[0.3em]
+		$\mu_\text{wjets} $ & $1.00$ & $0.99^{+0.12}_{-0.12}$ & $1.02^{+0.13}_{-0.13}$ & --                        & $1.05 $ & $1.17^{+0.12}_{-0.13}$  & $1.22^{+0.13}_{-0.13}$  & -- \\[0.3em]
+		$\mu_\text{lumi } $ & $1.00$ & $1.00^{+0.02}_{-0.02}$ & $1.00^{+0.02}_{-0.02}$ & --                        & $0.98 $ & $1.00^{+0.02}_{-0.02}$  & $1.00^{+0.02}_{-0.02}$  & -- \\[0.3em]
 		\hline
 	\end{tabular}
 	\caption{The predicted values of the signal strength modifier and of the nuisance parameter for the cINN and the summary-network extended network (SN-cINN) for the nominal and the high-signal, low-background scenario. Note the similarity of the output of both networks.}
@@ -203,8 +203,20 @@ In order to study the sensitivity further a "small-background high-signal" scena
 	\label{fig:HS-SM}
 \end{figure}
 
-So far, it occurs that the SN-cINN and the cINN can both reproduce the same results under similar conditions. The SN-cINN carries unfortunately two intrinsic conceptual disadvantages: first, it reduces the input dimension of the physics observable and second, it is often prone to overtraining empirically. Naïvely, the reduction and reweighing of the conditions should benefit the training; however, the bins in the condition histogram are completely independent of each other and this reweighing can be then performed by the subnetworks in the GLOW blocks themselves. In other words, any reduction in dimensionality by the summary network itself in case of uncorrelated data yields implicit information loss reducing training performance. This is also reflected by the lack of "network architecture flexibility": forcing the SN-cINN architectures requires a lot of arbitrary fine-tuning per hand and only some individual setups are stable (if at all). For this reason, the cINN setup is considered to be superior compared to the SN-cINN setup.
+So far, the discussion on the reconstruction of the luminosity nuisance parameter has been ignored. According to the prediction distributions and to the posteriors it can be considered as a weakly recognized parameter due the lens-like shape of the former and the minimal shape changes (compared to prior) in the latter. As it acts as a normalizing uncertainty scaling the integral of the histogram -- hence every bin altogether -- it is not surprising the network has difficulties reconstructing them correctly due to the other occurring shape-changing and normalizing nuisance parameters inherent in the conditions.\\
+
+It occurs that the SN-cINN and the cINN can both reproduce the same results under similar conditions. The SN-cINN carries unfortunately two intrinsic conceptual disadvantages: first, it reduces the input dimension of the physics observable and second, it is often prone to overtraining empirically. Naïvely, the reduction and reweighing of the conditions should benefit the training; however, the bins in the condition histogram are completely independent of each other and this reweighing can be then performed by the subnetworks in the GLOW blocks themselves. In other words, any reduction in dimensionality by the summary network itself in case of uncorrelated data yields implicit information loss reducing training performance. This is also reflected by the lack of "network architecture flexibility": forcing the SN-cINN architectures requires a lot of arbitrary fine-tuning per hand and only some individual setups are stable (if at all). For this reason, the cINN setup is considered to be superior compared to the SN-cINN setup.
 
 \Subsection{Conclusion}
 
-It has been shown that the cINN is capable of inferring the signal strength modifier parameters for sufficient sensitivity. Upon successful training, the network is approximately bias-less and reproduces the prior distributions for physics variables with respect to which it is insensitive as expected. Although the network underestimates some signal strength and nuisance parameters, the predictions scatter closely around the perfect predictions.
+It has been shown that the cINN is capable of inferring the signal strength modifier parameters. Upon successful training, the network is approximately bias-less and reproduces the prior distributions for physics variables with respect to which it is insensitive as expected. For the Standard Model expectation the three signal strength modifiers are inferred to be
+
+\begin{equation*}
+	\boxed{
+		\begin{array}{ccc}
+			\mu_\text{ggZH} & = & 5.10^{+3.57}_{-3.50} \\[0.3em]
+			\mu_\text{ZHDY} & = & 3.90^{+2.62}_{-2.57} \\[0.3em]
+			\mu_\text{WH}   & = & 3.02^{+1.92}_{-1.90} \\
+		\end{array}
+	}
+\end{equation*}
