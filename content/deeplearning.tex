@@ -1,7 +1,7 @@
 \Section{Deep Learning and Conditional Invertible Neural Networks}
 \label{ch:deeplearning}
 
-Deep Learning is a subdomain within Machine Learning focussing on the construction and training of deep neural networks. Such networks have been proven to be extremely successful in different, analytically unsolvable problems such as (but not restricted to) image classification tasks, regression tasks, image generation tasks, language translation and reinforcement learning.
+Deep Learning is a subdomain within Machine Learning focusing on the construction and training of deep neural networks. Such networks have been proven to be extremely successful in different, analytically unsolvable problems such as (but not restricted to) image classification tasks, regression tasks, image generation tasks, language translation and reinforcement learning.
 
 In this chapter, a brief introduction to these networks and their properties with a focus on so-called normalizing flows and invertible neural networks is given.
 
@@ -125,7 +125,7 @@ Several loss functions have been established for each NN-specific task to be sol
 
 Distribution fitting requires the loss function to compare samples from a probability distribution function to a target distribution. Since the discrete labels are replaced with continuous target distributions and none of the datapoints has a well-defined target these training procedures belong to the class of unsupervised learning. As the name suggests, the neural network does not obtain any additional feature representation of the data necessary for the optimization procedure. In layman's terms the network has to "figure out on its own" which input features are more important for the given task.
 
-In this work, distribution fitting will be performed which is reflected by the choice of the loss function. The Kullback-Leibler divergence (also called relative entropy) is a measure of resemblance of $p_\text{x}(x; \theta)$ to $q_\text{x}(x)$ both defined over the random variable \text{x} and belongs to the families of $f$-divegences defined as
+In this work, distribution fitting will be performed which is reflected by the choice of the loss function. The Kullback-Leibler divergence (also called relative entropy) is a measure of resemblance of $p_\text{x}(x; \theta)$ to $q_\text{x}(x)$, both defined over the random variable \text{x}, and belongs to the families of $f$-divergences defined as
 
 \begin{equation*}
 	D_f\left[q_\text{x}(x) \, \, || \, \, p_\text{x}(x; \theta)\right] = \mathbb{E}_{p_\text{x}(x; \theta)}\left[f\left(\frac{q_\text{x}(x)}{p_\text{x}(x; \theta)}\right)\right]
@@ -342,7 +342,7 @@ With the Kullback-Leibler divergence from eq. \ref{eq:KL-loss}, this can be form
 	\mathbb{KL}\left[p(x | y) || p_\theta(x | y) \right] = - \mathbb{E}_{p(x | y)} \left[ \log p_\theta(x | y)\right] + const.
 \end{equation*}
 
-This form of the KL-divergence can be understood in terms of likelihoods as finding the optimal parameters which maximize the likelihood is asymptomatically equivalent to finding the distribution which has minimal distance to the real distribution in terms of the KL-divergence \cite{Bishop_book}. This expression can now be rewritten using the Jacobian and the known and fixed latent space distribution as
+This form of the KL-divergence can be understood in terms of likelihoods as finding the optimal parameters which maximize the likelihood is asymptotically equivalent to finding the distribution which has minimal distance to the real distribution in terms of the KL-divergence \cite{Bishop_book}. This expression can now be rewritten using the Jacobian and the known and fixed latent space distribution as
 
 \begin{equation*}
 	\begin{aligned}
