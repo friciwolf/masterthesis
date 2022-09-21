@@ -5,14 +5,20 @@ In this chapter, an overview of the analysis- strategy and setup will be given w
 
 \Subsection{Analysis Strategy}
 
-The analysis has been performed on Monte Carlo (MC) data exclusively. The phase space in consideration has been selected to contain the highest signal yield. Hence the $gg \rightarrow WH \rightarrow b\bar{b} l\nu_l$ and $gg \rightarrow ZH \rightarrow b\bar{b}l\bar{l}$ final states have been considered. \textcolor{red}{The Feynman diagram of these processes are shown in fig. \ref{fig:VH_finalstates}}. Note that due to their weakly-interacting nature, neutrinos cannot be reconstructed in the detector. For this reason, former will be referred to as semi-leptonic and the latter as di-leptonic final state with lepton meaning electrons and/or muons exclusively.
+The analysis has been performed on Monte Carlo (MC) data exclusively. The phase space in consideration has been selected to contain the highest signal yield. Hence the $gg \rightarrow WH \rightarrow b\bar{b} l\nu_l$ and $gg \rightarrow ZH \rightarrow b\bar{b}l\bar{l}$ final states have been considered. The Feynman diagram of these processes are shown in fig. \ref{fig:VH_finalstates}. Note that due to their weakly-interacting nature, neutrinos cannot be reconstructed in the detector. For this reason, former will be referred to as semi-leptonic and the latter as di-leptonic final state with lepton meaning electrons and/or muons exclusively.
 
-\begin{figure}[h!]
+\begin{table}[h!]
 	\centering
 %	\includegraphics[width=\linewidth]{imagefile}
+	\begin{tabular}{c|c}
+		Gluon Fusion & Quark Initiated \\
+		\hline
+		\includegraphics[width=0.4\linewidth]{figures/analysis/ggZH_triangle_bbll}&\includegraphics[width=0.4\linewidth]{figures/analysis/ZH_DY_bbll}  \\
+		\includegraphics[width=0.4\linewidth]{figures/analysis/ggZH_box_bbll}& \includegraphics[width=0.4\linewidth]{figures/analysis/HWbbl} \\
+	\end{tabular}
 	\caption{The analysed final states of the $VH$ processes.}
 	\label{fig:VH_finalstates}
-\end{figure}
+\end{table}
 
 The events are categorized through a triggering system and are assigned to one of four channels. The list of the triggers for the di- and semileptonic channels are listed in tab. \ref{tab:triggers}.
 
@@ -46,12 +52,19 @@ The datasets used for the analysis have been simulated with \texttt{PYTHIA} \cit
 
 \begin{table}[h!]
 	\centering
-	\begin{tabular}{ccc}
-		Dataset Name & N & $\sigma$/pb \\
-		\hline
-		\texttt{Dataset1} & & \\
+	\begin{tabular}{lS[table-format=8.0]S[table-format=1.6]}
+%		\toprule
+		Dataset name&{N}&$\sigma/$\si{\pico\barn} \\
+		\midrule
+		\verb|ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8|&9530684 &0.04471\\
+		\verb|ggZH_HToBB_ZToLL_M125_13TeV_powheg_herwigpp|& 199131&0.00722\\
+		\midrule
+		\verb|WminusH_HToBB_WToLNu_M125_13TeV_powheg_pythia8|&2382500&0.1012\\
+		\verb|WplusH_HToBB_WToLNu_M125_13TeV_powheg_pythia8|&2481200&0.1595\\
+%		\bottomrule
 	\end{tabular}
-	\caption{\textcolor{red}{The signal datasets}}
+	\caption{Simulated signal samples for the quark initiated ZH- and WH- and gluon fusion induced ZH process for 2017, with the cross section $\sigma$ of each process and the number of generated events $N$.}
+%	\caption{\textcolor{red}{The signal datasets}}
 	\label{tab:signal_datasets}
 \end{table}
 
@@ -61,13 +74,15 @@ Regarding (ir)reducible background, one distinguishes between the following proc
 	\item[] \texttt{dy}: Drell-Yan-like vector boson production with hadronic initial state radiation. This process has high cross section and yields the same final state (for radiated bottom jets) as the signal. In addition, it has the same lepton signature too. The process is shown in fig. \ref{fig:dy_background}.
 	\begin{figure}[h!]
 		\centering
-		\caption{\textcolor{red}{The Feynman diagram}}
+		\includegraphics[width=0.4\textwidth]{figures/analysis/dy.pdf}
+		\caption{The Feynman diagram for the dy background process.}
 		\label{fig:dy_background}
 	\end{figure}
 	\item[] $\texttt{t}\bar{\texttt{t}}$: Production of top quark pairs $t\bar{t}$. These quarks decay via $t\rightarrow Wb$ and with the leptonic decay channel of the $W$, this has the same final state as the signal process. This has the second largest background contribution. The corresponding Feynman diagram is shown in fig. \ref{fig:tt_background}.
 	\begin{figure}[h!]
 		\centering
-		\caption{\textcolor{red}{The Feynman diagram}}
+		\includegraphics[width=0.5\textwidth]{figures/analysis/tt.pdf}
+		\caption{The Feynman diagram for the tt background process.}
 		\label{fig:tt_background}
 	\end{figure}
 	\item[] $\texttt{t}\bar{\texttt{t}}\texttt{V}$: Associated vector boson production in the initial or final states with a $t\bar{t}$ pair. For the top quarks decaying into bottom quarks and the leptonically decaying vector bosons, this yields a final state similar to the signal final state.
@@ -79,29 +94,137 @@ Regarding (ir)reducible background, one distinguishes between the following proc
 	\item[] \texttt{rare}: rare processes (such as four top production) with individual low contribution each
 \end{itemize}
 
-\textcolor{red}{The list of the background samples from the MC simulations are all listed in tab. \ref{tab:bkg_datasets}}.
+The list of the background samples from the MC simulations are all listed in tab. \ref{tab:bkg_datasets}.
 
-\begin{table}[h!]
-	\centering
-	\begin{tabular}{ccc}
-		Sample Name & N & $\sigma$/pb \\
-		\hline
-		\texttt{Dataset2} & & \\
-	\end{tabular}
-	\caption{\textcolor{red}{List of simulated background samples.}}
-	\label{tab:bkg_datasets}
-\end{table}
+\begingroup
+\footnotesize
+\begin{longtable}[b]{llS[table-format=9.0]S[table-format=7.8]}
+	\caption{List of simulated background samples for 2017 with the cross section $\sigma$ of each process and the number of generated events $N$, divided into process groups. The symbol \texttt{*} is a placeholder for \texttt{pythia8}, while \texttt{**} denotes \texttt{inclusiveDecays}. Long dataset names are split into multiple lines, denoted by an indentation. (NanoAODv7, 102X\_mc2017\_realistic\_v8-v1)}\\
+	Process&Dataset name&{N}&$\sigma/$\si{\pico\barn} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	Process&Dataset name&{N}&$\sigma/$\si{\pico\barn} \\
+	\midrule
+	\endhead
+	\bottomrule
+	\endfoot
+	\bottomrule
+	\endlastfoot
+	
+	\multirow{ 4}{*}{DY}&\verb|DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-*| & 79058069&18610.0\\
+	&\verb|DYJetsToLL_0J_TuneCP5_13TeV-amcatnloFXFX-*| &88134822 &4843.6\\
+	&\verb|DYJetsToLL_1J_TuneCP5_13TeV-amcatnloFXFX-*| & 95629091&897.8\\
+	&\verb|DYJetsToLL_2J_TuneCP5_13TeV-amcatnloFXFX-*| & 54497574&335.8\\
+	\midrule%t$\bar{\textrm{t}}$
+	\multirow{ 3}{*}{t$\Bar{\textrm{t}}$}&\verb|TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-*| & 68296294&88.4\\
+	&\verb|TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-*| & 109795512&365.52\\
+	&\verb|TTToHadronic_TuneCP5_PSweights_13TeV-powheg-*| &128829950&377.96\\
+	\midrule
+	\multirow{ 5}{*}{VV}&\verb|WWTo2L2Nu_NNPDF31_TuneCP5_PSweights_13TeV-powheg-*| & 2000000&12.2\\
+	&\verb|WWTo2L2Nu_DoubleScattering_13TeV-*| & 968000&0.2232\\
+	&\verb|ZZTo4L_13TeV_powheg_*| & 207798469&1.256\\
+	&\verb|WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-*| & 10987679&4.43\\
+	&\verb|ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-*| & 30490034&55.59\\
+	\midrule
+	%&\verb|?WGToLNuG_TuneCP5_13TeV-madgraphMLM-*| &  6283083&464.800\\%aktuell auskommentiert
+	%\midrule
+	\multirow{ 7}{*}{ST}&\verb|ST_t-channel_top_4f_**_TuneCP5_13TeV-powhegV2-madspin-*| & 5982064&136.02\\
+	&\verb|ST_t-channel_antitop_4f_**_TuneCP5_13TeV-powhegV2-madspin-*| & 3675910&80.95\\
+	&\verb|ST_s-channel_4f_leptonDecays_TuneCP5_| & 9914948&3.364\\
+	&\verb|     PSweights_13TeV-amcatnlo-*|\\
+	&\verb|ST_tW_top_5f_**_TuneCP5_PSweights_13TeV-powheg-*| &7755138 &35.85\\
+	&\verb|ST_tW_antitop_5f_**_TuneCP5_PSweights_13TeV-powheg-*| & 7745276&35.85\\
+	&\verb|ST_tWll_5f_LO_TuneCP5_PSweights_13TeV-madgraph-*| & 986000&0.01096\\
+	\midrule
+	\multirow{ 5}{*}{VVV}&\verb|WWW_4F_TuneCP5_13TeV-amcatnlo-*| & 472300&0.2086\\
+	&\verb|WWZ_4F_TuneCP5_13TeV-amcatnlo-*| & 500000&0.1676\\
+	&\verb|WZZ_TuneCP5_13TeV-amcatnlo-*| & 500000&0.05701\\
+	&\verb|ZZZ_TuneCP5_13TeV-amcatnlo-*| & 500000&0.01473\\
+	&\verb|WZG_TuneCP5_13TeV-amcatnlo-*| & 1000000&0.04345\\
+	\midrule
+	\multirow{ 5}{*}{t$\Bar{\textrm{t}}$V}&\verb|TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-*| &250000 &0.0822\\
+	&\verb|TTZToLLNuNu_M-10_TuneCP5_PSweights_13TeV-amcatnlo-*| &11092000 &0.2814\\
+	&\verb|TTZToQQ_TuneCP5_13TeV-amcatnlo-*| &9690000 &0.5868\\
+	&\verb|TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-*| & 9828579&0.196\\
+	&\verb|TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-*| &811306 &0.4049\\
+	\midrule
+	\multirow{ 1}{*}{t$\Bar{\textrm{t}}$VV}&\verb|TTWW_TuneCP5_13TeV-madgraph-*| & 1162000&0.006981\\
+	\midrule
+	\multirow{ 2}{*}{t$\Bar{\textrm{t}}$VH}&\verb|TTWH_TuneCP5_13TeV-madgraph-*| & 200000&0.001582\\
+	&\verb|TTZH_TuneCP5_13TeV-madgraph-*| & 200000&0.001535\\
+	\midrule
+	\multirow{ 9}{*}{ggH}&\verb|GluGluHToTauTau_M125_13TeV_powheg_*| &15072210 &3.0469\\
+	&\verb|GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_*| &1953198&0.01297\\
+	&\verb|GluGluHToZZTo2L2Q_M125_13TeV_powheg2_JHUGenV7011_*| &1992000 &0.17963\\
+	&\verb|GluGluHToWWToLNuQQ_M125_NNPDF31_TuneCP5_| &465000 &4.5621\\
+	&\verb|     PSweights_13TeV_powheg_JHUGen710_*|\\
+	&\verb|GluGluHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_*| &953600&1.1033\\
+	&\verb|GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_*| & 1983600&0.010571\\
+	&\verb|GluGluHToBB_M125_13TeV_amcatnloFXFX_*| & 9358631&28.293\\
+	&\verb|GluGluHToGG_M125_13TeV_amcatnloFXFX_*| & 3942252&0.11028\\
+	\midrule
+	\multirow{ 7}{*}{VBF}&\verb|VBFHToTauTau_M125_13TeV_powheg_*| & 2977152&0.2372\\
+	&\verb|VBF_HToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_*| & 2220820&0.0010099\\
+	&\verb|VBFHToWWToLNuQQ_M125_NNPDF31_TuneCP5_| & 480000&0.35517\\
+	&\verb|     PSweights_13TeV_powheg_JHUGen710_*|\\
+	&\verb|VBFHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_*| & 500000&0.085894\\
+	&\verb|VBFHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_*| & 982200&0.00082296\\
+	&\verb|VBFHToBB_M-125_13TeV_powheg_*_weightfix| & 5000000&2.2026\\
+	&\verb|VBFHToGG_M125_13TeV_amcatnlo_*_PSWeights| &975930 &0.0085851\\
+	\midrule
+	\multirow{ 8}{*}{WJets}&\verb|WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8| & 22255124&1504.92\\
+	&\verb|WJetsToLNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8| &35862893&1625.08\\
+	&\verb|WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8| & 21250517&477.96\\
+	&\verb|WJetsToLNu_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8| &14313274&67.441\\
+	&\verb|WJetsToLNu_HT-600To800_TuneCP5_13TeV-madgraphMLM-pythia8| & 21709087&15.096\\
+	&\verb|WJetsToLNu_HT-800To1200_TuneCP5_13TeV-madgraphMLM-pythia8| & 20432728&6.3626\\
+	&\verb|WJetsToLNu_HT-1200To2500_TuneCP5_13TeV-madgraphMLM-pythia8| & 20258624&1.2658\\
+	&\verb|WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8| & 21495421&0.009405\\
+	\midrule
+	\multirow{ 5}{*}{rare}&\verb|WpWpJJ_EWK-QCD_TuneCP5_13TeV-madgraph-*| &149000 &0.04926\\
+	&\verb|TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-*| & 25290267&4.215\\
+	&\verb|TGJets_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-*| &6649547 &1.018\\
+	&\verb|tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-*| & 13276146&0.07358\\
+	&\verb|TTTT_TuneCP5_PSweights_13TeV-amcatnlo-*| & 2273928&0.008213\\
+	\midrule
+	\multirow{ 8}{*}{QCD}
+	&\verb|QCD_HT100to200_TuneCP5_13TeV-madgraph-*| &93231801&23590000.0\\
+	&\verb|QCD_HT200to300_TuneCP5_13TeV-madgraph-*| & 59197363&1551000.0\\
+	&\verb|QCD_HT300to500_TuneCP5_13TeV-madgraph-*| & 60258921&323400.0\\
+	&\verb|QCD_HT500to700_TuneCP5_13TeV-madgraph-*| & 56207744&30140.0\\
+	&\verb|QCD_HT700to1000_TuneCP5_13TeV-madgraph-*| & 47610552&6344.0\\
+	&\verb|QCD_HT1000to1500_TuneCP5_13TeV-madgraph-*| & 33420390&1092.0\\
+	&\verb|QCD_HT1500to2000_TuneCP5_13TeV-madgraph-*| & 11634434&99.76\\
+	&\verb|QCD_HT2000toInf_TuneCP5_13TeV-madgraph-*| & 5941306&20.35\\
+	\label{tab:bkg_datasets}	
+\end{longtable}
+\endgroup
 
 \Subsection{Analysis Setup}
 
-In the following, the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail. \textcolor{red}{As a brief overview, the analysis setup has been summarized in fig. \ref{fig:analysis_workflow}}.\\
+In the following, the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail. The analysis setup has been summarized in fig. \ref{fig:analysis_workflow}.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=\linewidth]{figures/analysis/classification.pdf}
-	\caption{\textcolor{red}{Flow chart of the analysis workflow.} First, the physics processes are simulated, followed by a detector simulation. The resulting objects undergo a final state selection, cutting off phase space regions for maximizing the signal yield. Depending on the event signature, they are categorized and then organized into subcategories using a deep neural network, which assigns a score value to them. The resulting scores can then be histogrammed, to which the generator weights can be applied. Measured data can then be fitted to the resulting histogram.}
+	\begin{tikzpicture}
+		\tikzstyle{terminator} = [rectangle, draw, text centered, rounded corners, minimum height=3em]
+		\tikzstyle{connector} = [draw, -latex']
+		\node [terminator, fill=blue!20, text width=1.2cm] at (0,0) (start) {Monte Carlo};
+		\node [terminator, fill=blue!20, text width=2cm] at (2.6,0) (detector) {Detector Simulation};
+		\node [terminator, fill=blue!20, text width = 3cm] at (6.2,0) (cat) {Object selection\\Categorization};
+		\node [terminator, fill=blue!20, text width = 2.5cm] at (10.2,0) (dnn) {DNN\\Subcategories};
+		\node [terminator, fill=blue!20, text width = 1cm] at (13,0) (fit) {Fit};
+		\path [connector] (start) -- (detector);
+		\path [connector] (detector) -- (cat);
+		\path [connector] (cat) -- (dnn);
+		\path [connector] (dnn) -- (fit);
+	\end{tikzpicture}
+	\caption{Flow chart of the analysis workflow.}
 	\label{fig:analysis_workflow}
 \end{figure}
+
+First, the physics processes are simulated, followed by a detector simulation. The resulting objects undergo a final state selection, cutting off phase space regions for maximizing the signal yield. Depending on the event signature, they are categorized and then organized into subcategories using a deep neural network, which assigns a score value to them. The resulting scores can then be histogrammed, to which the generator weights can be applied. Measured data can then be fitted to the resulting histogram.
 
 The muon selection criteria are listed in tab. \ref{tab:muon_selection}. For the leading muons, a $p_T$-cut of 25 GeV has been required; qualifying subleading muons need to satisfy $p_T>\SI{15}{\giga\electronvolt}$. Furthermore, muons ought to be identified as tight muons and have to be contained within the tracker their impact parameter (IP) geometry being compatible with the primary vertex (PV) too. In addition, the IP significance \texttt{sip3d} (defined as the ratio between the uncertainty of the IP and the IP itself) is also restricted to guarantee that these muons originate from the PV. The \texttt{pfRelISO04\_all} parameter cut ensures the isolation of the muons invoking a stronger constraint on their origin.
 

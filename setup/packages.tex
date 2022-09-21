@@ -110,11 +110,17 @@
 % enabling [H] for figure positioning
 %\usepackage{float}
 
-\usepackage{neuralnetwork}
+%\usepackage{neuralnetwork}
 
 % graphics 
 \usepackage{tikz}
-\usepackage{tikz-3dplot}
+\usetikzlibrary{shapes, arrows}
+\definecolor{mate}{HTML}{4997e2}
+%\usepackage{tikz-3dplot}
 \usepackage[outline]{contour} % glow around text
 \usepackage{xcolor}
 \tikzset{>=latex} % for LaTeX arrow head
+
+% for longtable env
+\usepackage{longtable}
+\usepackage{multirow}
