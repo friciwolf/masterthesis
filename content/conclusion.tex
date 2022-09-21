@@ -1,4 +1,20 @@
 \Section{Conclusion}
 \label{sec:conclusion}
 
-Todo.
+Since its discovery in 2012, the continuous research on the Standard Model (SM) Higgs boson has proven to be a fruitful endeavour. In order to constrain the Beyond the Standard Model nature of its coupling to known SM particles, several SM testing measurements have been performed, some of which require innovative analysis techniques.\\
+
+In this thesis, inference on signal strength modifier parameters with cINNs at the CMS experiment has been discussed in detail. Thanks to their unique feature of being able to infer the true posterior distribution conditioned on observables directly, these networks are capable of reconstructing physics parameters correctly. In addition to that, Bayesian inference upon successful training takes several orders of magnitude less time than model fits based on frequentist approaches. Several proposed novel analysis approaches require the gradient of the observables to be propagated by such networks; as cINNs are built upon normalizing flows, the diffeomorphism encoded in the network model fulfils this property.\\
+
+The gluon-fusion induced ZH production channel is a suitable candidate to look BSM effects for due to the loop-induced nature of the process at leading order. Using the measurable cross section of the quark initiated ZH and WH production processes, the observable $R^{ZW}_R$ can be measured by extracting the three signal processes from data via a likelihood fit.\\
+
+In has been shown that the signal strength modifier parameters obtained from the likelihood fit can be inferred by the cINN model. Inference has been performed on the DNN probability scores for the three signal processes, 13 background nuisance parameters and one normalizing uncertainty, the luminosity. With that, the resulting network model had 17 dimensional inputs of physics parameters and a 235 dimensional condition input as physics observables on which the posteriors are conditioned on.
+
+The study has been performed on simulated events exclusively. The training data has been constructed to reflect the expected statistical and systematic effects in measured data. For the former, both the limited MC sample size and the expected Poisson effects in the data have been taken into account. The shape-changing systematic effects are computationally expensive to simulate. For this reason, a non-linear histogram interpolation method (morphing) has been implemented to inter- and extrapolate among histogram templates. \\
+
+Upon training, inference has been performed on the SM expectation. The obtained values for the signal process were
+
+\begin{equation*}
+		\mu_\text{ggZH} = 5.10^{+3.57}_{-3.50}, \, \, \quad \mu_\text{ZHDY} = 3.90^{+2.62}_{-2.57}, \, \, \quad \mu_\text{WH} = 3.02^{+1.92}_{-1.90} 
+\end{equation*}
+
+The sensitivity of the network with respect to different signal regions and physics processes has been discussed in detail. It has been shown that the network model does not have inherent biases due to wrong initialization or training relics. Rather, the network returns broad posteriors in regions of low sensitivity as expected. In addition to that, the network returns the prior distribution for unrecognized processes. It has been noted that the network cannot be more sensitive then the analysis itself.
