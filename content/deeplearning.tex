@@ -1,14 +1,14 @@
 \Section{Deep Learning and Conditional Invertible Neural Networks}
 \label{ch:deeplearning}
 
-Deep Learning is a subdomain within Machine Learning focusing on the construction and training of deep neural networks. Such networks have been proven to be extremely successful in different, analytically unsolvable problems such as (but not restricted to) image classification tasks, regression tasks, image generation tasks, language translation and reinforcement learning.
+Deep Learning is a subdomain within Machine Learning focusing on the construction and training of deep neural networks. Such networks have been proven to be extremely successful in various, analytically unsolvable problems such as (but not restricted to) image classification tasks, regression tasks, image generation tasks, language translation.
 
 In this chapter, a brief introduction to these networks and their properties with a focus on so-called normalizing flows and invertible neural networks is given.
 
 \Subsection{Foundations of Deep Learning and Neural Networks}
 \Subsubsection{The Universal Approximation Theorem}
 
-The success of Neural Networks (NNs) lies in their potential of learning (almost) arbitrary models. This property of NNs can be expressed mathematically through the Universal Approximation Theorem which in words states a feed-forward network with linear output and at least one hidden layer with a finite number of nodes can approximate any real continuous function on a given closed and bounded subset to arbitrary precision \cite{DLiPR}.
+The success of neural networks (NNs) lies in their potential of learning arbitrary models. This property of NNs can be expressed mathematically through the Universal Approximation Theorem which in words states a feed-forward network with linear output and at least one hidden layer with a finite number of nodes can approximate any real continuous function on a given closed and bounded subset to arbitrary precision \cite{DLiPR}.
 
 However, the Universal Approximation Theorem does not state how the network should be constructed to achieve the desired precision. For this reason, the theorem has been proven for several network architectures; in case of ReLU-activated feed-forward networks the theorem can be written as the following \cite{UAC}:
 \newtheorem{theorem}{Theorem}
@@ -27,7 +27,7 @@ This theorem does not state anything about the exact depth (number of layers) th
 In the following, a brief overview of the most common NN components is going to be given with special focus on the ones used for the construction of the cINN.
 
 \Subsubsection{Fully-Connected Neural Networks}
-The most elementary NNs perform affine transformations (consisting of a linear transformation represented by a weight matrix $W$ and a shift $b$) on a given input $x$ followed by the application of a non-linear function (called activation) $g$:
+The most elementary NNs perform affine transformations, consisting of a linear transformation represented by a weight matrix $W$ and a shift $b$, on a given input $x$ followed by the application of a non-linear function (called activation) $g$:
 
 \begin{equation*}
 	y = g(Wx+b)
@@ -39,7 +39,7 @@ Graphically, one such transformation is represented as a layer. For a fully-conn
 	f(x, \theta) = g^n\left\{W^{n-1}g^{n-1}\left[ ... \left(W^2g^1(W^1x+b^1)+b^2\right)...\right]+b^{n-1}\right\}
 \end{equation*}
 
-is a universal approximator with the free parameters $\theta$ (containing all the matrices $W^i$ and the biases $b^i$) for the target output for $y$. Finding the optimal parameters $\theta$ is called training and the $\theta$ will be referred to as trainable parameters. The graphical representation of a neural network mapping is shown in fig. \ref{fig:nn}.
+is a universal approximator with the free parameters $\theta$, containing all the matrices $W^i$ and the biases $b^i$, for the target output for $y$. Finding the optimal parameters $\theta$ is called training and the $\theta$ will be referred to as trainable parameters. The graphical representation of a neural network mapping is shown in fig. \ref{fig:nn}.
 
 \tikzset{%
 	every neuron/.style={
@@ -100,10 +100,8 @@ is a universal approximator with the free parameters $\theta$ (containing all th
 	\label{fig:nn}
 \end{figure}
 
-Note that for the approximation to work arbitrary well, the structure of the network and training have to be correctly adjusted to the task to be solved.
-
 \Subsubsection{Activation Functions}
-It is essential for convergence to select the right activation function $g$. Historically, several candidate activation functions such as sigmoid, tanh, the rectified linear unit (ReLU) and its variants such as SeLU and leaky-ReLU have emerged. In this work ReLU will be used exclusively. An advantage of ReLU is the lack of saturation range compared to the sigmoid or the tanh activation functions, where gradients above or below a given value of $x$ become negligible, "paralysing" the training. Apart from that, ReLU has tractable derivatives and has proven to be an efficient activator empirically. It is defined as
+It is essential for convergence to select the right activation function $g$. Historically, several candidate activation functions such as sigmoid, tanh, the rectified linear unit (ReLU) and its variants such as the Scaled Exponential Linear Unit SeLU and leaky-ReLU have emerged. In this work ReLU will be used exclusively. An advantage of ReLU is the lack of saturation range compared to the sigmoid or the tanh activation functions, where gradients above or below a given value of $x$ become negligible, "paralysing" the training. Apart from that, ReLU has tractable derivatives and has proven to be an efficient activator empirically. It is defined as
 
 \begin{equation*}
 	\text{ReLU}(x) = \max \{0, x\}
@@ -120,10 +118,10 @@ where the maximum is taken element-wise over the vector components of $x$. Note 
 
 \Subsubsection{Objective Functions}
 
-Having established the network structure, a measure of fit quality remains to be chosen. Such measures are called objective functions (error or loss functions) and used to govern the training by setting the gradients of the trainable parameters $\theta$.
+Objective functions, error or loss functions, are used to govern the training by setting the gradients of the trainable parameters $\theta$.
 Several loss functions have been established for each NN-specific task to be solved. The mean-squared-error (MSE) has been found useful for regression tasks due to its resemblance to the least-squared-error obtained from likelihood fits of normal distributed data. The so-called cross-entropy error function has been found performant for classification tasks due to the relation of the loss to information theory and the accessible probabilistic interpretation of the outputs following sigmoid activation. Both of these loss functions need target labels to compare the network outputs to. Training procedures where fixed labels guide the parameter estimation are called supervised learning.
 
-Distribution fitting requires the loss function to compare samples from a probability distribution function to a target distribution. Since the discrete labels are replaced with continuous target distributions and none of the datapoints has a well-defined target these training procedures belong to the class of unsupervised learning. As the name suggests, the neural network does not obtain any additional feature representation of the data necessary for the optimization procedure. In layman's terms the network has to "figure out on its own" which input features are more important for the given task.
+Distribution fitting requires the loss function to compare samples from a probability distribution function to a target distribution. Since the discrete labels are replaced with continuous target distributions and none of the datapoints have a well-defined target these training procedures belong to the class of unsupervised learning. As the name suggests, the neural network does not obtain any additional feature representation of the data necessary for the optimization procedure. In layman's terms the network has to "figure out on its own" which input features are more important for the given task.
 
 In this work, distribution fitting will be performed which is reflected by the choice of the loss function. The Kullback-Leibler divergence (also called relative entropy) is a measure of resemblance of $p_\text{x}(x; \theta)$ to $q_\text{x}(x)$, both defined over the random variable \text{x}, and belongs to the families of $f$-divergences defined as
 
@@ -142,7 +140,7 @@ with the convex function $f(r) = r\log r$ \cite{Papamakarios_NF}. In its expande
 
 and can be decomposed into a $\theta$-parameter dependent and a $\theta$-independent term\footnote{Note that the Kullback-Leibler divergence is not symmetric in its arguments and swapping $q$ and $p$ does not yield a similar decomposition due to the expectation value taken over the probability density function $p_\text{x}(x; \theta)$. Hence a distinction between the forward and the backward Kullback-Leibler divergence has to be made. In to following, the forward KL-divergence (introduced above) will be used exclusively.}. The KL-divergence has a global minimum of value 0 where both distributions are identical. With this expression, one can approximate an unknown posterior distribution $p(x | y)$ using a model function $p_\theta(x | y)$ (both conditioned on a random variable $y$) by taking the parameter-dependent term $\mathcal{L}(\theta)$ as a basis for the loss function.
 
-Objective functions "guide" only the training, but are not a measure about the quality of the predictions per se. It can occur in terms of the weights, that a given feature of one or several inputs enjoys a higher-than-optimal weight at the cost of generalization (overfitting and overtraining). For this reason, the entries of the weight matrix during gradient descent are penalized with an additional $L^2$ regularization term
+Objective functions "guide" only the training, but due to their single-valued nature not a direct measure about the quality of the predictions per se. It can occur in terms of the weights, that a given feature of one or several inputs enjoys a higher-than-optimal weight at the cost of generalization (overfitting and overtraining). For this reason, the entries of the weight matrix during gradient descent are penalized with an additional $L^2$ regularization term in the loss function $L$
 
 \begin{equation}
 	L'(\theta) = L(\theta) + \alpha \, ||\theta|| _2^2
@@ -163,7 +161,7 @@ The optimization is data-driven. The dataset is split up to two disjoint dataset
 	\label{eq:optimization}
 \end{equation}
 
-Note that the learning rate is a decisive parameter in the update process; while a too small value of $\eta$ does not improve the loss significantly, a large $\eta$ on the other hand cannot achieve the desired convergence. To speed up the optimization process, this simple idea has been improved further upon and several competing optimizers have emerged. In this work, the quasi-standard Adam optimizer \cite{Adam_paper} has been used. It uses a sophisticated self-tuning learning rate optimization (taking the "momentum of convergence" into consideration) and several, empirically useful parameters to optimize the convergence. The algorithm can be summarized as the following:
+Note that the learning rate is a decisive parameter in the update process; while a too small value of $\eta$ does not improve the loss significantly, a large $\eta$ on the other hand cannot achieve the desired convergence. To speed up the optimization process, this simple idea has been improved further upon and several competing optimizers have emerged. In this work, the quasi-standard Adam optimizer \cite{Adam_paper} has been used. It uses a sophisticated self-tuning learning rate optimization and several, empirically useful parameters to optimize the convergence. The algorithm can be summarized as the following:
 
 \begin{equation*}
 	\begin{cases}
@@ -192,11 +190,11 @@ Most neural network setups tackle the challenge of posterior inference where the
 	p(x | y) = \frac{p(y | x) p(x)}{p(y)}
 \end{equation*}
 
-in Bayes' Theorem cannot be evaluated analytically. Most of these models are constructed in a one-directional way and do not preserve probability during inference. For this reason, even for (potentially) invertible problems, the model inverse is ill-defined. To avoid this, the network architecture has to be adjusted to satisfy the requirements of invertibility.
+in Bayes' Theorem cannot be evaluated analytically. Most of these models are constructed in a one-directional way and do not preserve probability during inference. For this reason, even for invertible problems, the model inverse is ill-defined. To avoid this, the network architecture has to be adjusted to satisfy the requirements of invertibility.
 
 \Subsubsection{General INN Architecture}
 
-To ensure invertibility the network input and output dimensions have to match to fulfil bijection. General invertible neural networks map the inputs $x$ to their targets $y$ while encoding some information regarding $x$ in the latent variables $z$. These variables are assumed to follow a fixed distribution which is also represented in the loss function. Usually these distributions are chosen to be a multivariate normal distribution, as they are unbiased and easy to sample from, the latter being crucial for obtaining the posterior distributions $p(x | y)$. Indeed, it can be shown that upon perfect convergence sampling from the latent space and picking an $y$ network inference yields the true posteriors $p(x | y)$ for any $y$ \cite{INN_Ardizzone}.
+To ensure invertibility, the network input and output dimensions have to match to fulfil bijection. General invertible neural networks map the inputs $x$ to their targets $y$ while encoding some information regarding $x$ in the latent variables $z$. These variables are assumed to follow a fixed distribution which is also represented in the loss function. Usually these distributions are chosen to be a multivariate normal distribution, as they are unbiased and easy to sample from, the latter being crucial for obtaining the posterior distributions $p(x | y)$. Indeed, it can be shown that upon perfect convergence sampling from the latent space and picking an $y$ network inference yields the true posteriors $p(x | y)$ for any $y$ \cite{INN_Ardizzone}.
 
 \begin{figure}[h!]
 	\centering
@@ -207,7 +205,7 @@ To ensure invertibility the network input and output dimensions have to match to
 
 \footnotetext{but not for cINNs}
 
-A conceptual disadvantage arises from the conditions being included in the network outputs. Assuming the dimensionality of $x$ and $y$ are wide apart from each other zero-padding or several noise-extending techniques are necessary to construct the network potentially introducing unnecessary redundancies. This can be fixed by removing the conditions $y$ from the output and by using them as an additional input for the network and by setting the dimension of the latent space distribution to match that of the inputs $x$. With this approach, the conditions can also be pre-processed by applying a -- either pre- or jointly with the network trained -- network (a conditioning or summary network) \cite{BayesFlow}. Such setups enable processing of highly correlated or feature-rich data at the cost of potential overfitting \cite{Ksoll_2020}. 
+A conceptual disadvantage arises from the conditions being included in the network outputs. Assuming the dimensionality of $x$ and $y$ are wide apart from each other zero-padding or several noise-extending techniques are necessary to construct the network. This can be fixed by removing the conditions $y$ from the output and by using them as an additional input for the network and by setting the dimension of the latent space distribution to match that of the inputs $x$. With this approach, the conditions can also be pre-processed with a with the INN jointly trained network. These networks are called conditioning or summary networks \cite{BayesFlow}. Such setups enable processing of highly correlated or feature-rich data at the cost of potential overfitting \cite{Ksoll_2020}. 
 %A sketch of the resulting network -- the conditional invertible neural network (cINN) -- structure is shown in fig. \ref{fig:cINN_archicture}.
 
 %\begin{figure}[h!]
@@ -229,7 +227,7 @@ The main idea of NFs is to construct an invertible transformation $T$ which maps
 
 yields a diffeomorphism too.
 
-In a historic sense a whitening transformation can be already viewed as a normalizing flow the target distribution being a (multivariate) normal distribution. In more general and complicated cases however, the transformation $T$ cannot be easily constructed by hand. As the transformation is applied to samples of the distribution $p$, the flow has to normalize the distribution internally.
+In a historic sense a whitening transformation can be already viewed as a normalizing flow the target distribution being a multivariate normal distribution \cite{Papamakarios_NF}. Generally, the transformation $T$ cannot be easily constructed by hand. As the transformation is applied to samples of the distribution $p$, the flow has to normalize the distribution internally.
 
 Assume we would like to express the probability $p(x)$ using the target distribution. For this, a straightforward coordinate transformation involving the Jacobian from the source to the target space can be used:
 
@@ -266,7 +264,7 @@ To represent the transformation $T$ Affine Coupling Blocks (ACB) can be utilized
 	\label{eq:glow_transformation}
 \end{equation}
 
-where $\odot$ denotes the element-wise (Hadamard) product. Note that although the functions $s_i(\cdot)$ and $t_i(\cdot)$ are not necessary invertible themselves and can be approximated thanks to the Universal Approximation Theorem with neural networks, the transformation in eq. \ref{eq:glow_transformation} is invertible, as $u_1$ and $u_2$ can be expressed with $v_1$ and $v_2$:
+where $\odot$ denotes the element-wise Hadamard product. Although the functions $s_i(\cdot)$ and $t_i(\cdot)$ are not necessarily invertible themselves and can be approximated thanks to the Universal Approximation Theorem with neural networks, the transformation in eq. \ref{eq:glow_transformation} is invertible, as $u_1$ and $u_2$ can be expressed with $v_1$ and $v_2$:
 
 \begin{equation*}
 	\left\{\begin{aligned}
@@ -290,7 +288,7 @@ and its determinant
 	\left|\frac{\partial (v_1, v_2)}{\partial (u_1, u_2)} \right| = \exp \left(\sum_j s^j_2(u_2) + s^j_2(v_1) \right)
 \end{equation*}
 
-it can be seen that they keep the determinant is nonzero independently of the behaviour of the scaling transformations $s_i(\cdot)$. It becomes also clear from the determinant, that even for high-dimensional input and output vectors $u$, $v$ the determinant is computationally cheap to evaluate.
+it can be seen that they keep the determinant nonzero independently of the behaviour of the scaling transformations $s_i(\cdot)$. It becomes also clear from the determinant, that even for high-dimensional input and output vectors $u$, $v$ the determinant is computationally cheap to evaluate.
 
 Due to their mutual dependence on each other the expressions in eq. \ref{eq:glow_transformation} are not evaluated directly in practice and the transformation is split up in two intermediate steps. First, a term with
 
@@ -310,7 +308,7 @@ is evaluated followed by
 	\end{cases}
 \end{equation*}
 
-It is easy to check, that the composed transformation $f = f_2 \circ f_1$ has the same Jacobian (and hence the same determinant) as the one in eq. \ref{eq:glow_transformation}. This step-wise evaluation can be visualized in a flow chart, as shown in fig. \ref{fig:glow}.
+It is easy to check, that the composed transformation $f = f_2 \circ f_1$ has the same Jacobian and hence the same determinant as the one in eq. \ref{eq:glow_transformation}. This step-wise evaluation can be visualized in a flow chart, as shown in fig. \ref{fig:glow}.
 
 \begin{figure}[h!]
 	\centering
@@ -319,7 +317,7 @@ It is easy to check, that the composed transformation $f = f_2 \circ f_1$ has th
 	\label{fig:glow}
 \end{figure}
 
-Note that the exponential functions in eq. \ref{eq:glow_transformation} can potentially produce extreme values which can lead to numerical instabilities during optimization. For this reason, additional soft-clamping is introduced, and an additional scale function with a fixed clamping coefficient $\alpha$ is applied to the scale coefficients $s_i(\cdot)$:
+The exponential functions in eq. \ref{eq:glow_transformation} can potentially produce extreme values which can lead to numerical instabilities during optimization. For this reason, additional soft-clamping is introduced, and an additional scale function with a fixed clamping coefficient $\alpha$ is applied to the scale coefficients $s_i(\cdot)$:
 
 \begin{equation*}
 	s' = \frac{2\alpha}{\pi} \arctan\left(\frac{s}{\alpha}\right)
@@ -367,6 +365,6 @@ the resulting loss function becomes
 for all inputs $x_m$ of batch $m$ to train the network with respect to.
 
 \Subsubsection{Posterior Inference}
-After training, the network should be capable of inferring the true posterior distribution. For this, a condition has to be fixed first. Then, one can select samples from the latent space distribution (as its shape has been fixed by the loss function) and invert the network to obtain the samples from the posterior distribution.
-At first glance there is no guarantee from the loss and from the architecture only that it is meaningful to map the datapoints to a more or less arbitrary function, from which independently drawn samples can be used for posterior inference. However, it can be shown that the latent output distribution is statistically independent on the training data at the global optimum, and the latent output distribution is the same for any fixed condition \cite{BayesFlow}. This motivates the rightfulness of the sampling from the latent space.
+After training, the network is capable of inferring the true posterior distribution. For this, a condition has to be fixed first. Then, one can select samples from the latent space distribution (as its shape has been fixed by the loss function) and invert the network to obtain the samples from the posterior distribution.
+At first glance there is no guarantee from the loss and from the architecture only that it is meaningful to map the datapoints to a more or less arbitrary function, from which independently drawn samples can be used for posterior inference. However, it can be shown that the latent output distribution is statistically independent on the training data at the global optimum, and the latent output distribution is the same for any fixed condition \cite{BayesFlow}. This motivates the rightness of the sampling from the latent space.
 

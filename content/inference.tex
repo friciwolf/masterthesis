@@ -1,4 +1,5 @@
 \Section{Signal Modifier Parameter Inference with cINNs}
+\label{ch:inference}
 
 In this chapter, the performance of the network will be characterized in detail. Two network setups will be considered: one without and one with a summary network reducing the representation of the conditions. These networks will be referred to as cINN and SN-cINN (for summary network-extended cINN). It will be shown that the setup without a summary network results in superior performance. 
 
@@ -20,7 +21,7 @@ The loss functions for both trainings are shown in fig. \ref{fig:losses} for the
 	\label{fig:losses}
 \end{figure}
 
-The strongly fluctuating and exploding test loss for the SN-cINN indicates that a reduction of the conditions does not result in a better generalisation capability of the model, but only lowers the training loss with an overtraining effect. Thus, the representation of the conditions is already well chosen and the reduction of the conditions necessarily result in performances of lower quality.
+The strongly fluctuating and exploding test loss after $\approx4000$ epochs for the SN-cINN indicates that a reduction of the conditions does not result in a better generalisation capability of the model, but only lowers the training loss with an overtraining effect. Thus, the representation of the conditions is already well chosen and the reduction of the conditions necessarily result in performances of lower quality.
 
 \Subsection{Latent Space Distributions}
 
@@ -32,7 +33,7 @@ The latent space distributions for both networks are shown in fig. \ref{fig:late
 	\centering
 	\includegraphics[width=\textwidth]{figures/inference/ls.png}
 	\includegraphics[width=\textwidth]{figures/inference/ls_SN.png}
-	\caption{Latent space distribution for the cINN without (top) and with (bottom) a summary network.}
+	\caption{Latent space distribution for the cINN without (top 3 rows) and with a summary network (bottom 3 rows).}
 	\label{fig:latents}
 \end{figure}
 
@@ -40,19 +41,19 @@ All of the above distributions in blue are well-described by the orange curve fo
 
 \Subsection{Calibration Curves}
 
-A measure of evaluating the quality of the produced posteriors are the calibration errors. The calibration error for a given quantile (i.e. $q\in [0, 1]$) is defined for all histograms $N$ as
+A measure of evaluating the quality of the produced posteriors are the calibration errors. The calibration error for a given quantile (i.e. $q\in [0, 1]$) is defined for all histograms $N$ in the dataset as
 
 \begin{equation*}
 	e_{cal}(q) = \frac{N^q_{in}}{N} - q
 \end{equation*}
 
-where $N^q_{in}$ is the number of histograms containing the true value within their $q$ quantile. For ideal posteriors, this measure is 0 for all quantiles $q$; any deviations from that signals the presence of biases and of hidden correlations within the network. Naturally, no network can reproduce the ideal results, as the global optimum can only be approximated. For all quantiles, the ratio of histograms containing the true value in their $q$ quantile as a function of $q$ is shown in fig. \ref{fig:ecals}.
+where $N^q_{in}$ is the number of histograms containing the true value within their quantile $q$. For ideal posteriors, this measure is 0 for all quantiles $q$; any deviations from that signals the presence of biases and of hidden correlations within the network. Naturally, no network can reproduce the ideal results, as the global optimum can only be approximated. For all quantiles, the ratio of histograms containing the true value in their $q$ quantile as a function of $q$ is shown in fig. \ref{fig:ecals}.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{figures/inference/ecal}
 	\includegraphics[width=\linewidth]{figures/inference/ecal_SN}
-	\caption{The calibration curves for the cINN and summary network-extended cINN. Note the closeness to the perfect calibration curve shown in the gray dashed line.}
+	\caption{The calibration curves for the cINN (top 3 rows) and summary network-extended cINN (bottom three rows). Note the closeness to the perfect calibration curve shown in the gray dashed line.}
 	\label{fig:ecals}
 \end{figure}
 
@@ -86,7 +87,7 @@ It describes the median absolute distance of the histogram ratios to the ideal c
 		\texttt{vv   }   & 0.0333    &    0.0441  \\
 		\texttt{vvv  }   & 0.0326    &    0.0331  \\
 		\texttt{wjets}   & 0.0070    &    0.0127  \\
-		\texttt{lumi }   & 0.0156    &    0.0248  \\
+		\texttt{luminosity}   & 0.0156    &    0.0248  \\
 		\hline
 	\end{tabular}
 	\caption{The median calibration errors for the cINN and the summary network-extended (SN-cINN).}
@@ -98,17 +99,11 @@ It describes the median absolute distance of the histogram ratios to the ideal c
 The predictions for the complete test dataset are shown in fig. \ref{fig:predictions}. For each two dimensional histogram, the x axis shows the predicted values for a parameter on the y axis. In these plots several structures are clearly visible, which can be categorised into three groups for both networks:
 
 \begin{itemize}
-	\item[] \textit{Unrecognized processes} are those, where the network has difficulties obtaining the parameter with which the processes had been scaled. These are \texttt{VBFH, ggH, ttVH, ttVV, vvv} which are rare background processes. Due to the network not being able to differentiate between the different scalings, all of these are fitted close to the mean of the prior distribution, resulting in the thin vertical distribution in fig. \ref{fig:predictions}. Their contribution to each bin in the conditions is shown in fig. \ref{fig:cond_without_sig_bkg} in orange. From the distribution even without signal and main background processes, their contribution is extremely low.
-	
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=\linewidth]{figures/inference/cond4_sorted_no_main_bkg_no_sig.pdf}
-		\caption{Nominal conditions sorted by relative process occurrence without main background \texttt{tt, dy, st} and signal processes, showing the total contribution of the unrecognized processes in orange. Note that the content of each orange bin is $\lesssim\mathcal{O}(\sqrt{N})$, so their contribution is suppressed by statistical effects -- even without main background and signal processes.}
-		\label{fig:cond_without_sig_bkg}
-	\end{figure}
-	
+    \item[] \textit{Recognized processes} are all signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} and the major background sources \texttt{QCD}, \texttt{dy}, \texttt{st}, \texttt{tt}, \texttt{wjets}. For these processes, most modifier parameters predictions lie close to the true parameter value, hence distribution scatter around the perfect prediction diagonal.
+
 	\item[] \textit{Weakly recognized processes} are \texttt{rare}, \texttt{ttV}, \texttt{vv}. For these processes, the network can already resolve sevaral parameters close to the mean, from where the sensitivity starts to develop during training. Parameters further away from the mean are still fit the average value, resulting in an overall lense-like shape.
-	\item[] \textit{Recognized processes} are all signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} and the major background sources \texttt{QCD}, \texttt{dy}, \texttt{st}, \texttt{tt}, \texttt{wjets}. For these processes, most modifier parameters predictions lie close to the true parameter value, hence distribution scatter around the perfect prediction diagonal.
+
+	\item[] \textit{Unrecognized processes} are those, where the network has difficulties obtaining the parameter with which the processes had been scaled. These are \texttt{VBFH, ggH, ttVH, ttVV, vvv} which are rare background processes. Due to the network not being able to differentiate between the different scalings, all of these are fitted close to the mean of the prior distribution, resulting in the thin vertical distribution in fig. \ref{fig:predictions}. Their contribution to each bin in the conditions is shown in fig. \ref{fig:cond_without_sig_bkg} in orange. From the distribution even without signal and main background processes, their contribution is extremely low.
 \end{itemize}
 
 For the signal processes \texttt{ggZH}, \texttt{ZHDY} and \texttt{WH} a decrease in sensitivity for $\mu\lesssim10$ resulting in a tail-like structure stretching towards the mean has been observed. Since their contribution is already low, the added statistical and systematic effects renders these statistically undetectable. The most significant of these effects is the Poisson bin-variation, as it modifies all bins with $\sqrt{N}$.
@@ -121,9 +116,16 @@ In general, this resolution effect only be can further tackled by a more refined
 	\centering
 	\includegraphics[width=\linewidth]{figures/inference/p}
 	\includegraphics[width=\linewidth]{figures/inference/p_SN}
-	\caption{The predicted signal scale parameters vs. the simulated "real" Monte Carlo values. Note the five unrecognized processes, the tail for the signal processes, the well-reconstructed processes and the in-between-quality predictions characterized by the lense-like distribution.}
+	\caption{The predicted signal scale parameters vs. the simulated "real" Monte Carlo values for the cINN (top 3 rows) and the SN-cINN (bottom 3 rows). The five unrecognized processes, the sensitivity drop for the signal processes an the well-reconstructed processes and the in-between-quality predictions characterized by the lense-like distribution can be noted.}
 	\label{fig:predictions}
 \end{figure}
+
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=\linewidth]{figures/inference/cond4_sorted_no_main_bkg_no_sig.pdf}
+		\caption{Nominal conditions sorted by relative process occurrence without main background \texttt{tt, dy, st} and signal processes, showing the total contribution of the unrecognized processes in orange. Note that the content of each orange bin is $\lesssim\mathcal{O}(\sqrt{N})$, so their contribution is suppressed by statistical effects -- even without main background and signal processes.}
+		\label{fig:cond_without_sig_bkg}
+	\end{figure}
 
 The \texttt{WH} process has the highest sensitivity, and the \texttt{ggZH} process the least. In the region $\mu\geq20$ the signal strength modifier parameters are widely and asymmetrically scattered around the perfect predictions in the high-signal region for the $ZH$ processes for both networks. This effect becomes most visible if one switches to linear scales as shown in fig. \ref{fig:predictions_sig_lin}. 
 
