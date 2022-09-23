@@ -5,7 +5,8 @@ In this chapter, an overview of the analysis- strategy and setup will be given w
 
 \Subsection{Analysis Strategy}
 
-The analysis has been performed on Monte Carlo (MC) data exclusively. The phase space in consideration has been selected to contain the highest signal yield. Hence the $gg \rightarrow WH \rightarrow b\bar{b} l\nu_l$ and $gg \rightarrow ZH \rightarrow b\bar{b}l\bar{l}$ final states have been considered. The Feynman diagram of these processes are shown in fig. \ref{fig:VH_finalstates}. Note that due to their weakly-interacting nature, neutrinos cannot be reconstructed in the detector. For this reason, former will be referred to as semi-leptonic and the latter as di-leptonic final state with lepton meaning electrons and/or muons exclusively.
+The analysis has been performed on Monte Carlo (MC) simulated events exclusively. The datasets used for the analysis have been simulated with \texttt{PYTHIA} \cite{Sj_strand_2008} and \texttt{HERWIG++} \cite{herwig}. These simulated events do not only contain matrix element calculation and hadronization, but also the CMS detector simulations using \texttt{GEANT4} in order to represent the final expected distributions accurately \cite{geant1, geant2, geant3}.
+The signal processes are \texttt{ggZH} (for the box and triangle diagram process), \texttt{ZH\_DY} (for the Drell-Yan-like $ZH$ production process) and \texttt{WH} (for the $WH$ Higgsstrahlung process). The list of the signal sample datasets is shown in tab. \ref{tab:signal_datasets}. The phase space has been selected to contain regions with high signal sensitivity. Hence the $qq \rightarrow WH \rightarrow b\bar{b} l\nu_l$ and $gg/qq \rightarrow ZH \rightarrow b\bar{b}l\bar{l}$ final states have been considered. The Feynman diagram of these processes are shown in fig. \ref{fig:VH_finalstates}. Note that due to their weakly-interacting nature, neutrinos cannot be reconstructed in the detector. For this reason, former will be referred to as one-lepton and the latter as two-lepton final state with lepton meaning electrons or muons exclusively.
 
 \begin{table}[h!]
 	\centering
@@ -20,7 +21,7 @@ The analysis has been performed on Monte Carlo (MC) data exclusively. The phase 
 	\label{fig:VH_finalstates}
 \end{table}
 
-The events are categorized through a triggering system and are assigned to one of four channels. The list of the triggers for the di- and semileptonic channels are listed in tab. \ref{tab:triggers}.
+The events are categorized through a triggering system and are assigned to one of four channels. The list of the triggers for the two and one lepton channels are listed in tab. \ref{tab:triggers}.
 
 \begin{table}[h!]
 	\centering
@@ -40,15 +41,13 @@ The events are categorized through a triggering system and are assigned to one o
 		& \texttt{IsoMu27} \\
 		\hline \\
 	\end{tabular}
-	\caption{The lepton triggers used in the analysis.}
+	\caption{The lepton triggers used in the analysis. For a channel, only one of the given two is used.}
 	\label{tab:triggers}
 \end{table}
 
-The naming in tab. \ref{tab:triggers} indicates the phase space which the triggers cut off. In the di-leptonic channels the lepton with the higher energy (the leading lepton) is required to have $p_T > \SI{23}{\giga\electronvolt}$ and $p_T > \SI{17}{\giga\electronvolt}$ for $ee$ and $\mu\mu$, respectively; the sub-leading (the "other") lepton is then required to have $p_T>\SI{12}{\giga\electronvolt}$ and $\SI{8}{\giga\electronvolt}$ for $ee$ and $\mu\mu$, respectively. In the semi-leptonic categories, only electrons with $p_T>\SI{32}{\giga\electronvolt}$ and isolated muons with $\SI{24}{\giga\electronvolt}$ and $|\eta|<2$ and isolated muons with $p_T>\SI{27}{\giga\electronvolt}$ are kept.
+The naming in tab. \ref{tab:triggers} indicates the phase space which the triggers select. In the two lepton channels the lepton with the higher transverse momentum (the leading lepton) is required to have $p_T > \SI{23}{\giga\electronvolt}$ and $p_T > \SI{17}{\giga\electronvolt}$ for $ee$ and $\mu\mu$, respectively; the sub-leading lepton is then required to have $p_T>\SI{12}{\giga\electronvolt}$ and $\SI{8}{\giga\electronvolt}$ for $ee$ and $\mu\mu$, respectively. In the one lepton categories, only electrons with $p_T>\SI{32}{\giga\electronvolt}$ and isolated muons with $\SI{24}{\giga\electronvolt}$ and $|\eta|<2.1$ or isolated muons with $p_T>\SI{27}{\giga\electronvolt}$ are kept.
 
-In addition to these selection criteria, both muon tracks have to be isolated in the $\mu\mu$ channel. For the $e$ channel, the tight working point has been selected as trigger efficiency.
-
-The datasets used for the analysis have been simulated with \texttt{PYTHIA} \cite{Sj_strand_2008} and \texttt{HERWIG++} \cite{herwig}. These simulated events not only contain matrix element calculation samples, but also the CMS detectors simulations using \texttt{GEANT4} in order to represent the final expected distributions accurately \cite{geant1, geant2, geant3}. The list of the signal sample datasets is shown in tab. \ref{tab:signal_datasets}. These processes are \texttt{ggZH} (for the box diagram process), \texttt{ZH\_DY} (for the Drell-Yan-like $ZH$ production process) and \texttt{WH} (for the $WH$ Higgsstrahlung process).
+%In addition to these selection criteria, both muon tracks have to be isolated in the $\mu\mu$ channel. For the $e$ channel, the tight working point has been selected as trigger efficiency.
 
 \begin{table}[h!]
 	\centering
@@ -68,36 +67,33 @@ The datasets used for the analysis have been simulated with \texttt{PYTHIA} \cit
 	\label{tab:signal_datasets}
 \end{table}
 
-Regarding (ir)reducible background, one distinguishes between the following processes:
+Regarding background, one distinguishes between the following processes:
 
 \begin{itemize}
-	\item[] \texttt{dy}: Drell-Yan-like vector boson production with hadronic initial state radiation. This process has high cross section and yields the same final state (for radiated bottom jets) as the signal. In addition, it has the same lepton signature too. The process is shown in fig. \ref{fig:dy_background}.
+	\item[] \texttt{dy}: Drell-Yan vector boson production with hadronic initial state radiation. This process has high cross section and yields the same final state (for radiated bottom jets) as the signal. In addition, it has the same lepton signature too. The process is shown in fig. \ref{fig:dy_background}.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.4\textwidth]{figures/analysis/dy.pdf}
 		\caption{The Feynman diagram for the dy background process.}
 		\label{fig:dy_background}
 	\end{figure}
-	\item[] $\texttt{t}\bar{\texttt{t}}$: Production of top quark pairs $t\bar{t}$. These quarks decay via $t\rightarrow Wb$ and with the leptonic decay channel of the $W$, this has the same final state as the signal process. This has the second largest background contribution. The corresponding Feynman diagram is shown in fig. \ref{fig:tt_background}.
+	\item[] $\texttt{t}\bar{\texttt{t}}$: Production of top quark pairs $t\bar{t}$. These quarks decay with high probability via $t\rightarrow Wb$ and with the leptonic decay channel of the $W$, this has the same final state as the signal process and has a large background contribution. The corresponding Feynman diagram is shown in fig. \ref{fig:tt_background}.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.5\textwidth]{figures/analysis/tt.pdf}
 		\caption{The Feynman diagram for the tt background process.}
 		\label{fig:tt_background}
 	\end{figure}
-	\item[] $\texttt{t}\bar{\texttt{t}}\texttt{V}$: Associated vector boson production in the initial or final states with a $t\bar{t}$ pair. For the top quarks decaying into bottom quarks and the leptonically decaying vector bosons, this yields a final state similar to the signal final state.
-	\item[] $\texttt{st}$: Single top quark production. A hadronically decaying top with a QCD-induced bottom jet results in a semileptonic di-bottom state.
+ 	\item[] $\texttt{st}$ and $\texttt{t}\bar{\texttt{t}}\texttt{V}$: Single top quark production and associated vector boson production with a $t\bar{t}$ pair. For the top quarks decaying into bottom quarks and leptonically decaying vector bosons, this yields a final state similar to the signal final state.
 	\item[] \texttt{VV}, \texttt{VVV} and $\texttt{t}{\bar{\texttt{t}}}\texttt{VV}$: di- or triboson production with (or without) associated $t\bar{t}$ production. If any of these vector bosons decay hadronically while the other(s) decay leptonically, this results in a semi- or dileptonic di-bottom final state.
-	\item[] $\texttt{t}\bar{\texttt{t}}\texttt{VH}$, \texttt{ggH} and \texttt{VBFH}: Higgs production channels.
-	\item[] \texttt{wjets}: leptonically decaying jet-associated $W$ boson production.
-	\item[] \texttt{QCD}: reducible QCD background.
-	\item[] \texttt{rare}: rare processes (such as four top production) with individual low contribution each
+	\item[] $\texttt{t}\bar{\texttt{t}}\texttt{VH}$, \texttt{ggH} and \texttt{VBFH} are Higgs production channels. \texttt{wjets} are leptonically decaying jet-associated $W$ boson production. \texttt{QCD} is QCD background. \texttt{rare} are rare processes (such as four top production) with individual low contribution each.
 \end{itemize}
 
 The list of the background samples from the MC simulations are all listed in tab. \ref{tab:bkg_datasets}.
 
 \begingroup
 \footnotesize
+\setlength\LTleft{-1.0cm}
 \begin{longtable}[b]{llS[table-format=9.0]S[table-format=7.8]}
 	\caption{List of simulated background samples for 2017 with the cross section $\sigma$ of each process and the number of generated events $N$, divided into process groups. The symbol \texttt{*} is a placeholder for \texttt{pythia8}, while \texttt{**} denotes \texttt{inclusiveDecays}. Long dataset names are split into multiple lines, denoted by an indentation. (NanoAODv7, 102X\_mc2017\_realistic\_v8-v1)}\\
 	Process&Dataset name&{N}&$\sigma/$\si{\pico\barn} \\
@@ -136,7 +132,8 @@ The list of the background samples from the MC simulations are all listed in tab
 	&\verb|ST_tW_top_5f_**_TuneCP5_PSweights_13TeV-powheg-*| &7755138 &35.85\\
 	&\verb|ST_tW_antitop_5f_**_TuneCP5_PSweights_13TeV-powheg-*| & 7745276&35.85\\
 	&\verb|ST_tWll_5f_LO_TuneCP5_PSweights_13TeV-madgraph-*| & 986000&0.01096\\
-	\midrule
+    \newpage
+	%\midrule
 	\multirow{ 5}{*}{VVV}&\verb|WWW_4F_TuneCP5_13TeV-amcatnlo-*| & 472300&0.2086\\
 	&\verb|WWZ_4F_TuneCP5_13TeV-amcatnlo-*| & 500000&0.1676\\
 	&\verb|WZZ_TuneCP5_13TeV-amcatnlo-*| & 500000&0.05701\\
@@ -200,10 +197,11 @@ The list of the background samples from the MC simulations are all listed in tab
 	\label{tab:bkg_datasets}	
 \end{longtable}
 \endgroup
+\setlength\LTleft{0.0cm}
 
 \Subsection{Analysis Setup}
 
-In the following, the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail. The analysis setup has been summarized in fig. \ref{fig:analysis_workflow}.
+In the following, the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail. First, the physics processes are simulated, followed by a detector simulation. The resulting objects undergo a final state selection, isolating phase space regions for maximizing signal sensitivity. Depending on the event signature, they are categorized and then organized into subcategories using a deep neural network, which assigns a probability score value to them. The resulting scores can then be histogrammed and measured data can then be fitted to the resulting histogram. The analysis setup has been summarized in fig. \ref{fig:analysis_workflow}.
 
 \begin{figure}[h!]
 	\centering
@@ -224,35 +222,35 @@ In the following, the selected electron, muon and jet final state objects (recon
 	\label{fig:analysis_workflow}
 \end{figure}
 
-First, the physics processes are simulated, followed by a detector simulation. The resulting objects undergo a final state selection, cutting off phase space regions for maximizing the signal yield. Depending on the event signature, they are categorized and then organized into subcategories using a deep neural network, which assigns a score value to them. The resulting scores can then be histogrammed, to which the generator weights can be applied. Measured data can then be fitted to the resulting histogram.
+\Subsubsection{Final State Objects}
 
-The muon selection criteria are listed in tab. \ref{tab:muon_selection}. For the leading muons, a $p_T$-cut of 25 GeV has been required; qualifying subleading muons need to satisfy $p_T>\SI{15}{\giga\electronvolt}$. Furthermore, muons ought to be identified as tight muons and have to be contained within the tracker their impact parameter (IP) geometry being compatible with the primary vertex (PV) too. In addition, the IP significance \texttt{sip3d} (defined as the ratio between the uncertainty of the IP and the IP itself) is also restricted to guarantee that these muons originate from the PV. The \texttt{pfRelISO04\_all} parameter cut ensures the isolation of the muons invoking a stronger constraint on their origin.
+The muon selection criteria are listed in tab. \ref{tab:muon_selection}. For the muons, a $p_T$-cut of 15 GeV has been required. Furthermore, they ought to be identified as tight muons and have to be contained within the tracker. It is also required that their impact parameter (IP) geometry is compatible with the primary vertex (PV) too. In addition, the IP significance \texttt{sip3d} (defined as the ratio between the uncertainty of the IP and the IP itself) is also restricted to guarantee that these muons originate from the PV. The \texttt{pfRelISO04\_all} parameter cut ensures the isolation of the muons invoking a stronger constraint on their origin.
 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{c}
 		\hline
 		\texttt{tightId} \\
-		$p_T > \SI{25}{\giga\electronvolt}/\SI{15}{\giga\electronvolt}$ \\
+		$p_T > \SI{15}{\giga\electronvolt}$ \\
 		$|\eta| \leq 2.4$ \\
 		$d_{xy} \leq \SI{0.05}{\centi\meter}$ \\
 		$d_z \leq \SI{0.1}{\centi\meter}$ \\
-		$\texttt{pfRelIso04\_all} \leq 0.15$  \\
 		\texttt{sip3d} $\leq 8$ \\
+		$\texttt{pfRelIso04\_all} \leq 0.15$  \\
 		\hline \\
 	\end{tabular}
-	\caption{Selection criteria for the muons. The first and the second values correspond to the cuts applied to the leading and sub-leading muons, respectively.}
+	\caption{Selection criteria for muons.}
 	\label{tab:muon_selection}
 \end{table}
 
-The electron selection criteria is listed in tab. \ref{tab:electron_selection}. The electrons are required to be included in the tracker (through $\eta$) to ensure quality transversal momentum reconstruction. These electrons should also originate from the primary vertex through the impact parameter (IP) cuts $d_i$. Similarly to muons, the IP significance and isolation measures are also restricted. For quality reconstruction, the maximum number of lost hits in the tracker is also limited. As identification efficiency, the 80\% working point (WP80, defined on a Drell-Yang sample) has been chosen.
+The electron selection criteria is listed in tab. \ref{tab:electron_selection}. The electrons are required to be contained in the tracker to ensure the quality of the transverse momentum reconstruction. These electrons should also originate from the primary vertex through the impact parameter (IP) cuts $d_i$. Similarly to muons, the IP significance and isolation measures are also restricted. For quality reconstruction, the maximum number of lost hits in the tracker is also limited. \texttt{MVA ID WP80} has been chosen and as identification efficiency the 80\% working point (WP80, defined on a Drell-Yan sample) has been selected.
 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{c}
 		\hline
-		\texttt{MVA WP80} \\
-		$p_T > \SI{25}{\giga\electronvolt}/\SI{15}{\giga\electronvolt} $\\
+		\texttt{MVA ID WP80} \\
+		$p_T > \SI{15}{\giga\electronvolt} $\\
 		$|\eta| \leq 2.5$ \\
 		$d_{xy} \leq \SI{0.05}{\centi\meter}$ \\
 		$d_z \leq \SI{0.1}{\centi\meter}$ \\
@@ -265,26 +263,26 @@ The electron selection criteria is listed in tab. \ref{tab:electron_selection}. 
 	\label{tab:electron_selection}
 \end{table}
 
-For the jets in consideration, the selection criteria in tab. \ref{tab:jet_selection} are applied. For AK8 jets, the transversal momentum selection lies higher than those of the AK4 jets; both jets are required to carry the tight ID. In addition to that, they should be restricted to the region covered by the tracker. Based on the jet selection, the flavour tracking algorithm identifies the bottom jets. For the AK4-tagging, DeepFlavour and for AK8 jets, DeepDoubleX are used.
+For the jets in consideration, the selection criteria in tab. \ref{tab:jet_selection} are applied. The AK4 jets are required to carry the tight ID. In addition to that, they are restricted to the region covered by the tracker. Based on the jet selection, the flavour tracking algorithm identifies the bottom jets. For the AK4-tagging, DeepFlavour is used.
 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{c}
 		\hline
 		\texttt{tightId} \\
-		$p_T > \SI{30}{\giga\electronvolt}/ \SI{70}{\giga\electronvolt}$ \\
+		$p_T > \SI{30}{\giga\electronvolt}$ \\
 		$|\eta| < 2.4$ \\
 		\hline
 	\end{tabular}
-	\caption{Jet selection criteria. For the transversal cuts the first and the second values are applied to the AK4 and AK8 jets, respectively.}
+	\caption{Jet selection criteria applied to the AK4 jets.}
 	\label{tab:jet_selection}
 \end{table}
 
-\Subsection{Event Categorisation}
+\Subsubsection{Event Selection and Categorisation}
 
-For better signal yield the selected events have been categorized depending on their final state configuration. In the network analysis, only channels with two b tagged AK4 jets with semi- or dileptonic final states have been chosen.
+The selected events have been categorized depending on their final state configuration. In the network analysis, only channels with two b tagged AK4 jets with one or two lepton final states have been chosen.
 
-In the dileptonic configurations, the lepton charges have been required to be opposite, such that the total charge of selected objects is $Q_{tot} = 0$. In addition to that, the invariant mass defined by the dilepton system is required to be close to the $Z$ mass and only events with a maximum absolute deviation of $\SI{15}{\giga\electronvolt}$ are kept. For the semileptonic channels, such selection is not necessary. Additional selection is performed with supplementary leading lepton transversal momentum $p^l_T$ and missing transverse energy $\slashed{E}_T$ cuts. A summary of these selection criteria for the considered channels are listed in tab. \ref{tab:categories}.
+In the two lepton configurations, the lepton charges are required to be opposite, such that the total charge of selected objects is $Q_{tot} = 0$. In addition to that, the invariant mass defined by the dilepton system is required to be close to the $Z$ mass and only events with a maximum absolute deviation of $\SI{15}{\giga\electronvolt}$ are kept. For the one lepton channels, such selection is not possible. Additional selection with supplementary leading lepton transverse momentum $p^l_T$ and missing transverse energy $\slashed{E}_T$ cuts is performed. A summary of these selection criteria for the considered channels are listed in tab. \ref{tab:categories}.
 
 
 \begin{table}[h!]
@@ -303,10 +301,11 @@ In the dileptonic configurations, the lepton charges have been required to be op
 	\label{tab:categories}
 \end{table}
 
-\Subsection{Multi-Process Classification and Weight Application}
+\Subsubsection{Multi-Process Classification and Weight Application}
 
-Following the definition of the channels, the contained final state objects are further categorized using a deep neural network (DNN). The network assigns these final state objects to so-called subcategories within each channel and has been constructed to take even those channels with lower signal yield into consideration which are beyond the scope of this thesis. Hence, the input variables include properties of additional physics objects, such as AK8 jets, the physics object kinematic variables, correlations among them and additional jet and particle identification values. The complete list of input variables is shown in tab. \ref{tab:DNN_inputs}.
+Following the definition of the channels, the contained events are further categorized using a deep neural network (DNN). The network assigns these events to so-called subcategories within each channel. The input variables include properties of additional physics objects, such as AK8 jets, the physics object kinematic variables, correlations among them and additional jet and particle identification values. %The complete list of input variables is shown in tab. \ref{tab:DNN_inputs}.
 
+\begin{comment}
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{cc}
@@ -324,16 +323,17 @@ Following the definition of the channels, the contained final state objects are 
 	\caption{The 54 inputs of the classifier DNN with object multiplicity indicated in brackets. Note that the network has been trained as a general final state classifier, so additional kinematic variables irrelevant for the dilepton and single lepton channel analysis are also used as inputs.}
 	\label{tab:DNN_inputs}
 \end{table}
+\end{comment}
 
-The DNN then assigns a probability (following sigmoid activation) to each final state object belonging to a process group. As the sensitivity for some rare background processes is low, these are grouped into a single process group; hence, for the 16 processes the analysis differentiates between there are only 13 process groups the DNN sorts the physics final state objects into. The 13 process groups are listed in tab. \ref{tab:DNN_outputs}.
+The DNN assigns a probability to each event belonging to a process group. As the sensitivity for some rarely occuring background processes is low, these are grouped together into a common process group. Hence, for the 16 processes the analysis differentiates between there are only 13 process groups, which the DNN sorts the events into. The 13 process groups are listed in tab. \ref{tab:DNN_outputs}.
 
-The events carry a generator weight, as it would be computationally infeasible to simulate all processes proportionally to their occurrence; rather they are scaled with the experiment luminosity and process cross section. At the same time, it is desirable to reduce the uncertainties due to the finite size of Monte Carlo samples. The resulting weights written as
+The events carry a generator weight, as it would be computationally infeasible to simulate all processes proportionally to their occurrence and have to be scaled with the experiment luminosity and process cross section. The resulting weights written as
 
 \begin{equation*}
 	w_i = \frac{\mathcal{L}\sigma w^\text{gen}_i}{\sum\limits_i w^\text{gen}_i}
 \end{equation*}
 
-with luminosity $\mathcal{L}$ and cross section $\sigma$ and are then applied to the maximum DNN score distribution histogram following the classification for each process $i$.
+with luminosity $\mathcal{L}$ and cross section $\sigma$ and are then applied to the maximum DNN score distribution histogram following the classification for each event $i$.
 
 \begin{table}[h!]
 	\centering
@@ -357,7 +357,7 @@ with luminosity $\mathcal{L}$ and cross section $\sigma$ and are then applied to
 	\label{tab:DNN_outputs}
 \end{table}
 
-An example output of a such classification is shown for an $ee$ category and \texttt{ZH\_DY} process group in fig. \ref{fig:ZH_DY_sub}. Note that there are $13\times4 = 52$ cases for the 13 process groups and 4 categories in total. On this particular plot, the strong Drell-Yan and $t\bar{t}$ background is clearly visible, while a large portion of \texttt{ZH\_DY} signal events are classified correctly.
+An example output of a such classification is shown for an $ee$ category and \texttt{ZH\_DY} output node in fig. \ref{fig:ZH_DY_sub}. In total, there are $13\times4 = 52$ cases for the 13 output nodes and 4 categories. On this particular plot, the strong Drell-Yan and $t\bar{t}$ background is clearly visible, with \texttt{ZH\_DY} having the highest share among the signal processes.
 
 \begin{figure}[h!]
 	\centering
@@ -366,30 +366,30 @@ An example output of a such classification is shown for an $ee$ category and \te
 	\label{fig:ZH_DY_sub}
 \end{figure}
 
-Unfortunately, no single process can be seen in a measured dataset. What is possible though, is to fit the data to the distribution of the DNN scores of every category. A such histogram for a single category is shown in fig. \ref{fig:ee_dnn_score}; for all four categories covered by this study, the resulting histogram in shown in fig. \ref{fig:conditions}. In case of a measured dataset, only the resulting bin heights would be visible on which an analytical likelihood fit can be performed extracting the contribution of each signal process from the bins.
+The DNN probability score distribution of every category can be fitted to data. A such distribution for a single category is shown in fig. \ref{fig:ee_dnn_score}; for all four categories covered by this study, the resulting histogram in shown in fig. \ref{fig:conditions}. In case of a measured dataset, only the resulting bin count would be visible on which an analytical likelihood fit can be performed.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{figures/analysis/cond1.pdf}
-	\caption{The DNN score histogram distribution for the $ee$ category and each 13 subcategory (separated in red). On the x-axis, only the bin index is shown. The fourth subcategory from the left corresponds to the above-mentioned \texttt{ZH\_DY} subcategory. This is one of the four categories.}
+	\caption{The DNN score histogram distribution for the $ee_2b$ category and each 13 subcategory (separated in red). On the x-axis, only the bin index is shown. The fourth subcategory from the left corresponds to the above-mentioned \texttt{ZH\_DY} subcategory. The \texttt{ggZH} subcategory is the seventh from the left with the two bins. This is one of the four channels.}
 	\label{fig:ee_dnn_score}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=1.1\linewidth]{figures/analysis/cond4_notOrdered.pdf}
-	\caption{The distribution of the DNN scores for each subcategory (separated in red) in the semi- and dileptonic categories in consideration (separated in blue). Note the high share of Drell-Yan, $t\bar{t}$ and QCD background events in each bin and the absence of $WH$ events in the dileptonic bins. The $ee$ category is the second one from the left.}
+	\caption{The distribution of the DNN scores for each subcategory (separated in red) in the one and two lepton categories in consideration (separated in blue). Note the high share of Drell-Yan, $t\bar{t}$ and QCD background events in each bin and the absence of $WH$ events in the two lepton bins. The $ee$ category is the second one from the left.}
 	\label{fig:conditions}
 \end{figure}
 
-\Subsection{Likelihood Fits}
+\Subsubsection{Likelihood Fits}
 
-Using these histograms, the maximum likelihood fits can be performed to obtain the signal strength parameters. For that, the likelihood function for a signal+background hypothesis defined as
+Using these histograms, a maximum likelihood fit can be performed to determine the signal strength parameters. For that, the likelihood function for a signal+background hypothesis is defined, which can be written as
 
 \begin{equation*}
 	\mathcal{L}(N | \left\{\mu_i\right\} , \left\{\theta_i\right\}) = \prod\limits_i \frac{(\mu_is_i(\theta)+b_i(\theta))^N}{N!}e^{-\mu_is_i(\theta) + b_i(\theta)} \prod\limits_j p(\tilde{\theta}_j | \theta_j)
 \end{equation*}
 
-with Poisson-distributed binwise signal and background contributions $s_i$ and $b_i$ depending on the uncertainty-modelling nuisance parameter $\theta$ following the probability distribution $p(\tilde{\theta} | \theta)$ is fitted to the histogram. Note that this fit assumes only changes in the background processes within the uncertainties, but not in their proportion. In other words, there is a single signal strength modifier parameter for each signal process exclusively.
+The binwise signal and background contributions $s_i$ and $b_i$ depend on the uncertainty-modelling nuisance parameter $\theta$ and are Poisson-distributed; the nuisance parameters follow the probability distribution $p(\tilde{\theta} | \theta)$. This likelihood function is fitted to the histogram and encodes the variations of the background processes within the uncertainties.
 
 In this thesis, these signal strength modifier parameters will inferred using a conditional invertible neural network and will be compared to their maximum likelihood counterpart.
