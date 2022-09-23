@@ -85,7 +85,7 @@ Regarding background, one distinguishes between the following processes:
 		\label{fig:tt_background}
 	\end{figure}
  	\item[] $\texttt{st}$ and $\texttt{t}\bar{\texttt{t}}\texttt{V}$: Single top quark production and associated vector boson production with a $t\bar{t}$ pair. For the top quarks decaying into bottom quarks and leptonically decaying vector bosons, this yields a final state similar to the signal final state.
-	\item[] \texttt{VV}, \texttt{VVV} and $\texttt{t}{\bar{\texttt{t}}}\texttt{VV}$: di- or triboson production with (or without) associated $t\bar{t}$ production. If any of these vector bosons decay hadronically while the other(s) decay leptonically, this results in a semi- or dileptonic di-bottom final state.
+	\item[] \texttt{VV}, \texttt{VVV} and $\texttt{t}{\bar{\texttt{t}}}\texttt{VV}$: di- or triple boson production with (or without) associated $t\bar{t}$ production. If any of these vector bosons decay hadronically while the other(s) decay leptonically, this results in a leptonic final state.
 	\item[] $\texttt{t}\bar{\texttt{t}}\texttt{VH}$, \texttt{ggH} and \texttt{VBFH} are Higgs production channels. \texttt{wjets} are leptonically decaying jet-associated $W$ boson production. \texttt{QCD} is QCD background. \texttt{rare} are rare processes (such as four top production) with individual low contribution each.
 \end{itemize}
 
@@ -201,7 +201,7 @@ The list of the background samples from the MC simulations are all listed in tab
 
 \Subsection{Analysis Setup}
 
-In the following, the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail. First, the physics processes are simulated, followed by a detector simulation. The resulting objects undergo a final state selection, isolating phase space regions for maximizing signal sensitivity. Depending on the event signature, they are categorized and then organized into subcategories using a deep neural network, which assigns a probability score value to them. The resulting scores can then be histogrammed and measured data can then be fitted to the resulting histogram. The analysis setup has been summarized in fig. \ref{fig:analysis_workflow}.
+In the following, the selected electron, muon and jet final state objects (reconstructed and identified by ParticleFlow) will be described in detail. First, the physics processes are simulated, followed by a detector simulation. The resulting objects undergo a final state selection, isolating phase space regions for maximizing signal sensitivity. Depending on the event signature, they are categorized and then organized into subcategories using a deep neural network, which assigns a probability score value to them. The resulting scores can be histogrammed and measured data can then be fitted to the resulting histogram. The analysis worfkflow has been summarized in fig. \ref{fig:analysis_workflow}.
 
 \begin{figure}[h!]
 	\centering
@@ -289,7 +289,7 @@ In the two lepton configurations, the lepton charges are required to be opposite
 	\centering
 	\begin{tabular}{ccccc}
 		channel & $\mu\mu$ & $ee$ & $\mu$ & $e$ \\
-		\hline \hline \\
+		\hline \\
 		$p^l_T$ & $>\SI{30}{\giga\electronvolt}$ & $>\SI{25}{\giga\electronvolt}$ & $>\SI{25}{\giga\electronvolt}$ & $>\SI{35}{\giga\electronvolt}$ \\
 		$n_\mu$ & 2 & 0 & 1 & 0 \\
 		$n_e$ & 0 & 2 & 0 & 1 \\
@@ -371,7 +371,7 @@ The DNN probability score distribution of every category can be fitted to data. 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{figures/analysis/cond1.pdf}
-	\caption{The DNN score histogram distribution for the $ee_2b$ category and each 13 subcategory (separated in red). On the x-axis, only the bin index is shown. The fourth subcategory from the left corresponds to the above-mentioned \texttt{ZH\_DY} subcategory. The \texttt{ggZH} subcategory is the seventh from the left with the two bins. This is one of the four channels.}
+	\caption{The DNN score histogram distribution for the $ee$ category and each 13 subcategory (separated in red). On the x-axis, only the bin index is shown. The fourth subcategory from the left corresponds to the above-mentioned \texttt{ZH\_DY} subcategory. The \texttt{ggZH} subcategory is the seventh from the left with the two bins. This is one of the four channels.}
 	\label{fig:ee_dnn_score}
 \end{figure}
 
